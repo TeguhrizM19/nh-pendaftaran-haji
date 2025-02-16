@@ -16,6 +16,6 @@ class MDokHaji extends Model
   // Relasi Many to Many dg banyak dokumen
   public function daftarHaji()
   {
-    return $this->belongsToMany(TDaftarHaji::class, 't_daftar_haji_dokumen', 'dok_id', 't_daftar_haji_id');
+    return $this->belongsToMany(TDaftarHaji::class, 't_daftar_haji_documents', 'dokumen_id', 'daftar_haji_id');
   }
 }

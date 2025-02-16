@@ -26,15 +26,14 @@
     <table class="w-full text-sm text-left rtl:text-right text-black bg-white">
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
-          <th scope="col" class="px-6 py-3">
-            No
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Nama
-          </th>
-          <th scope="col" class="px-6 py-3 text-center">
-            Aksi
-          </th>
+          <th scope="col" class="px-6 py-3">No</th>
+          <th scope="col" class="px-6 py-3">No Porsi Haji</th>
+          <th scope="col" class="px-6 py-3">Nama</th>
+          <th scope="col" class="px-6 py-3">Paket Pendaftaran</th>
+          <th scope="col" class="px-6 py-3">Estimasi Berangkat</th>
+          <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
+          <th scope="col" class="px-6 py-3">No Telpone</th>
+          <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -44,12 +43,25 @@
               {{ $loop->iteration }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $daftar->no_porsi_haji }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->nama }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $daftar->paket_haji }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $daftar->estimasi }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $daftar->jenis_kelamin }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $daftar->no_hp_1 }}
             </th>
             <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">
-                {{-- <a href="#" class="font-medium text-blue-600 hover:underline">Detail</a>
-                <span>|</span> --}}
                 <a href="/pendaftaran-haji/{{ $daftar->id }}/edit" class="font-medium text-blue-600 hover:underline">Edit</a>
                 <span>|</span>
                 <form action="/pendaftaran-haji/{{ $daftar->id }}" method="POST" class="deleteForm inline-block">

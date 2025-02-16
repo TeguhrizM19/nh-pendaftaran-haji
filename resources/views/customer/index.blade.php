@@ -32,6 +32,12 @@
           <th scope="col" class="px-6 py-3">
             Nama
           </th>
+          <th scope="col" class="px-6 py-3">
+            Jenis Kelamin
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Telepone
+          </th>
           <th scope="col" class="px-6 py-3 text-center">
             Aksi
           </th>
@@ -45,6 +51,12 @@
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $customer->nama }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $customer->jenis_kelamin }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $customer->no_hp_1 }}
             </th>
             <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">

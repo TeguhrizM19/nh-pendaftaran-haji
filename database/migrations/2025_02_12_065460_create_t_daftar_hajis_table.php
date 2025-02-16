@@ -34,6 +34,7 @@ return new class extends Migration
       $table->string('jenis_id')->nullable();
       $table->string('no_id')->nullable();
       $table->string('warga')->nullable();
+      $table->text('dokumen')->nullable();
       $table->string('jenis_kelamin')->nullable();
       $table->string('status_nikah')->nullable();
       $table->string('pekerjaan')->nullable();

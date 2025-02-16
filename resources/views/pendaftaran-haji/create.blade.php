@@ -6,6 +6,7 @@
   <div class="rounded-lg shadow-lg p-4">
     <form action="/pendaftaran-haji" method="POST">
       @csrf
+      
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
         {{-- Kolom 1 --}}
         <div>
@@ -62,14 +63,23 @@
                     data-kecamatan-nama="{{ $kecamatanNama }}"
                     data-kelurahan-nama="{{ $kelurahanNama }}"
                     data-kode-pos="{{ $kodePos }}"
+                    
                     data-alamat-domisili="{{ $alamatDomisili->alamat ?? '' }}"
                     data-provinsi-domisili="{{ $provinsiDomisili }}"
                     data-kota-domisili="{{ $kotaDomisili }}"
                     data-kecamatan-domisili="{{ $kecamatanDomisili }}"
                     data-kelurahan-domisili="{{ $kelurahanDomisili }}"
-                    data-kode-pos-domisili="{{ $kodePosDomisili }}">
+                    data-kode-pos-domisili="{{ $kodePosDomisili }}"
+
+                    {{-- Tambahkan ID wilayah domisili --}}
+                    data-provinsi-domisili-id="{{ $alamatDomisili->provinsi_id ?? '' }}"
+                    data-kota-domisili-id="{{ $alamatDomisili->kota_id ?? '' }}"
+                    data-kecamatan-domisili-id="{{ $alamatDomisili->kecamatan_id ?? '' }}"
+                    data-kelurahan-domisili-id="{{ $alamatDomisili->kelurahan_id ?? '' }}"
+                  >
                     {{ $customer->nama }}
                   </option>
+
 
                 @endforeach
               </select>
@@ -174,36 +184,23 @@
             <!-- Kolom Dokumen -->
             <div class="w-1/2">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
-              {{-- <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                @foreach ($dokumen as $dok)
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
-                    <input id="dokumen1" type="checkbox" value="Reguler Tunai" name="dokumen[]"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="dokumen1" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Reguler Tunai
+                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ in_array($dok->id, $selectedDokumen ?? []) ? 'checked' : '' }}>
+
+                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      {{ $dok->dokumen }}
                     </label>
                   </div>
                 </li>
-                <li class="w-full border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="dokumen2" type="checkbox" value="Reguler Talangan" name="dokumen[]"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="dokumen2" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Reguler Talangan
-                    </label>
-                  </div>
-                </li>
-                <li class="w-full">
-                  <div class="flex items-center ps-3">
-                    <input id="dokumen3" type="checkbox" value="Khusus/Plus" name="dokumen[]"
-                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="dokumen3" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Khusus/Plus
-                    </label>
-                  </div>
-                </li>
-              </ul> --}}
+                @endforeach
+              </ul>
             </div>
+          
           </div>
           <div>
             <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
@@ -373,31 +370,35 @@
             </div>
         
             <!-- Provinsi Domisili -->
-            <label for="kota" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">
+            <label for="provinsi_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <input type="text" id="provinsi_domisili" name="provinsi_domisili" 
+            <input type="text" id="provinsi_domisili" name="provinsi_domisili"
               class="w-full shadow-md text-gray-900 bg-gray-100 border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500"
               placeholder="Provinsi Domisili" readonly>
+              <input type="hidden" id="provinsi_domisili_id" name="provinsi_domisili_id">
 
-            <label for="kota" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
+            <label for="kota_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
             <input type="text" id="kota_domisili" name="kota_domisili"
               class="w-full shadow-md text-gray-900 bg-gray-100 border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500"
               placeholder="Kota Domisili" readonly>
+            <input type="hidden" id="kota_domisili_id" name="kota_domisili_id">
 
-            <label for="kecamatan" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
+            <label for="kecamatan_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
             <input type="text" id="kecamatan_domisili" name="kecamatan_domisili"
               class="w-full shadow-md text-gray-900 bg-gray-100 border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500"
               placeholder="Kecamatan Domisili" readonly>
+            <input type="hidden" id="kecamatan_domisili_id" name="kecamatan_domisili_id">
 
             <div class="relative">
               <div class="flex gap-4 mt-4">
                 <!-- Kolom Kelurahan -->
                 <div class="w-3/4">
-                  <label for="kelurahan" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
+                  <label for="kelurahan_domisili" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
                   <input type="text" id="kelurahan_domisili" name="kelurahan_domisili"
                     class="w-full text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-md text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500"
                     placeholder="Kelurahan Domisili" readonly>
+                  <input type="hidden" id="kelurahan_domisili_id" name="kelurahan_domisili_id">
                 </div>
         
                 <!-- Kolom Kode Pos -->
@@ -405,7 +406,7 @@
                   <label for="kode_pos" class="block text-sm font-medium leading-6 text-[#099AA7]">Kode Pos</label>
                   <input type="text" id="kode_pos_domisili" name="kode_pos_domisili"
                     class="w-full text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-md text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500"
-                    placeholder="Kode Pos Domisili" readonly>
+                    placeholder="Kode Pos" readonly>
                 </div>
               </div>
             </div>
@@ -465,19 +466,22 @@
   });
 
   // Otomatis menampilkan data customer
-  $(document).ready(function () {
+  $(document).ready(function () { 
     $('#customer_id').on('change', function () {
       let selected = $(this).find(':selected');
 
+      // Data Identitas
       let jenisId = selected.data('jenis-id') || '';
       let noId = selected.data('no-id') || '';
       let warga = selected.data('warga') || ''; 
       let jenisKelamin = selected.data('jenis-kelamin') || ''; 
       let statusNikah = selected.data('status-nikah') || ''; 
-      let pekerjaan = selected.data('pekerjaan') || ''; // Ambil data pekerjaan
-      let pendidikan = selected.data('pendidikan') || ''; // Ambil data pendidikan
+      let pekerjaan = selected.data('pekerjaan') || ''; 
+      let pendidikan = selected.data('pendidikan') || ''; 
       let tempatLahir = selected.data('tempat-lahir') || ''; 
       let tglLahir = selected.data('tgl-lahir') || ''; 
+
+      // Data Alamat KTP
       let alamatKtp = selected.data('alamat-ktp') || ''; 
       let provinsiNama = selected.data('provinsi-nama') || ''; 
       let kotaNama = selected.data('kota-nama') || ''; 
@@ -485,6 +489,7 @@
       let kelurahanNama = selected.data('kelurahan-nama') || ''; 
       let kodePos = selected.data('kode-pos') || '';
 
+      // Data Alamat Domisili
       let alamatDomisili = selected.data('alamat-domisili') || ''; 
       let provinsiDomisili = selected.data('provinsi-domisili') || ''; 
       let kotaDomisili = selected.data('kota-domisili') || ''; 
@@ -492,34 +497,25 @@
       let kelurahanDomisili = selected.data('kelurahan-domisili') || ''; 
       let kodePosDomisili = selected.data('kode-pos-domisili') || ''; 
 
+      // ID Wilayah Domisili
+      let provinsiDomisiliId = selected.data('provinsi-domisili-id') || '';
+      let kotaDomisiliId = selected.data('kota-domisili-id') || '';
+      let kecamatanDomisiliId = selected.data('kecamatan-domisili-id') || '';
+      let kelurahanDomisiliId = selected.data('kelurahan-domisili-id') || '';
+
+      // Data No HP
       let noHp1 = selected.data('no-hp-1') || ''; 
       let noHp2 = selected.data('no-hp-2') || ''; 
 
-      // Set nilai input Jenis ID
+      // Set nilai input
       $('#jenis_id').val(jenisId);
-
-      // Set nilai input No ID
       $('#no_id').val(noId);
-
-      // Set nilai input Warga
       $('#warga').val(warga); 
-
-      // Set nilai input Jenis Kelamin
       $('#jenis_kelamin').val(jenisKelamin); 
-
-      // Set nilai input Status Nikah
       $('#status_nikah').val(statusNikah); 
-
-      // Set nilai input Pekerjaan
-      $('#pekerjaan').val(pekerjaan); // Isi input pekerjaan
-
-      // Set nilai input Pendidikan
-      $('#pendidikan').val(pendidikan); // Isi input pendidikan
-
-      // Set nilai input Tempat Lahir
+      $('#pekerjaan').val(pekerjaan); 
+      $('#pendidikan').val(pendidikan); 
       $('#tempat_lahir').val(tempatLahir);
-
-      // Set nilai input Tanggal Lahir
       $('#tgl_lahir').val(tglLahir);
 
       // Set nilai input Alamat KTP
@@ -538,25 +534,17 @@
       $('#kelurahan_domisili').val(kelurahanDomisili);
       $('#kode_pos_domisili').val(kodePosDomisili);
 
+      // Set nilai input hidden untuk ID Wilayah Domisili
+      $('#provinsi_domisili_id').val(provinsiDomisiliId);
+      $('#kota_domisili_id').val(kotaDomisiliId);
+      $('#kecamatan_domisili_id').val(kecamatanDomisiliId);
+      $('#kelurahan_domisili_id').val(kelurahanDomisiliId);
+
       // Set nilai input No HP
       $('#no_hp_1').val(noHp1);
       $('#no_hp_2').val(noHp2);
     });
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
