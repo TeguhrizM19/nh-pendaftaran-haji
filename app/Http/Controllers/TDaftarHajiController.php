@@ -78,6 +78,9 @@ class TDaftarHajiController extends Controller
       $validated['status_nikah'] = $customer->status_nikah ?? null;
       $validated['pekerjaan'] = $customer->pekerjaan ?? null;
       $validated['pendidikan'] = $customer->pendidikan ?? null;
+
+      // Ambil langsung alamat_ktp tanpa json_encode ulang
+      $validated['alamat_ktp'] = $customer->alamat_ktp;
     }
 
     // Simpan data utama
@@ -85,7 +88,6 @@ class TDaftarHajiController extends Controller
 
     return redirect('/pendaftaran-haji')->with('success', 'Data Tersimpan');
   }
-
 
   /**
    * Display the specified resource.
