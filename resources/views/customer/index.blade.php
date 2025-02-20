@@ -17,6 +17,7 @@
   <div>
     <x-page-title>Data Customer</x-page-title>
   </div>
+
   <div class="mt-4">
     <a href="/customer/create"
     class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Customer</a>
@@ -26,21 +27,11 @@
     <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
-          <th scope="col" class="px-6 py-3">
-            No
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Nama
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Jenis Kelamin
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Telepone
-          </th>
-          <th scope="col" class="px-6 py-3 text-center">
-            Aksi
-          </th>
+          <th scope="col" class="px-6 py-3">No</th>
+          <th scope="col" class="px-6 py-3">Nama</th>
+          <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
+          <th scope="col" class="px-6 py-3">Telepone</th>
+          <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -89,29 +80,29 @@
     </table>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll(".deleteForm").forEach(function (form) {
-          form.addEventListener("submit", function (event) {
-              event.preventDefault(); // Mencegah form langsung submit
-              
-              Swal.fire({
-                  title: "Apakah Anda yakin?",
-                  text: "Data akan dihapus secara permanen!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#d33",
-                  cancelButtonColor: "#3085d6",
-                  confirmButtonText: "Ya, Hapus!",
-                  cancelButtonText: "Batal"
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      form.submit(); // Submit form jika dikonfirmasi
-                  }
-              });
-          });
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".deleteForm").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Mencegah form langsung submit
+        
+        Swal.fire({
+          title: "Apakah Anda yakin?",
+          text: "Data akan dihapus secara permanen!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Ya, Hapus!",
+          cancelButtonText: "Batal"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit(); // Submit form jika dikonfirmasi
+          }
+        });
       });
     });
+  });
 
     // Data Table
   $(document).ready(function () {

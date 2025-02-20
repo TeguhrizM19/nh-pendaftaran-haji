@@ -40,21 +40,21 @@
         </tr>
       </thead>
       <tbody>
-        {{-- @forelse ($daftar_haji as $daftar ) --}}
+        @forelse ($gabung_haji as $gabung )
           <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{-- {{ $loop->iteration }} --}}
+              {{ $loop->iteration }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{-- {{ $daftar->customer->nama }} --}}
+              {{ $gabung->customer->nama }}
             </th>
             <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">
                 {{-- <a href="#" class="font-medium text-blue-600 hover:underline">Detail</a>
                 <span>|</span> --}}
-                <a href="" class="font-medium text-blue-600 hover:underline">Edit</a>
+                <a href="/gabung-haji/{{ $gabung->id }}/edit" class="font-medium text-blue-600 hover:underline">Edit</a>
                 <span>|</span>
-                <form action="" method="POST" class="deleteForm inline-block">
+                <form action="/gabung-haji/{{ $gabung->id }}" method="POST" class="deleteForm inline-block">
                   @method('DELETE')
                   @csrf
                   <button type="submit" class="font-medium text-blue-600 hover:underline bg-transparent border-none p-0 cursor-pointer">
@@ -64,11 +64,11 @@
               </div>
             </td>
           </tr>
-        {{-- @empty --}}
+        @empty
           <tr>
             <td class="text-center">Data Masih Kosong</td>
           </tr>
-        {{-- @endforelse --}}
+        @endforelse
       </tbody>
     </table>
   </div>

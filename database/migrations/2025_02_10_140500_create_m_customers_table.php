@@ -14,31 +14,29 @@ return new class extends Migration
   {
     Schema::create('m_customers', function (Blueprint $table) {
       $table->id();
-      $table->string('nama');
-      $table->string('no_hp_1');
-      $table->string('no_hp_2');
-      $table->integer('tempat_lahir'); // diambil dari relasi tabel m_kota
-      $table->date('tgl_lahir');
-      $table->string('jenis_id');
-      $table->string('no_id');
-      $table->string('jenis_kelamin');
-      $table->string('status_nikah');
-      $table->text('alamat_ktp');
-      $table->text('alamat_domisili');
-      $table->foreignId('provinsi_id')->nullable()->constrained('m_provinsis')->onDelete('cascade');
-      $table->foreignId('kota_id')->nullable()->constrained('m_kotas')->onDelete('cascade');
-      $table->foreignId('kecamatan_id')->nullable()->constrained('m_kecamatans')->onDelete('cascade');
-      $table->foreignId('kelurahan_id')->nullable()->constrained('m_kelurahans')->onDelete('cascade');
-      $table->string('warga');
-      $table->string('pekerjaan');
-      $table->string('pendidikan');
-      // $table->string('nama_pasport');
-      // $table->string('tmp_lhr_pasport');
-      // $table->date('tgl_lhr_pasport');
-      // $table->string('no_pasport');
-      // $table->string('kota_paspor_dibuat');
-      // $table->date('tgl_terbit_pasport');
-      // $table->date('tgl_kadaluarsa_pasport');
+      $table->bigInteger('no_porsi_haji')->nullable();
+      $table->foreignId('sumber_info_id')->nullable()->constrained('m_sumber_infos')->onDelete('cascade');
+      $table->foreignId('wilayah_daftar')->nullable()->constrained('m_kotas')->onDelete('cascade');
+      $table->string('nama')->nullable();
+      $table->string('no_hp_1')->nullable();
+      $table->string('no_hp_2')->nullable();
+      $table->integer('tempat_lahir')->nullable(); // diambil dari relasi tabel m_kota
+      $table->date('tgl_lahir')->nullable();
+      $table->string('jenis_id')->nullable();
+      $table->bigInteger('no_id')->nullable();
+      $table->string('jenis_kelamin')->nullable();
+      $table->string('status_nikah')->nullable();
+      $table->string('warga')->nullable();
+      $table->integer('estimasi')->nullable();
+      $table->string('paket_haji')->nullable();
+      $table->text('dokumen')->nullable();
+      $table->text('catatan')->nullable();
+      $table->bigInteger('bpjs')->nullable();
+      $table->string('bank')->nullable();
+      $table->string('pekerjaan')->nullable();
+      $table->string('pendidikan')->nullable();
+      $table->text('alamat_ktp')->nullable();
+      $table->text('alamat_domisili')->nullable();
       $table->string('create_user', 100)->nullable();
       $table->date('create_date')->nullable();
       $table->timestamps();

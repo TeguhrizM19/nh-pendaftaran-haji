@@ -14,6 +14,8 @@ class Kota extends Model
 
   protected $table = 'm_kotas';
   protected $guarded = ['id'];
+  protected $primaryKey = 'id';
+  public $timestamps = false;
 
   public function provinsi()
   {
@@ -33,5 +35,10 @@ class Kota extends Model
   public function gabungHaji()
   {
     return $this->hasMany(TGabungHaji::class, 'kota_id');
+  }
+
+  public function customers()
+  {
+    return $this->hasMany(Customer::class, 'tempat_lahir');
   }
 }

@@ -45,6 +45,11 @@ class TDaftarHaji extends Model
     return $this->belongsToMany(MDokHaji::class, 't_daftar_haji_documents', 'daftar_haji_id', 'dokumen_id');
   }
 
+  public function kotaLahir()
+  {
+    return $this->belongsTo(Kota::class, 'tempat_lahir');
+  }
+
   // Awal Relasi Wilayah Indonesia
   public function provinsi()
   {

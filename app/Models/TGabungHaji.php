@@ -12,6 +12,16 @@ class TGabungHaji extends Model
 
   protected $guarded = ['id'];
 
+  public function customer()
+  {
+    return $this->belongsTo(Customer::class, 'customer_id');
+  }
+
+  public function kotaLahir()
+  {
+    return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
+  }
+
   // Relasi ke Provinsi
   public function provinsi()
   {

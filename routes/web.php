@@ -26,3 +26,10 @@ Route::get('/get-kota/{provinsi_id}', [CustomerController::class, 'getKota']);
 Route::get('/get-kecamatan/{kota_id}', [CustomerController::class, 'getKecamatan']);
 Route::get('/get-kelurahan/{kecamatan_id}', [CustomerController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [CustomerController::class, 'getKodePos']);
+
+Route::get('/search-customer', [CustomerController::class, 'search'])->name('customer.search');
+Route::get('/repeat-data-customer/{id}', [CustomerController::class, 'repeatDataCustomer']);
+Route::post('/repeat-data-customer/{id}/store', [CustomerController::class, 'storeRepeatData'])->name('store-repeat-data');
+
+Route::get('/ambil-semua-data-customer/{id}', [CustomerController::class, 'ambilSemuaData']);
+Route::post('/ambil-semua-data-customer/{id}/store', [CustomerController::class, 'storeAmbilSemuaData'])->name('store-ambil-semua-data');

@@ -22,7 +22,6 @@ class Customer extends Model
   ];
 
   // Awal Relasi Wilayah Indonesia
-  // Relasi Wilayah Indonesia
   public function provinsi()
   {
     return $this->belongsTo(Provinsi::class, 'provinsi_id', 'id');
@@ -44,9 +43,9 @@ class Customer extends Model
   }
 
   // Relasi Tempat Lahir ke Tabel Kota
-  public function kota_lahir()
+  public function kotaLahir()
   {
-    return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
+    return $this->belongsTo(Kota::class, 'tempat_lahir');
   }
 
   // Relasi Sumber Info

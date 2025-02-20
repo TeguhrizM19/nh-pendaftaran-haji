@@ -48,8 +48,8 @@
                   <option value="{{ $customer->id }}"
                     data-tempat-lahir="{{ $customer->kota_lahir->kota ?? '' }}"
                     data-tgl-lahir="{{ $customer->tgl_lahir ?? '' }}" 
-                    data-no-hp-1="{{ $customer->no_hp_1 }}"
-                    data-no-hp-2="{{ $customer->no_hp_2 }}"
+                    data-no-hp-1="{{ $customer->no_hp_1 ?? '' }}"
+                    data-no-hp-2="{{ $customer->no_hp_2 ?? '' }}"
                     data-alamat-ktp="{{ $alamatKtp->alamat ?? '' }}"
                     data-jenis-id="{{ $customer->jenis_id ?? '' }}"
                     data-no-id="{{ $customer->no_id ?? '' }}"
@@ -296,6 +296,7 @@
             placeholder="Kota" readonly>
           <input type="hidden" name="kota_id" id="kota_id">
 
+          <!-- Kecamatan -->
           <label for="kecamatan" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
           <input type="text" id="kecamatan" name="kecamatan_nama" 
             class="w-full shadow-md text-gray-900 bg-gray-100 border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" 
@@ -307,10 +308,10 @@
               <!-- Kolom Kelurahan -->
               <div class="w-3/4">
                 <label for="kelurahan" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <input type="text" id="kelurahan" name="kelurahan_nama"
-                  class="bg-gray-100 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed"
+                  <input type="text" id="kelurahan" name="kelurahan_nama"
+                  class="bg-gray-100 border border-gray-300 text-gray-900 shadow-md text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed"
                   placeholder="Kelurahan" readonly>
-                <input type="hidden" name="kelurahan_id" id="kelurahan_id">
+                  <input type="hidden" name="kelurahan_id" id="kelurahan_id">
               </div>
       
               <!-- Kolom Kode Pos -->
@@ -466,7 +467,7 @@
   });
 
   // Otomatis menampilkan data customer
-  $(document).ready(function () { 
+  $(document).ready(function () {  
     $('#customer_id').on('change', function () {
       let selected = $(this).find(':selected');
 
@@ -544,7 +545,8 @@
       $('#no_hp_1').val(noHp1);
       $('#no_hp_2').val(noHp2);
     });
-  });
+});
+
 
 
 

@@ -17,10 +17,10 @@
   <div>
     <x-page-title>Data Pendaftaran Haji</x-page-title>
   </div>
-  <div class="mt-4">
+  {{-- <div class="mt-4">
     <a href="/pendaftaran-haji/create"
     class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Pendaftaran</a>
-  </div>
+  </div> --}}
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
     <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">
@@ -55,10 +55,10 @@
               {{ $daftar->estimasi }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{ $daftar->jenis_kelamin }}
+              {{ $daftar->customer->jenis_kelamin }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{ $daftar->no_hp_1 }}
+              {{ $daftar->customer->no_hp_1 }}
             </th>
             <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">
