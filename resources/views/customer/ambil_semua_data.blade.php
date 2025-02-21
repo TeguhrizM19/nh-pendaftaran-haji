@@ -1,6 +1,6 @@
 <x-layout>
   <div>
-    <x-page-title>Ambil Semua Data Customer</x-page-title>
+    <x-page-title>Ambil Semua Data</x-page-title>
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
@@ -13,6 +13,12 @@
           <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nama</label>
           <input type="text" name="nama" required placeholder="Nama"
           class="mb-3 block w-full shadow-md shadow-slate-400 rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+
+          <div>
+            <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
+            <input type="number" name="no_porsi_haji" required placeholder="Nomor Porsi Haji"
+              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+          </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
@@ -36,7 +42,8 @@
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempat_lahir as $tl)
-                  <option value="{{ $tl->id }}">
+                  <option value="{{ $tl->id }}" 
+                    {{ $customer->tempat_lahir == $tl->id ? 'selected' : '' }}>
                     {{ $tl->kota }}
                   </option>
                 @empty
@@ -47,7 +54,7 @@
         
             <div>
               <label for="tgl_lahir" class="block text-sm font-medium leading-6 text-[#099AA7]">Tanggal Lahir</label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" required
+              <input type="date" id="tgl_lahir" name="tgl_lahir" required 
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-md shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -60,8 +67,8 @@
               <select id="jenis_id" name="jenis_id" required
                 class="w-full text-gray-900 bg-white shadow-md shadow-slate-400 border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
-                <option value="KTP">KTP</option>
-                <option value="SIM">SIM</option>
+                <option value="KTP" {{ $customer->jenis_id == 'KTP' ? 'selected' : '' }}>KTP</option>
+                <option value="SIM" {{ $customer->jenis_id == 'SIM' ? 'selected' : '' }}>SIM</option>
               </select>
             </div>
 
@@ -69,7 +76,7 @@
                 <label for="no_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
                   No Identitas
                 </label>
-                <input type="text" id="no_id" name="no_id" required placeholder="Masukkan No Identitas"
+                <input type="text" id="no_id" name="no_id" required placeholder="Masukkan No Identitas" 
                 class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
               </div>
 
@@ -90,14 +97,12 @@
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Jenis Kelamin</label>
               <div class="flex items-center mb-2">
                 <input id="laki-laki" type="radio" value="Laki-Laki" name="jenis_kelamin" required 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  {{ $customer->jenis_kelamin == 'Laki-Laki' ? 'checked' : '' }}>
+                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                 <label for="laki-laki" class="ms-2 text-sm font-medium text-gray-900">Laki-Laki</label>
               </div>
               <div class="flex items-center">
                 <input id="perempuan" type="radio" value="Perempuan" name="jenis_kelamin" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  {{ $customer->jenis_kelamin == 'Perempuan' ? 'checked' : '' }}>
+                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                 <label for="perempuan" class="ms-2 text-sm font-medium text-gray-900">Perempuan</label>
               </div>
             </div>
@@ -129,7 +134,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" required placeholder="Pekerjaan" 
+              <input type="text" name="pekerjaan" required placeholder="Pekerjaan" value="{{ $customer->pekerjaan }}"
               class="mb-3 block w-full shadow-md shadow-slate-400 rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -147,6 +152,115 @@
                 <option value="S3" {{ old('pendidikan', $customer->pendidikan) == "S3" ? 'selected' : '' }}>S3</option>
               </select>
             </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="shadow-md">
+              <label for="cabang_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
+                Cabang Daftar
+              </label>
+              <select name="cabang_id" id="cabang_id" required
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach($cabang as $cbg)
+                  <option value="{{ $cbg->id }}"
+                    {{ $cbg->id == $customer->cabang_id ? 'selected' : '' }}>
+                    {{ $cbg->cabang }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="shadow-md">
+              <label for="wilayah_daftar" class="block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
+              <select name="wilayah_daftar" id="wilayah_daftar" required
+                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach ($wilayahKota as $wilayah)
+                  <option value="{{ $wilayah->id }}" 
+                    {{ $wilayah->id == $customer->wilayah_daftar ? 'selected' : '' }}>
+                    {{ $wilayah->kota }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Berangkat</label>
+              <input type="number" name="estimasi" min="1900" max="2099" step="1" required
+              value="{{ old('estimasi', $customer->estimasi) }}"
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+        
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
+              <input type="number" name="bpjs" required
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
+              <input type="text" name="bank" required
+              value="{{ old('bank', $customer->bank) }}"
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+        
+            <div class="shadow-md">
+              <label for="sumber_info" class="block text-sm font-medium leading-6 text-[#099AA7]">Sumber Informasi</label>
+              <select name="sumber_info_id" id="sumber_info" required
+                class="w-full text-gray-900 bg-white border shadow-md shadow-slate-400 border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Sumber Informasi</option>
+                @foreach($sumberInfo as $sumber)
+                  <option value="{{ $sumber->id }}" 
+                    {{ $sumber->id == $customer->sumber_info_id ? 'selected' : '' }}>
+                    {{ $sumber->info }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="flex gap-6 mt-3">
+            <!-- Paket Pendaftaran -->
+            <div class="w-1/2">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
+              @foreach (['Reguler Tunai', 'Reguler Talangan', 'Khusus/Plus'] as $paket)
+                <div class="flex items-center ps-3">
+                  <input type="radio" value="{{ $paket }}" name="paket_haji" required
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                  {{ $customer->paket_haji == $paket ? 'checked' : '' }}>
+                  <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                    {{ $paket }}
+                  </label>
+                </div>
+              @endforeach
+            </div>
+        
+            <!-- Dokumen -->
+            <div class="w-1/2">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
+              @foreach ($dokumen as $dok)
+              <div class="flex items-center ps-3">
+                <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                {{ in_array((string) $dok->id, $selected_documents) ? 'checked' : '' }}>
+                <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                  {{ $dok->dokumen }}
+                </label>
+              </div>
+              @endforeach
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
+              Catatan
+            </label>
+            <textarea id="message" rows="4" name="catatan"
+              class="mb-4 shadow-md shadow-slate-400 block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
           </div>
         </div>
         

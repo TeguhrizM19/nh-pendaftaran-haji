@@ -17,10 +17,10 @@
   <div>
     <x-page-title>Data Pendaftaran Haji</x-page-title>
   </div>
-  {{-- <div class="mt-4">
+  <div class="mt-4">
     <a href="/pendaftaran-haji/create"
     class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Pendaftaran</a>
-  </div> --}}
+  </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
     <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">
@@ -30,7 +30,6 @@
           <th scope="col" class="px-6 py-3">No Porsi Haji</th>
           <th scope="col" class="px-6 py-3">Nama</th>
           <th scope="col" class="px-6 py-3">Paket Pendaftaran</th>
-          <th scope="col" class="px-6 py-3">Estimasi Berangkat</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>
           <th scope="col" class="px-6 py-3 text-center">Aksi</th>
@@ -50,9 +49,6 @@
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->paket_haji }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{ $daftar->estimasi }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->jenis_kelamin }}

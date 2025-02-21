@@ -37,7 +37,7 @@ class Kota extends Model
     return $this->hasMany(TGabungHaji::class, 'kota_id');
   }
 
-  public function customers()
+  public function customer()
   {
     return $this->hasMany(Customer::class, 'tempat_lahir');
   }

@@ -18,7 +18,8 @@ class Customer extends Model
   protected $table = 'm_customers';
   protected $guarded = ['id'];
   protected $casts = [
-    'alamat_ktp' => 'array', // Mengubah alamat_ktp menjadi array
+    'alamat_ktp' => 'array',
+    'alamat_domisili' => 'array', // Mengubah alamat_ktp menjadi array
   ];
 
   // Awal Relasi Wilayah Indonesia
@@ -45,7 +46,7 @@ class Customer extends Model
   // Relasi Tempat Lahir ke Tabel Kota
   public function kotaLahir()
   {
-    return $this->belongsTo(Kota::class, 'tempat_lahir');
+    return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
   }
 
   // Relasi Sumber Info
@@ -58,5 +59,15 @@ class Customer extends Model
   public function daftarHaji()
   {
     return $this->hasMany(TDaftarHaji::class, 'customer_id');
+  }
+
+  public function cabang()
+  {
+    return $this->belongsTo(MCabang::class, 'cabang_id');
+  }
+
+  public function wilayahKota()
+  {
+    return $this->belongsTo(Kota::class, 'kota_id');
   }
 }

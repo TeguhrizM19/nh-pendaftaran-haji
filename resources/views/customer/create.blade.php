@@ -1,6 +1,6 @@
 <x-layout>
   <div>
-    <x-page-title>Form Data Customer</x-page-title>
+    <x-page-title>Form Pendaftaran Haji</x-page-title>
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
@@ -28,6 +28,12 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
+            <input type="number" name="no_porsi_haji" required placeholder="Nomor Porsi Haji"
+              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -155,6 +161,131 @@
                 <option value="S3">S3</option>
               </select>
             </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="shadow-md">
+              <label for="cabang_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
+                Cabang Daftar
+              </label>
+              <select name="cabang_id" id="cabang_id" required
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach($cabang as $cbg)
+                  <option value="{{ $cbg->id }}">{{ $cbg->cabang }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="shadow-md">
+              <label for="wilayah_daftar" class="block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
+              <select name="wilayah_daftar" id="wilayah_daftar" required
+                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @forelse ($wilayahKota as $wilayah)
+                  <option value="{{ $wilayah->id }}">{{ $wilayah->kota }}</option>
+                @empty
+                  <option value="">Wilayah Masih Kosong</option>
+                @endforelse
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Barangkat</label>
+              <input type="number" name="estimasi" min="1900" max="2099" step="1" placeholder="YYYY" required
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
+              <input type="number" name="bpjs" placeholder="No BPJS" required
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
+              <input type="text" name="bank" placeholder="Bank/Jumlah Setoran" required
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+
+            <div class="shadow-md">
+              <label for="sumber_info" class="block text-sm font-medium leading-6 text-[#099AA7]">Sumber Informasi</label>
+              <select name="sumber_info_id" id="sumber_info" required
+                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Sumber Informasi</option>
+                @foreach($sumberInfo as $sumber)
+                  <option value="{{ $sumber->id }}">{{ $sumber->info }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="flex gap-6 mt-3">
+            <!-- Kolom Paket Pendaftaran -->
+            <div class="w-1/2">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji" required
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Reguler Tunai
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="reguler-talangan" type="radio" value="Reguler Talangan" name="paket_haji"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="reguler-talangan" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Reguler Talangan
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center ps-3">
+                    <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Khusus/Plus
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        
+            <!-- Kolom Dokumen -->
+            <div class="w-1/2">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                @foreach ($dokumen as $dok)
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ in_array($dok->id, $selectedDokumen ?? []) ? 'checked' : '' }}>
+
+                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      {{ $dok->dokumen }}
+                    </label>
+                  </div>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          
+          </div>
+          <div>
+            <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
+              Catatan
+            </label>
+            <textarea id="message" rows="4" name="catatan"
+            class="mb-4 shadow-md block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            placeholder="Write your thoughts here..."></textarea>
           </div>
         </div>
 
@@ -429,6 +560,24 @@ document.getElementById("searchInput").addEventListener("input", function () {
   // Tempat Lahir
   $(document).ready(function () {
     $('#tempat_lahir').select2({
+      placeholder: "Pilih", // Placeholder
+      allowClear: true, // Bisa menghapus pilihan
+      width: '100%' // Sesuaikan dengan Tailwind
+    });
+  });
+
+  // Wilayah daftar
+  $(document).ready(function () {
+    $('#wilayah_daftar').select2({
+      placeholder: "Pilih", // Placeholder
+      allowClear: true, // Bisa menghapus pilihan
+      width: '100%' // Sesuaikan dengan Tailwind
+    });
+  });
+
+  // Cabang
+  $(document).ready(function () {
+    $('#cabang_id').select2({
       placeholder: "Pilih", // Placeholder
       allowClear: true, // Bisa menghapus pilihan
       width: '100%' // Sesuaikan dengan Tailwind

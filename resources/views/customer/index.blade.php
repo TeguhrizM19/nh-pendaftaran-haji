@@ -15,12 +15,12 @@
   @endif
 
   <div>
-    <x-page-title>Data Customer</x-page-title>
+    <x-page-title>Table Pendaftaran Haji</x-page-title>
   </div>
 
   <div class="mt-4">
     <a href="/customer/create"
-    class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Customer</a>
+    class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Data</a>
   </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
@@ -28,6 +28,7 @@
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
           <th scope="col" class="px-6 py-3">No</th>
+          <th scope="col" class="px-6 py-3">No Porsi Haji</th>
           <th scope="col" class="px-6 py-3">Nama</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">Telepone</th>
@@ -39,6 +40,9 @@
           <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $loop->iteration }}
+            </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $customer->no_porsi_haji }}
             </th>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $customer->nama }}

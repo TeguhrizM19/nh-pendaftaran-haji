@@ -17,4 +17,9 @@ class MCabang extends Model
   {
     return $this->hasMany(TDaftarHaji::class, 'cabang_id');
   }
+
+  public function customer()
+  {
+    return $this->hasMany(Customer::class, 'cabang_id');
+  }
 }

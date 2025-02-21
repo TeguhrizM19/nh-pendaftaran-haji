@@ -17,6 +17,13 @@ Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecama
 Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
 
+Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
+Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
+Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
+
+Route::get('/ambil-semua-data/{id}', [TDaftarHajiController::class, 'ambilSemuaData']);
+Route::post('/ambil-semua-data/{id}/store', [TDaftarHajiController::class, 'storeAmbilSemuaData'])->name('pendaftaran-haji-ambilSemuaData');
+
 // Route Gabung Haji
 Route::resource('/gabung-haji', TGabungHajiController::class);
 
@@ -27,9 +34,9 @@ Route::get('/get-kecamatan/{kota_id}', [CustomerController::class, 'getKecamatan
 Route::get('/get-kelurahan/{kecamatan_id}', [CustomerController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [CustomerController::class, 'getKodePos']);
 
-Route::get('/search-customer', [CustomerController::class, 'search'])->name('customer.search');
-Route::get('/repeat-data-customer/{id}', [CustomerController::class, 'repeatDataCustomer']);
-Route::post('/repeat-data-customer/{id}/store', [CustomerController::class, 'storeRepeatData'])->name('store-repeat-data');
+// Route::get('/search-customer', [CustomerController::class, 'search'])->name('customer.search');
+// Route::get('/repeat-data-customer/{id}', [CustomerController::class, 'repeatDataCustomer']);
+// Route::post('/repeat-data-customer/{id}/store', [CustomerController::class, 'storeRepeatData'])->name('store-repeat-data');
 
-Route::get('/ambil-semua-data-customer/{id}', [CustomerController::class, 'ambilSemuaData']);
-Route::post('/ambil-semua-data-customer/{id}/store', [CustomerController::class, 'storeAmbilSemuaData'])->name('store-ambil-semua-data');
+// Route::get('/ambil-semua-data-customer/{id}', [CustomerController::class, 'ambilSemuaData']);
+// Route::post('/ambil-semua-data-customer/{id}/store', [CustomerController::class, 'storeAmbilSemuaData'])->name('store-ambil-semua-data');

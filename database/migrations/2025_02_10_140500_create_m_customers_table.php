@@ -14,9 +14,6 @@ return new class extends Migration
   {
     Schema::create('m_customers', function (Blueprint $table) {
       $table->id();
-      $table->bigInteger('no_porsi_haji')->nullable();
-      $table->foreignId('sumber_info_id')->nullable()->constrained('m_sumber_infos')->onDelete('cascade');
-      $table->foreignId('wilayah_daftar')->nullable()->constrained('m_kotas')->onDelete('cascade');
       $table->string('nama')->nullable();
       $table->string('no_hp_1')->nullable();
       $table->string('no_hp_2')->nullable();
@@ -27,12 +24,6 @@ return new class extends Migration
       $table->string('jenis_kelamin')->nullable();
       $table->string('status_nikah')->nullable();
       $table->string('warga')->nullable();
-      $table->integer('estimasi')->nullable();
-      $table->string('paket_haji')->nullable();
-      $table->text('dokumen')->nullable();
-      $table->text('catatan')->nullable();
-      $table->bigInteger('bpjs')->nullable();
-      $table->string('bank')->nullable();
       $table->string('pekerjaan')->nullable();
       $table->string('pendidikan')->nullable();
       $table->text('alamat_ktp')->nullable();

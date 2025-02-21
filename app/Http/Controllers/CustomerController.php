@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kota;
+use App\Models\MCabang;
 use App\Models\Customer;
+use App\Models\MDokHaji;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -30,9 +32,12 @@ class CustomerController extends Controller
   {
     return view('customer.create', [
       'customers' => Customer::all(),
+      'cabang' => MCabang::all(),
+      'sumberInfo' => MSumberInfo::all(),
+      'wilayahKota' => Kota::all(),
+      'dokumen' => MDokHaji::all(),
       'provinsi' => Provinsi::all(),
       'kota' => Kota::all(),
-      'sumber_info' => MSumberInfo::all()
     ]);
   }
 
@@ -44,6 +49,17 @@ class CustomerController extends Controller
   {
     $validated = $request->validate([
       'nama'           => 'required|string|max:255',
+      'no_porsi_haji' => 'required|numeric',
+      'cabang_id' => 'required|exists:m_cabangs,id',
+      'sumber_info_id' => 'required|exists:m_sumber_infos,id',
+      'wilayah_daftar' => 'required|exists:m_kotas,id',
+      'estimasi' => 'required|integer',
+      'bpjs' => 'nullable|string',
+      'bank' => 'nullable|string',
+      'paket_haji' => 'nullable|string',
+      'catatan' => 'nullable|string',
+      'dokumen' => 'array', // Validasi input dokumen sebagai array
+      'dokumen.*' => 'exists:m_dok_hajis,id', // Pastikan dokumen yang dipilih ada di database
       'no_hp_1'        => 'required|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
       'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
@@ -88,6 +104,9 @@ class CustomerController extends Controller
       'kecamatan_id' => $validated['kecamatan_domisili_id'],
       'kelurahan_id' => $validated['kelurahan_domisili_id'],
     ]);
+
+    // ✅ Simpan dokumen sebagai array JSON (ID dokumen)
+    $validated['dokumen'] = json_encode($request->dokumen, JSON_UNESCAPED_UNICODE);
 
     $customer = Customer::create($validated);
 
@@ -174,6 +193,8 @@ class CustomerController extends Controller
 
     return view('customer.edit', [
       'customer' => $customer,
+      'cabang' => MCabang::all(),
+      'wilayahKota' => Kota::all(),
       'provinsi' => Provinsi::all(),
       'tempat_lahir' => Kota::all(),
       'kota' => Kota::where('provinsi_id', $alamatKtp->provinsi_id ?? null)->get(),
@@ -185,7 +206,10 @@ class CustomerController extends Controller
       'kecamatan_domisili' => Kecamatan::where('kota_id', $alamatDomisili->kota_id ?? null)->get(),
       'kelurahan_domisili' => Kelurahan::where('kecamatan_id', $alamatDomisili->kecamatan_id ?? null)->get(),
 
-      'sumber_info' => MSumberInfo::all(),
+      'sumberInfo' => MSumberInfo::all(),
+      'dokumen' => MDokHaji::all(),
+      // Konversi dokumen dari JSON ke array jika diperlukan
+      'selected_documents' => json_decode($customer->dokumen, true) ?? []
     ]);
   }
 
@@ -195,30 +219,41 @@ class CustomerController extends Controller
   public function update(Request $request, String $id)
   {
     $validated = $request->validate([
-      'nama' => 'required|string',
-      'no_hp_1' => 'required|string',
-      'no_hp_2' => 'required|string',
-      'tempat_lahir' => 'required|string',
-      'tgl_lahir' => 'required|date',
-      'jenis_id' => 'required|string',
-      'no_id' => 'required|string',
-      'jenis_kelamin' => 'required|string',
-      'status_nikah' => 'required|string',
-      'alamat_ktp' => 'required|string',
-      'alamat_domisili' => 'required|string',
-      // Wilayah sesuai KTP
+      'nama'           => 'required|string|max:255',
+      'no_porsi_haji' => 'required|numeric',
+      'cabang_id' => 'required|exists:m_cabangs,id',
+      'sumber_info_id' => 'required|exists:m_sumber_infos,id',
+      'wilayah_daftar' => 'required|exists:m_kotas,id',
+      'estimasi' => 'required|integer',
+      'bpjs' => 'nullable|string',
+      'bank' => 'nullable|string',
+      'paket_haji' => 'nullable|string',
+      'catatan' => 'nullable|string',
+      'dokumen' => 'array', // Validasi input dokumen sebagai array
+      'dokumen.*' => 'exists:m_dok_hajis,id', // Pastikan dokumen yang dipilih ada di database
+      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_2'        => 'nullable|string|max:15',
+      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'required|date',
+      'jenis_id'       => 'required|string',
+      'no_id'          => 'required|string',
+      'jenis_kelamin'  => 'required|string',
+      'status_nikah'   => 'required|string',
+      'warga'          => 'required|string',
+      'pekerjaan'      => 'required|string',
+      'pendidikan'     => 'required|string',
+      'alamat_ktp'     => 'nullable|string',
+      'alamat_domisili' => 'nullable|string',
+      // wilayah sesuai KTP
       'provinsi_ktp_id' => 'required|exists:m_provinsis,id',
       'kota_ktp_id' => 'required|exists:m_kotas,id',
       'kecamatan_ktp_id' => 'required|exists:m_kecamatans,id',
       'kelurahan_ktp_id' => 'required|exists:m_kelurahans,id',
-      // Wilayah sesuai Domisili
+      // wilayah sesuai Domisili
       'provinsi_domisili_id' => 'required|exists:m_provinsis,id',
       'kota_domisili_id' => 'required|exists:m_kotas,id',
       'kecamatan_domisili_id' => 'required|exists:m_kecamatans,id',
       'kelurahan_domisili_id' => 'required|exists:m_kelurahans,id',
-      'warga' => 'required|string',
-      'pekerjaan' => 'required|string',
-      'pendidikan' => 'required|string',
     ]);
 
     // Ubah nama menjadi huruf besar
@@ -240,6 +275,9 @@ class CustomerController extends Controller
       'kecamatan_id' => $validated['kecamatan_domisili_id'],
       'kelurahan_id' => $validated['kelurahan_domisili_id'],
     ]);
+
+    // ✅ Simpan dokumen sebagai array JSON (ID dokumen)
+    $validated['dokumen'] = json_encode($request->dokumen, JSON_UNESCAPED_UNICODE);
 
     // Cari customer berdasarkan ID
     $customer = Customer::findOrFail($id);
@@ -304,6 +342,8 @@ class CustomerController extends Controller
 
     return view('customer.repeat_data', [
       'customer' => $customer,
+      'cabang' => MCabang::all(),
+      'wilayahKota' => Kota::all(),
       'provinsi' => Provinsi::all(),
       'tempat_lahir' => Kota::all(),
       'kota' => Kota::where('provinsi_id', $alamatKtp->provinsi_id ?? null)->get(),
@@ -315,100 +355,28 @@ class CustomerController extends Controller
       'kecamatan_domisili' => Kecamatan::where('kota_id', $alamatDomisili->kota_id ?? null)->get(),
       'kelurahan_domisili' => Kelurahan::where('kecamatan_id', $alamatDomisili->kecamatan_id ?? null)->get(),
 
-      'sumber_info' => MSumberInfo::all(),
+      'sumberInfo' => MSumberInfo::all(),
+      'dokumen' => MDokHaji::all(),
+      // Konversi dokumen dari JSON ke array jika diperlukan
+      'selected_documents' => json_decode($customer->dokumen, true) ?? []
     ]);
   }
 
   public function storeRepeatData(Request $request, String $id)
   {
     $validated = $request->validate([
-      'nama' => 'required|string',
-      'no_hp_1' => 'required|string',
-      'no_hp_2' => 'required|string',
-      'tempat_lahir' => 'required|string',
-      'tgl_lahir' => 'required|date',
-      'jenis_id' => 'required|string',
-      'no_id' => 'required|string',
-      'jenis_kelamin' => 'required|string',
-      'status_nikah' => 'required|string',
-      'alamat_ktp' => 'required|string',
-      'alamat_domisili' => 'required|string',
-      // Wilayah sesuai KTP
-      'provinsi_ktp_id' => 'required|exists:m_provinsis,id',
-      'kota_ktp_id' => 'required|exists:m_kotas,id',
-      'kecamatan_ktp_id' => 'required|exists:m_kecamatans,id',
-      'kelurahan_ktp_id' => 'required|exists:m_kelurahans,id',
-      // Wilayah sesuai Domisili
-      'provinsi_domisili_id' => 'required|exists:m_provinsis,id',
-      'kota_domisili_id' => 'required|exists:m_kotas,id',
-      'kecamatan_domisili_id' => 'required|exists:m_kecamatans,id',
-      'kelurahan_domisili_id' => 'required|exists:m_kelurahans,id',
-      'warga' => 'required|string',
-      'pekerjaan' => 'required|string',
-      'pendidikan' => 'required|string',
-    ]);
-
-    // Ubah nama menjadi huruf besar
-    $validated['nama'] = strtoupper($validated['nama']);
-
-    // Simpan data wilayah dalam JSON
-    $validated['alamat_ktp'] = json_encode([
-      'alamat' => $validated['alamat_ktp'],
-      'provinsi_id' => $validated['provinsi_ktp_id'],
-      'kota_id' => $validated['kota_ktp_id'],
-      'kecamatan_id' => $validated['kecamatan_ktp_id'],
-      'kelurahan_id' => $validated['kelurahan_ktp_id'],
-    ]);
-
-    $validated['alamat_domisili'] = json_encode([
-      'alamat' => $validated['alamat_domisili'],
-      'provinsi_id' => $validated['provinsi_domisili_id'],
-      'kota_id' => $validated['kota_domisili_id'],
-      'kecamatan_id' => $validated['kecamatan_domisili_id'],
-      'kelurahan_id' => $validated['kelurahan_domisili_id'],
-    ]);
-
-    // Cari customer berdasarkan ID
-    $customer = Customer::findOrFail($id);
-
-    // Update data customer (karena repeat data berasal dari customer yang sama)
-    $customer->update($validated);
-
-    // Insert ke tabel t_daftar_hajis (hanya menyimpan customer_id)
-    TDaftarHaji::create([
-      'customer_id' => $customer->id
-    ]);
-
-    return redirect('/customer')->with('success', 'Repeat Data Berhasil Disimpan');
-  }
-
-  public function ambilSemuaData($id)
-  {
-    $customer = Customer::findOrFail($id);
-    $alamatKtp = json_decode($customer->alamat_ktp); // Ambil data alamat KTP dari JSON
-    $alamatDomisili = json_decode($customer->alamat_domisili); // Ambil data alamat Domisili dari JSON
-
-    return view('customer.ambil_semua_data', [
-      'customer' => $customer,
-      'provinsi' => Provinsi::all(),
-      'tempat_lahir' => Kota::all(),
-      'kota' => Kota::where('provinsi_id', $alamatKtp->provinsi_id ?? null)->get(),
-      'kecamatan' => Kecamatan::where('kota_id', $alamatKtp->kota_id ?? null)->get(),
-      'kelurahan' => Kelurahan::where('kecamatan_id', $alamatKtp->kecamatan_id ?? null)->get(),
-
-      // Tambahkan data alamat domisili
-      'kota_domisili' => Kota::where('provinsi_id', $alamatDomisili->provinsi_id ?? null)->get(),
-      'kecamatan_domisili' => Kecamatan::where('kota_id', $alamatDomisili->kota_id ?? null)->get(),
-      'kelurahan_domisili' => Kelurahan::where('kecamatan_id', $alamatDomisili->kecamatan_id ?? null)->get(),
-
-      'sumber_info' => MSumberInfo::all(),
-    ]);
-  }
-
-  public function storeAmbilSemuaData(Request $request, $id)
-  {
-    $validated = $request->validate([
       'nama'           => 'required|string|max:255',
+      'no_porsi_haji' => 'required|numeric',
+      'cabang_id' => 'required|exists:m_cabangs,id',
+      'sumber_info_id' => 'required|exists:m_sumber_infos,id',
+      'wilayah_daftar' => 'required|exists:m_kotas,id',
+      'estimasi' => 'required|integer',
+      'bpjs' => 'nullable|string',
+      'bank' => 'nullable|string',
+      'paket_haji' => 'nullable|string',
+      'catatan' => 'nullable|string',
+      'dokumen' => 'array', // Validasi input dokumen sebagai array
+      'dokumen.*' => 'exists:m_dok_hajis,id', // Pastikan dokumen yang dipilih ada di database
       'no_hp_1'        => 'required|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
       'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
@@ -453,6 +421,109 @@ class CustomerController extends Controller
       'kecamatan_id' => $validated['kecamatan_domisili_id'],
       'kelurahan_id' => $validated['kelurahan_domisili_id'],
     ]);
+
+    // ✅ Simpan dokumen sebagai array JSON (ID dokumen)
+    $validated['dokumen'] = json_encode($request->dokumen, JSON_UNESCAPED_UNICODE);
+
+    $customer = Customer::create($validated);
+
+    // TDaftarHaji::create([
+    //   'customer_id' => $customer->id
+    // ]);
+
+    return redirect('/customer')->with('success', 'Customer berhasil ditambahkan dan otomatis masuk daftar haji.');
+  }
+
+  public function ambilSemuaData($id)
+  {
+    $customer = Customer::findOrFail($id);
+    $alamatKtp = json_decode($customer->alamat_ktp); // Ambil data alamat KTP dari JSON
+    $alamatDomisili = json_decode($customer->alamat_domisili); // Ambil data alamat Domisili dari JSON
+
+    return view('customer.ambil_semua_data', [
+      'customer' => $customer,
+      'cabang' => MCabang::all(),
+      'wilayahKota' => Kota::all(),
+      'provinsi' => Provinsi::all(),
+      'tempat_lahir' => Kota::all(),
+      'kota' => Kota::where('provinsi_id', $alamatKtp->provinsi_id ?? null)->get(),
+      'kecamatan' => Kecamatan::where('kota_id', $alamatKtp->kota_id ?? null)->get(),
+      'kelurahan' => Kelurahan::where('kecamatan_id', $alamatKtp->kecamatan_id ?? null)->get(),
+
+      // Tambahkan data alamat domisili
+      'kota_domisili' => Kota::where('provinsi_id', $alamatDomisili->provinsi_id ?? null)->get(),
+      'kecamatan_domisili' => Kecamatan::where('kota_id', $alamatDomisili->kota_id ?? null)->get(),
+      'kelurahan_domisili' => Kelurahan::where('kecamatan_id', $alamatDomisili->kecamatan_id ?? null)->get(),
+
+      'sumberInfo' => MSumberInfo::all(),
+      'dokumen' => MDokHaji::all(),
+      // Konversi dokumen dari JSON ke array jika diperlukan
+      'selected_documents' => json_decode($customer->dokumen, true) ?? []
+    ]);
+  }
+
+  public function storeAmbilSemuaData(Request $request, $id)
+  {
+    $validated = $request->validate([
+      'nama'           => 'required|string|max:255',
+      'no_porsi_haji' => 'required|numeric',
+      'cabang_id' => 'required|exists:m_cabangs,id',
+      'sumber_info_id' => 'required|exists:m_sumber_infos,id',
+      'wilayah_daftar' => 'required|exists:m_kotas,id',
+      'estimasi' => 'required|integer',
+      'bpjs' => 'nullable|string',
+      'bank' => 'nullable|string',
+      'paket_haji' => 'nullable|string',
+      'catatan' => 'nullable|string',
+      'dokumen' => 'array', // Validasi input dokumen sebagai array
+      'dokumen.*' => 'exists:m_dok_hajis,id', // Pastikan dokumen yang dipilih ada di database
+      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_2'        => 'nullable|string|max:15',
+      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'required|date',
+      'jenis_id'       => 'required|string',
+      'no_id'          => 'required|string',
+      'jenis_kelamin'  => 'required|string',
+      'status_nikah'   => 'required|string',
+      'warga'          => 'required|string',
+      'pekerjaan'      => 'required|string',
+      'pendidikan'     => 'required|string',
+      'alamat_ktp'     => 'nullable|string',
+      'alamat_domisili' => 'nullable|string',
+      // wilayah sesuai KTP
+      'provinsi_ktp_id' => 'required|exists:m_provinsis,id',
+      'kota_ktp_id' => 'required|exists:m_kotas,id',
+      'kecamatan_ktp_id' => 'required|exists:m_kecamatans,id',
+      'kelurahan_ktp_id' => 'required|exists:m_kelurahans,id',
+      // wilayah sesuai Domisili
+      'provinsi_domisili_id' => 'required|exists:m_provinsis,id',
+      'kota_domisili_id' => 'required|exists:m_kotas,id',
+      'kecamatan_domisili_id' => 'required|exists:m_kecamatans,id',
+      'kelurahan_domisili_id' => 'required|exists:m_kelurahans,id',
+    ]);
+
+    // Ubah nama menjadi huruf besar
+    $validated['nama'] = strtoupper($validated['nama']);
+
+    // Simpan data wilayah dalam JSON
+    $validated['alamat_ktp'] = json_encode([
+      'alamat' => $validated['alamat_ktp'],
+      'provinsi_id' => $validated['provinsi_ktp_id'],
+      'kota_id' => $validated['kota_ktp_id'],
+      'kecamatan_id' => $validated['kecamatan_ktp_id'],
+      'kelurahan_id' => $validated['kelurahan_ktp_id'],
+    ]);
+
+    $validated['alamat_domisili'] = json_encode([
+      'alamat' => $validated['alamat_domisili'],
+      'provinsi_id' => $validated['provinsi_domisili_id'],
+      'kota_id' => $validated['kota_domisili_id'],
+      'kecamatan_id' => $validated['kecamatan_domisili_id'],
+      'kelurahan_id' => $validated['kelurahan_domisili_id'],
+    ]);
+
+    // ✅ Simpan dokumen sebagai array JSON (ID dokumen)
+    $validated['dokumen'] = json_encode($request->dokumen, JSON_UNESCAPED_UNICODE);
 
     // Cari customer berdasarkan ID
     // Simpan customer baru dan ambil ID-nya
