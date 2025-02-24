@@ -23,7 +23,7 @@ class TDaftarHajiController extends Controller
   public function index()
   {
     return view('pendaftaran-haji.index', [
-      'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(10)
+      'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(2)
     ]);
   }
 

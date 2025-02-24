@@ -28,11 +28,11 @@
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
           <th scope="col" class="px-6 py-3">No</th>
-          <th scope="col" class="px-6 py-3">No Porsi Haji</th>
+          {{-- <th scope="col" class="px-6 py-3">No Porsi Haji</th> --}}
           <th scope="col" class="px-6 py-3">Nama</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">Telepone</th>
-          <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+          {{-- <th scope="col" class="px-6 py-3 text-center">Aksi</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -41,9 +41,9 @@
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $loop->iteration }}
             </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-              {{ $customer->no_porsi_haji }}
-            </th>
+            {{-- <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $customer->daftarHaji->no_porsi_haji }}
+            </th> --}}
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $customer->nama }}
             </th>
@@ -53,7 +53,7 @@
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $customer->no_hp_1 }}
             </th>
-            <td class="px-6 py-4 text-center">
+            {{-- <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">
                 <a href="/customer/{{ $customer->id }}/edit" class="font-medium text-blue-600 hover:underline">
                   <svg class="w-6 h-6 text-green-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@
                   </button>
                 </form>
               </div>
-            </td>
+            </td> --}}
           </tr>
         @empty
           <tr>

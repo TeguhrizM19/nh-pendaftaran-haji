@@ -21,7 +21,7 @@ class CustomerController extends Controller
   public function index()
   {
     return view('customer.index', [
-      'customers' => Customer::all()
+      'customers' => Customer::with('daftarHaji')->get()
     ]);
   }
 

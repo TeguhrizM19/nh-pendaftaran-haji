@@ -186,8 +186,7 @@
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempat_lahir as $tl)
-                  <option value="{{ $tl->id }}" 
-                    {{ $customer->tempat_lahir == $tl->id ? 'selected' : '' }}>
+                  <option value="{{ $tl->id }}">
                     {{ $tl->kota }}
                   </option>
                 @empty
@@ -201,7 +200,7 @@
               <label for="tgl_lahir" class="block text-sm font-medium leading-6 text-[#099AA7]">
                 Tanggal Lahir
               </label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}"
+              <input type="date" id="tgl_lahir" name="tgl_lahir"
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-md shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -339,19 +338,18 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Dropdown Jenis Kelamin -->
             <div>
-              <label class="mb-2 block text-sm font-medium text-[#099AA7]">Jenis Kelamin</label>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Jenis Kelamin</label>
               <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
                 @foreach (['Laki-Laki', 'Perempuan'] as $gender)
-                <li class="w-full border-b border-gray-200 last:border-b-0 bg-gray-50 hover:bg-gray-100">
-                  <div class="flex items-center ps-3">
-                    <input id="{{ strtolower($gender) }}" type="radio" value="{{ $gender }}" name="jenis_kelamin"
-                      class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      {{ old('jenis_kelamin', $customer->jenis_kelamin ?? '') == $gender ? 'checked' : '' }}>
-                    <label for="{{ strtolower($gender) }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      {{ $gender }}
-                    </label>
-                  </div>
-                </li>
+                  <li class="w-full border-b border-gray-200 last:border-b-0">
+                    <div class="flex items-center ps-3">
+                      <input type="radio" value="{{ $gender }}" name="jenis_kelamin"
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        {{ $gender }}
+                      </label>
+                    </div>
+                  </li>
                 @endforeach
               </ul>
             </div>
