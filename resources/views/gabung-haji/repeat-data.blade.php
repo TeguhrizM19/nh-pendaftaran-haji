@@ -1,12 +1,15 @@
 <x-layout>
   <div>
-    <x-page-title>Form Edit gabung Haji</x-page-title>
+    <x-page-title>Repeat Data gabung Haji</x-page-title>
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="/gabung-haji/{{ $gabung_haji->id }}" method="POST">
-      @method('PUT')
+    {{-- <pre>{{ dd($gabung_haji) }}</pre> --}}
+
+    {{-- <p>Form action: {{ route('gabung-haji-storeRepeatData', $gabung_haji->id) }}</p> --}}
+    <form action="{{ route('gabung-haji.storeRepeatData', $gabung_haji->id) }}" method="POST">
       @csrf
+      <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
         {{-- Kolom 1 --}}
@@ -160,7 +163,7 @@
           </div>
         </div>
 
-        {{-- Kolom 2 --}}
+        {{-- Kolom 2 Alamat KTP --}}
         <div class="relative">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
@@ -374,7 +377,7 @@
               </ul>
             </div>
           </div>
-                  
+          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
@@ -493,26 +496,6 @@
         </button>
       </div>  
     </form>
-  </div>
-
-  <!-- Modal Box -->
-  <div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white w-[1000px] p-6 rounded-lg shadow-lg relative">
-      <!-- Tombol Close -->
-      <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
-
-      <!-- Input Pencarian -->
-      <input type="text" id="searchInput"
-      class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
-      placeholder="Search Data..." autocomplete="off">
-
-      <!-- Dropdown hasil pencarian -->
-      <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg hidden">
-        <ul id="customerList">
-          <!-- Hasil pencarian akan ditampilkan di sini -->
-        </ul>
-      </div>
-    </div>
   </div>
 
 <script>

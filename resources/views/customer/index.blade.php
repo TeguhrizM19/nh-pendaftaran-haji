@@ -18,10 +18,10 @@
     <x-page-title>Table Pendaftaran Haji</x-page-title>
   </div>
 
-  <div class="mt-4">
+  {{-- <div class="mt-4">
     <a href="/customer/create"
     class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Data</a>
-  </div>
+  </div> --}}
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
     <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">

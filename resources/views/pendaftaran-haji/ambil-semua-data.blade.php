@@ -1,6 +1,6 @@
 <x-layout>
   <div>
-    <x-page-title>Repeat Pendaftar Haji</x-page-title>
+    <x-page-title>Ambil Semua Pendaftar Haji</x-page-title>
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
@@ -18,13 +18,6 @@
                 <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
                   <input type="text" name="nama" placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
-              <!-- Tombol Cari -->
-              {{-- <div class="w-1/6">
-                <button type="button" id="openSearch"
-                  class="px-2 py-2 bg-[#099AA7] text-white rounded-lg shadow-md shadow-slate-400">
-                  🔍 Cari
-                </button>
-              </div> --}}
             </div>
           </div>
 
@@ -34,6 +27,107 @@
             class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
           </div>
 
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="shadow-md">
+              <label for="cabang_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
+                Cabang Daftar
+              </label>
+              <select name="cabang_id" id="cabang_id" 
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach($cabang as $cbg)
+                  <option value="{{ $cbg->id }}"
+                    {{ $cbg->id == $daftar_haji->cabang_id ? 'selected' : '' }}>
+                    {{ $cbg->cabang }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="shadow-md">
+              <label for="wilayah_daftar" class="block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
+              <select name="wilayah_daftar" id="wilayah_daftar" 
+                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @forelse ($wilayahKota as $wilayah)
+                  <option value="{{ $wilayah->id }}" {{ $wilayah->id == $daftar_haji->wilayah_daftar ? 'selected' : '' }}>
+                    {{ $wilayah->kota }}
+                  </option>
+                @empty
+                  <option value="">Wilayah Masih Kosong</option>
+                @endforelse
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-1 gap-2 mt-4">
+            {{-- <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Barangkat</label>
+              <input type="number" name="estimasi" min="1900" max="2099" step="1" placeholder="YYYY" 
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div> --}}
+
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
+              <input type="number" name="bpjs" placeholder="No BPJS" 
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
+              <input type="text" name="bank" value="{{ old('bank', $daftar_haji->bank) }}" placeholder="Bank/Jumlah Setoran" 
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+
+            <div class="shadow-md">
+              <label for="sumber_info" class="block text-sm font-medium leading-6 text-[#099AA7]">Sumber Informasi</label>
+              <select name="sumber_info_id" id="sumber_info" 
+                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Sumber Informasi</option>
+                @foreach($sumberInfo as $sumber)
+                  <option value="{{ $sumber->id }}" 
+                    {{ $sumber->id == $daftar_haji->sumber_info_id ? 'selected' : '' }}>
+                    {{ $sumber->info }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="flex gap-6 mt-3">
+            <!-- Kolom Paket Pendaftaran -->
+            <div class="w-1/2">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                @foreach (['Reguler Tunai', 'Reguler Talangan', 'Khusus/Plus'] as $paket)
+                  <li class="w-full border-b border-gray-200 last:border-b-0">
+                    <div class="flex items-center ps-3">
+                      <input type="radio" value="{{ $paket }}" name="paket_haji"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        {{ $daftar_haji->paket_haji == $paket ? 'checked' : '' }}>
+                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        {{ $paket }}
+                      </label>
+                    </div>
+                  </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>          
+
+          <div>
+            <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
+              Catatan
+            </label>
+            <textarea id="message" rows="4" name="catatan"
+            class="mb-4 shadow-md block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+
+        {{-- Kolom 2 --}}
+        <div class="relative">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">No HP 1</label>
@@ -114,41 +208,41 @@
             <!-- Dropdown Jenis Kelamin -->
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Jenis Kelamin</label>
-              <div class="flex items-center mb-2">
-                <input id="laki-laki" type="radio" value="Laki-Laki" name="jenis_kelamin" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                <label for="laki-laki" class="ms-2 text-sm font-medium text-gray-900">Laki-Laki</label>
-              </div>
-              <div class="flex items-center">
-                <input id="perempuan" type="radio" value="Perempuan" name="jenis_kelamin" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                <label for="perempuan" class="ms-2 text-sm font-medium text-gray-900">Perempuan</label>
-              </div>
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                @foreach (['Laki-Laki', 'Perempuan'] as $gender)
+                  <li class="w-full border-b border-gray-200 last:border-b-0">
+                    <div class="flex items-center ps-3">
+                      <input type="radio" value="{{ $gender }}" name="jenis_kelamin"
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        {{ $gender }}
+                      </label>
+                    </div>
+                  </li>
+                @endforeach
+              </ul>
             </div>
-        
+          
             <!-- Dropdown Status -->
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Status</label>
-              <div class="flex items-center mb-2">
-                <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  {{ $customer->status_nikah == 'Menikah' ? 'checked' : '' }}>
-                <label for="menikah" class="ms-2 text-sm font-medium text-gray-900">Menikah</label>
-              </div>
-              <div class="flex items-center mb-2">
-                <input id="belum-menikah" type="radio" value="Belum Menikah" name="status_nikah" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  {{ $customer->status_nikah == 'Belum Menikah' ? 'checked' : '' }}>
-                <label for="belum-menikah" class="ms-2 text-sm font-medium text-gray-900">Belum Menikah</label>
-              </div>
-              <div class="flex items-center">
-                <input id="janda-duda" type="radio" value="Janda/Duda" name="status_nikah" 
-                  class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                  {{ $customer->status_nikah == 'Janda/Duda' ? 'checked' : '' }}>
-                <label for="janda-duda" class="ms-2 text-sm font-medium text-gray-900">Janda/Duda</label>
-              </div>
+              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+                @foreach (['Menikah', 'Belum Menikah', 'Janda/Duda'] as $status)
+                  <li class="w-full border-b border-gray-200 last:border-b-0">
+                    <div class="flex items-center ps-3">
+                      <input type="radio" value="{{ $status }}" name="status_nikah"
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        {{ $customer->status_nikah == $status ? 'checked' : '' }}>
+                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        {{ $status }}
+                      </label>
+                    </div>
+                  </li>
+                @endforeach
+              </ul>
             </div>
-          </div>
+          </div>          
+          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
@@ -172,116 +266,27 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div class="shadow-md">
-              <label for="cabang_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
-                Cabang Daftar
-              </label>
-              <select name="cabang_id" id="cabang_id" 
-                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih</option>
-                @foreach($cabang as $cbg)
-                  <option value="{{ $cbg->id }}"
-                    {{ $cbg->id == $daftar_haji->cabang_id ? 'selected' : '' }}>
-                    {{ $cbg->cabang }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="shadow-md">
-              <label for="wilayah_daftar" class="block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
-              <select name="wilayah_daftar" id="wilayah_daftar" 
-                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih</option>
-                @foreach($cabang as $cbg)
-                  <option value="{{ $cbg->id }}"
-                    {{ $cbg->id == $daftar_haji->cabang_id ? 'selected' : '' }}>
-                    {{ $cbg->cabang }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-1 gap-2 mt-4">
-            {{-- <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Barangkat</label>
-              <input type="number" name="estimasi" min="1900" max="2099" step="1" placeholder="YYYY" 
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
-            </div> --}}
-
-            <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" placeholder="No BPJS" 
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
-              <input type="text" name="bank" value="{{ old('bank', $daftar_haji->bank) }}" placeholder="Bank/Jumlah Setoran" 
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
-            </div>
-
-            <div class="shadow-md">
-              <label for="sumber_info" class="block text-sm font-medium leading-6 text-[#099AA7]">Sumber Informasi</label>
-              <select name="sumber_info_id" id="sumber_info" 
-                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih Sumber Informasi</option>
-                @foreach($sumberInfo as $sumber)
-                  <option value="{{ $sumber->id }}" 
-                    {{ $sumber->id == $daftar_haji->sumber_info_id ? 'selected' : '' }}>
-                    {{ $sumber->info }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="flex gap-6 mt-3">
-            <!-- Kolom Paket Pendaftaran -->
-            <div class="w-1/2">
-              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
-              @foreach (['Reguler Tunai', 'Reguler Talangan', 'Khusus/Plus'] as $paket)
-                <div class="flex items-center ps-3">
-                  <input type="radio" value="{{ $paket }}" name="paket_haji"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                  {{ $daftar_haji->paket_haji == $paket ? 'checked' : '' }}>
-                  <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                    {{ $paket }}
-                  </label>
-                </div>
-              @endforeach
-            </div>
-        
-            <!-- Kolom Dokumen -->
-            <div class="w-1/2">
-              <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
+          <!-- Kolom Dokumen -->
+          <div class="w-full">
+            <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
+            <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
               @foreach ($dokumen as $dok)
-              <div class="flex items-center ps-3">
-                <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                {{ in_array((string) $dok->id, $selected_documents) ? 'checked' : '' }}>
-                <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                  {{ $dok->dokumen }}
-                </label>
-              </div>
+                <li class="w-full border-b border-gray-200 last:border-b-0">
+                  <div class="flex items-center ps-3">
+                    <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ in_array((string) $dok->id, $selected_documents) ? 'checked' : '' }}>
+                    <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      {{ $dok->dokumen }}
+                    </label>
+                  </div>
+                </li>
               @endforeach
-            </div>
-          
-          </div>
-          <div>
-            <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
-              Catatan
-            </label>
-            <textarea id="message" rows="4" name="catatan"
-            class="mb-4 shadow-md block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Write your thoughts here...">{{ old('catatan', $daftar_haji->catatan) }}</textarea>
+            </ul>
           </div>
         </div>
-
-        {{-- Kolom 2 Alamat KTP --}}
+        
+        {{-- Kolom 3 Alamat Domisili --}}
         <div class="relative">
           @php
             $alamatKtp = json_decode($customer->alamat_ktp, true)['alamat'] ?? '';
@@ -329,7 +334,6 @@
               @endforelse
             </select>
           </div>
-        
 
           <div class="shadow-md">
             <label for="kota_ktp" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">
@@ -352,7 +356,7 @@
           <div class="relative">
             <div class="flex gap-4 mt-4">
               <!-- Kolom Kelurahan (Lebih Lebar) -->
-              <div class="w-3/4 shadow-md">
+              <div class="w-full shadow-md">
                 <label for="kelurahan_ktp" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
                 <select name="kelurahan_ktp_id" id="kelurahan_ktp" required
                     class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -378,10 +382,7 @@
               </div> --}}
             </div>            
           </div>
-        </div>
-        
-        {{-- Kolom 3 Alamat Domisili --}}
-        <div class="relative">
+
           @php
             $alamatDomisili = is_array($customer->alamat_domisili) 
               ? $customer->alamat_domisili
@@ -389,7 +390,7 @@
           @endphp
       
           <div>
-            <label for="alamat_domisili" class="block mb-2 text-sm font-medium text-[#099AA7]">
+            <label for="alamat_domisili" class="block mt-4 mb-2 text-sm font-medium text-[#099AA7]">
               Alamat Domisili
             </label>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
@@ -445,18 +446,18 @@
           <!-- Kelurahan -->
           <div class="flex gap-4 mt-4"> 
             <!-- Kelurahan -->
-            <div class="w-3/4 shadow-md">
-                <label for="kelurahan_domisili" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_domisili_id" id="kelurahan_domisili" required
-                    class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                    <option value="">Pilih Kelurahan</option>
-                    @foreach ($kelurahan as $kl)
-                        <option value="{{ $kl->id }}" data-kode-pos="{{ $kl->kode_pos }}"
-                            {{ old('kelurahan_domisili_id', $alamat_domisili['kelurahan_id'] ?? '') == $kl->id ? 'selected' : '' }}>
-                            {{ $kl->kelurahan }}
-                        </option>
-                    @endforeach
-                </select>
+            <div class="w-full shadow-md">
+              <label for="kelurahan_domisili" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
+              <select name="kelurahan_domisili_id" id="kelurahan_domisili" required
+              class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Kelurahan</option>
+                @foreach ($kelurahan as $kl)
+                  <option value="{{ $kl->id }}" data-kode-pos="{{ $kl->kode_pos }}"
+                    {{ old('kelurahan_domisili_id', $alamat_domisili['kelurahan_id'] ?? '') == $kl->id ? 'selected' : '' }}>
+                    {{ $kl->kelurahan }}
+                  </option>
+                @endforeach
+              </select>
             </div>
           
             <!-- Kode Pos -->
@@ -487,15 +488,6 @@
 
 {{-- Select2 --}}
 <script>
-  // Customer
-  $(document).ready(function () {
-      $('#customer_id').select2({
-          placeholder: "Pilih", // Placeholder
-          allowClear: true, // Bisa menghapus pilihan
-          width: '100%' // Sesuaikan dengan Tailwind
-      });
-  });
-
   // Wilayah daftar
   $(document).ready(function () {
     $('#wilayah_daftar').select2({
@@ -624,25 +616,25 @@
     }
   });
 
-  // Ketika kelurahan dipilih, ambil kode pos
-  $(document).ready(function () {
-    let selectedKelurahan = $('#kelurahan_ktp').val(); // Ambil kelurahan yang sudah dipilih
+  // // Ketika kelurahan dipilih, ambil kode pos
+  // $(document).ready(function () {
+  //   let selectedKelurahan = $('#kelurahan_ktp').val(); // Ambil kelurahan yang sudah dipilih
 
-    if (selectedKelurahan) {
-      $.ajax({
-        url: `/get-kodepos/${selectedKelurahan}`,
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-          console.log("Kode Pos Default:", data); // Debugging
-          $('#kode_pos_ktp').val(data.kode_pos);
-        },
-        error: function(xhr, status, error) {
-          console.error("AJAX Error:", error);
-        }
-      });
-    }
-  });
+  //   if (selectedKelurahan) {
+  //     $.ajax({
+  //       url: `/get-kodepos/${selectedKelurahan}`,
+  //       type: "GET",
+  //       dataType: "json",
+  //       success: function (data) {
+  //         console.log("Kode Pos Default:", data); // Debugging
+  //         $('#kode_pos_ktp').val(data.kode_pos);
+  //       },
+  //       error: function(xhr, status, error) {
+  //         console.error("AJAX Error:", error);
+  //       }
+  //     });
+  //   }
+  // });
 
 
   // JS untuk Domisili
@@ -737,25 +729,25 @@
     }
   });
 
-  // Ketika kelurahan dipilih, ambil kode pos
-  $(document).ready(function () {
-    let selectedKelurahan = $('#kelurahan_domisili').val(); // Ambil kelurahan yang sudah dipilih
+  // // Ketika kelurahan dipilih, ambil kode pos
+  // $(document).ready(function () {
+  //   let selectedKelurahan = $('#kelurahan_domisili').val(); // Ambil kelurahan yang sudah dipilih
 
-    if (selectedKelurahan) {
-      $.ajax({
-        url: `/get-kodepos/${selectedKelurahan}`,
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-          console.log("Kode Pos Default:", data); // Debugging
-          $('#kode_pos_domisili').val(data.kode_pos);
-        },
-        error: function(xhr, status, error) {
-          console.error("AJAX Error:", error);
-        }
-      });
-    }
-  });
+  //   if (selectedKelurahan) {
+  //     $.ajax({
+  //       url: `/get-kodepos/${selectedKelurahan}`,
+  //       type: "GET",
+  //       dataType: "json",
+  //       success: function (data) {
+  //         console.log("Kode Pos Default:", data); // Debugging
+  //         $('#kode_pos_domisili').val(data.kode_pos);
+  //       },
+  //       error: function(xhr, status, error) {
+  //         console.error("AJAX Error:", error);
+  //       }
+  //     });
+  //   }
+  // });
 
 </script>
 </x-layout>

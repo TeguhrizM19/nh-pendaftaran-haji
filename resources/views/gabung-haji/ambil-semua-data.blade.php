@@ -1,12 +1,12 @@
 <x-layout>
   <div>
-    <x-page-title>Form Edit gabung Haji</x-page-title>
+    <x-page-title>Ambil Data gabung Haji</x-page-title>
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="/gabung-haji/{{ $gabung_haji->id }}" method="POST">
-      @method('PUT')
+    <form action="{{ route('gabung-haji.ambilSemuaData', $gabung_haji->id) }}" method="POST">
       @csrf
+      <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
         {{-- Kolom 1 --}}
@@ -16,7 +16,7 @@
               <!-- Kolom Nama (Lebih Lebar) -->
               <div class="w-full">
                 <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
-                <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama" 
+                <input type="text" name="nama" placeholder="Nama" 
                 class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400  ring-1 
                 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
                 text-sm leading-6 uppercase" />
@@ -27,7 +27,7 @@
           <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nama Panggilan</label>
-              <input type="text" name="panggilan" value="{{ old('panggilan', $customer->panggilan) }}" placeholder="Nama Panggilan"
+              <input type="text" name="panggilan" placeholder="Nama Panggilan"
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
             </div>
           </div>
@@ -35,12 +35,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">No Porsi</label>
-              <input type="number" name="no_porsi" value="{{ old('no_porsi', $gabung_haji->no_porsi) }}" placeholder="No SPPH"
+              <input type="number" name="no_porsi" placeholder="No SPPH"
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
             </div>
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nomor spph</label>
-              <input type="number" name="no_spph" value="{{ old('no_spph', $gabung_haji->no_spph) }}" placeholder="Nomor SPPH"
+              <input type="number" name="no_spph" placeholder="Nomor SPPH"
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -150,17 +150,18 @@
             </div> --}}
           
           </div>
+
           <div>
             <label for="message" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Catatan
             </label>
             <textarea id="message" rows="4" name="catatan"
             class="mb-4 shadow-md block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Write your thoughts here...">{{ old('catatan', $gabung_haji->catatan) }}</textarea>
+            placeholder="Write your thoughts here..."></textarea>
           </div>
         </div>
 
-        {{-- Kolom 2 --}}
+        {{-- Kolom 2 Alamat KTP --}}
         <div class="relative">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
@@ -224,7 +225,7 @@
               <label for="no_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
                 No Identitas
               </label>
-              <input type="text" id="no_id" name="no_id" value="{{ old('no_id', $customer->no_id) }}" placeholder="Masukkan No Identitas"
+              <input type="text" id="no_id" name="no_id" placeholder="Masukkan No Identitas"
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
@@ -374,11 +375,11 @@
               </ul>
             </div>
           </div>
-                  
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $customer->pekerjaan) }}" placeholder="Pekerjaan" 
+              <input type="text" name="pekerjaan" placeholder="Pekerjaan" 
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -387,14 +388,14 @@
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="Tidak Sekolah">Tidak Sekolah</option>
-                <option value="Tidak Sekolah" {{ old('pendidikan', $customer->pendidikan) == "Tidak Sekolah" ? 'selected' : '' }}>Tidak Sekolah</option>
-                <option value="TK" {{ old('pendidikan', $customer->pendidikan) == "TK" ? 'selected' : '' }}>TK</option>
-                <option value="SD" {{ old('pendidikan', $customer->pendidikan) == "SD" ? 'selected' : '' }}>SD</option>
-                <option value="SMP" {{ old('pendidikan', $customer->pendidikan) == "SMP" ? 'selected' : '' }}>SMP</option>
-                <option value="SMA" {{ old('pendidikan', $customer->pendidikan) == "SMA" ? 'selected' : '' }}>SMA</option>
-                <option value="S1" {{ old('pendidikan', $customer->pendidikan) == "S1" ? 'selected' : '' }}>S1</option>
-                <option value="S2" {{ old('pendidikan', $customer->pendidikan) == "S2" ? 'selected' : '' }}>S2</option>
-                <option value="S3" {{ old('pendidikan', $customer->pendidikan) == "S3" ? 'selected' : '' }}>S3</option>
+                <option>Tidak Sekolah</option>
+                <option>TK</option>
+                <option>SD</option>
+                <option>SMP</option>
+                <option>SMA</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
               </select>
             </div>
           </div>
@@ -493,26 +494,6 @@
         </button>
       </div>  
     </form>
-  </div>
-
-  <!-- Modal Box -->
-  <div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white w-[1000px] p-6 rounded-lg shadow-lg relative">
-      <!-- Tombol Close -->
-      <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
-
-      <!-- Input Pencarian -->
-      <input type="text" id="searchInput"
-      class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
-      placeholder="Search Data..." autocomplete="off">
-
-      <!-- Dropdown hasil pencarian -->
-      <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg hidden">
-        <ul id="customerList">
-          <!-- Hasil pencarian akan ditampilkan di sini -->
-        </ul>
-      </div>
-    </div>
   </div>
 
 <script>

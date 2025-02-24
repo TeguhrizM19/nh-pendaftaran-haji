@@ -41,4 +41,10 @@ class Kota extends Model
   {
     return $this->hasMany(Customer::class, 'tempat_lahir');
   }
+
+  // Relasi ke Kecamatan (one to many)
+  public function kecamatan()
+  {
+    return $this->hasMany(Kecamatan::class, 'kota_id');
+  }
 }

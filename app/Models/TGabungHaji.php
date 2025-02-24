@@ -28,11 +28,17 @@ class TGabungHaji extends Model
     return $this->belongsTo(Provinsi::class, 'provinsi_id');
   }
 
+  public function kotaBank()
+  {
+    return $this->belongsTo(Kota::class, 'kota_id');
+  }
+
   // Relasi ke Kota
   public function kota()
   {
     return $this->belongsTo(Kota::class, 'kota_id');
   }
+
 
   // Relasi ke Kecamatan
   public function kecamatan()

@@ -34,4 +34,10 @@ class Kecamatan extends Model
   {
     return $this->hasMany(TGabungHaji::class, 'kecamatan_id');
   }
+
+  // Relasi ke Kelurahan (one to many)
+  public function kelurahan()
+  {
+    return $this->hasMany(Kelurahan::class, 'kecamatan_id');
+  }
 }
