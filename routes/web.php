@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
@@ -18,6 +19,9 @@ Route::get('/get-kota/{provinsi_id}', [TDaftarHajiController::class, 'getKota'])
 Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecamatan']);
 Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
+
+// Cetak PDF
+Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetak'])->name('daftar_haji.cetak');
 
 Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
 Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);

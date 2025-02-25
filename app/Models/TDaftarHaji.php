@@ -37,7 +37,7 @@ class TDaftarHaji extends Model
 
   public function wilayahKota()
   {
-    return $this->belongsTo(Kota::class, 'kota_id');
+    return $this->belongsTo(Kota::class, 'wilayah_daftar', 'id');
   }
 
   public function dokumen()

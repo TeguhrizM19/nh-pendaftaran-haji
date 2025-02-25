@@ -32,6 +32,7 @@
           <th scope="col" class="px-6 py-3">Paket Pendaftaran</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>
+          <th scope="col" class="px-6 py-3 text-center">Cetak</th>
           <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>
       </thead>
@@ -56,6 +57,14 @@
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->no_hp_1 }}
             </th>
+            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              <a href="{{ route('daftar_haji.cetak', $daftar->id) }}" target="_blank" class="text-blue-600 hover:underline">
+                <svg class="w-6 h-6 text-blue-500 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M6 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H6Zm1 4h10V5H7v2Zm0 2h10v2H7V9Zm0 4h10v2H7v-2Z" clip-rule="evenodd"/>
+                </svg>
+              </a>
+            </th>
+          
             <td class="px-6 py-4 text-center">
               <div class="inline-flex items-center space-x-2">
                 <a href="/pendaftaran-haji/{{ $daftar->id }}/edit" class="font-medium text-blue-600 hover:underline">
