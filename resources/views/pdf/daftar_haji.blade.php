@@ -6,6 +6,54 @@
   <title>Formulir Pendaftaran Haji</title>
   <style>
     body { font-family: 'Times New Roman', Times, serif; font-size: 16px; }
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid black;
+    }
+    .header-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .header-logo {
+        width: 200px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    .header-title {
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+    .sub-header td {
+        font-size: 16px;
+    }
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .info-table td {
+        border: 1px solid black;
+        padding: 5px;
+        text-align: center;
+        font-size: 14px;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    .top-section td {
+        vertical-align: middle;
+    }
+    .right-section {
+        text-align: left;
+        font-weight: normal;
+    }
+    .right-section td {
+        padding: 5px 10px;
+    }
+
     .table-format {
       width: 100%;
       border-collapse: collapse;
@@ -68,27 +116,36 @@
 </head>
 <body>
   <div class="container">
-    <table class="table-header">
-      <tr>
-        <td rowspan="4" class="logo"><img src="logo.png" alt="Logo Nurul Hayat"></td>
-        <td colspan="2" class="header">YAYASAN NURUL HAYAT<br>SURABAYA</td>
+    <table class="header-table">
+      <tr class="top-section">
+        <td rowspan="2" class="header-logo">
+          Nurul Hayat<br>#HajiBahagia
+        </td>
+        <td colspan="3" class="header-title">YAYASAN NURUL HAYAT SURABAYA</td>
       </tr>
-      <tr>
-        <td rowspan="3" class="form-title">FORM<br>KBIH-01</td>
-        <td rowspan="3" class="form-title">PENDAFTARAN<br>HAJI</td>
-      </tr>
-      <tr></tr>
-      <tr></tr>
-      <tr>
-        <td colspan="2" class="footer">Diterbitkan 01-04-2018</td>
-        <td class="footer">Revisi 00</td>
-        <td class="footer">Halaman 1 dari 1</td>
+      <tr class="sub-header">
+        <td>FORM <br> KBIH-01</td>
+        <td>PENDAFTARAN <br> HAJI</td>
+        <td style="padding: 0px">
+          <table border="1" style="border-collapse: collapse; width: 100%;">
+            <tr style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;">Diterbitkan</td>
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;"> : 01-04-2018</td>
+            </tr>
+            <tr style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;">Revisi</td>
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;"> : 00</td>
+            </tr>
+            <tr style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;">Halaman</td>
+              <td style="font-size: 14px; font-weight: normal; text-align: left; border: none; margin: 2px; padding: 2px;"> : 1 dari 1</td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </table>
 
-    <h2 align="center">Formulir Pendaftaran Haji</h2>
-
-    <table class="table-format">
+    <table class="table-format" style="margin-top: 20px">
       <tr>
         <td class="label">Nomor Porsi Haji</td>
         <td class="separator">:</td>
@@ -168,7 +225,7 @@
       </tr>
     </table>
 
-    <h4>Berkas :</h4>
+    <h4>Berkas yang diserahkan :</h4>
     @if (count($dokumen) > 0)
       <ul style="margin: 0; padding-left: 18px; list-style: none;">
         @foreach ($dokumen as $index => $doc)

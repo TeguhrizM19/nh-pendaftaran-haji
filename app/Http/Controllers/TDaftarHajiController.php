@@ -23,7 +23,7 @@ class TDaftarHajiController extends Controller
   public function index()
   {
     return view('pendaftaran-haji.index', [
-      'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(2)
+      'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(5)
     ]);
   }
 
@@ -36,9 +36,9 @@ class TDaftarHajiController extends Controller
     $kota = Kota::all(); // Ambil sekali, gunakan dua kali
 
     return view('pendaftaran-haji.create', [
+      'wilayahKota' => $kota, // Tidak perlu keyBy
       'cabang' => MCabang::all(),
       'sumberInfo' => MSumberInfo::all(),
-      'wilayahKota' => $kota, // Tidak perlu keyBy
       'dokumen' => MDokHaji::all(),
       'provinsi' => Provinsi::all()->keyBy('id'),
       'kota' => $kota->keyBy('id'), // Gunakan hasil yang sama, hanya tambahkan keyBy
