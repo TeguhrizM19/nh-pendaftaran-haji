@@ -166,7 +166,7 @@
               <select name="tempat_lahir" id="tempat_lahir" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
-                @forelse ($kota as $kt)
+                @forelse ($tempatLahir as $kt)
                   <option value="{{ $kt->id }}">{{ $kt->kota }}</option>
                 @empty
                   <option value="">Tempat Lahir masih kosong</option>
@@ -307,7 +307,7 @@
               @foreach ($dokumen as $dok)
               <li class="w-full border-b border-gray-200">
                 <div class="flex items-center ps-3">
-                  <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" required value="{{ $dok->id }}"
+                  <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
                     class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
                     {{ in_array($dok->id, $selectedDokumen ?? []) ? 'checked' : '' }}>
 
@@ -399,14 +399,14 @@
               </div>
             </div>            
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili"
-            class="block mb-2 p-2.5 w-full text-sm text-black bg-white shadow-md shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            class="block mb-2 p-2.5 w-full text-sm text-black bg-white shadow-md shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" required
             placeholder="Write your thoughts here..."></textarea>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="provinsi_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
             <select name="provinsi_domisili_id" id="provinsi_domisili"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
               <option value="">Pilih Provinsi</option>
               @forelse ($provinsi as $prov)
                 <option value="{{ $prov->id }}">{{ $prov->provinsi }}</option>
@@ -420,7 +420,7 @@
           <div class="shadow-md shadow-slate-400">
             <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
             <select name="kota_domisili_id" id="kota_domisili"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
               <option value="">Pilih Kota</option>
             </select>
             <input type="hidden" name="kota_domisili_id" id="hidden_kota_domisili">
@@ -429,7 +429,7 @@
           <div class="shadow-md shadow-slate-400">
             <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
             <select name="kecamatan_domisili_id" id="kecamatan_domisili"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
               <option value="">Pilih Kecamatan</option>
             </select>
             <input type="hidden" name="kecamatan_domisili_id" id="hidden_kecamatan_domisili">
@@ -441,7 +441,7 @@
               <div class="w-3/4 shadow-md shadow-slate-400">
                 <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
                 <select name="kelurahan_domisili_id" id="kelurahan_domisili"
-                  class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                  class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
                   <option value="">Pilih Kelurahan</option>
                 </select>
                 <input type="hidden" name="kelurahan_domisili_id" id="hidden_kelurahan_domisili">
@@ -575,7 +575,6 @@
     }
   });
 
-
   // Checkbox Gunakan alamat KTP 
 document.getElementById('copy-checkbox').addEventListener('change', function () { 
     const isChecked = this.checked;
@@ -590,19 +589,19 @@ document.getElementById('copy-checkbox').addEventListener('change', function () 
             document.getElementById('kota_domisili').value = document.getElementById('kota_ktp').value;
             document.getElementById('hidden_kota_domisili').value = document.getElementById('kota_ktp').value;
             $('#kota_domisili').trigger('change');
-        }, 500);
+        }, 1000);
 
         setTimeout(() => {
             document.getElementById('kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
             document.getElementById('hidden_kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
             $('#kecamatan_domisili').trigger('change');
-        }, 1000);
+        }, 1800);
 
         setTimeout(() => {
             document.getElementById('kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
             document.getElementById('hidden_kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
             $('#kelurahan_domisili').trigger('change');
-        }, 1500);
+        }, 2300);
 
         document.getElementById('kode_pos_domisili').value = document.getElementById('kode_pos_ktp').value;
     } else {

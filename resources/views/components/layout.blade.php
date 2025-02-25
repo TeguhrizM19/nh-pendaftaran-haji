@@ -8,10 +8,11 @@
   <link rel="icon" href="{{ asset('images/nhlogo.png') }}" type="image/png">
   <title>Pendaftaran Haji</title>
 
-  @vite('resources/css/app.css', 'resources/js/app.js')
-
   {{-- jquery cdn --}}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  {{-- tailwind cdn --}}
+  <script src="https://cdn.tailwindcss.com"></script>
 
   {{-- Flowbite CDN --}}
   <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -61,6 +62,8 @@
           border-radius: 10px;
       }
   </style>
+
+  @vite('resources/css/app.css', 'resources/js/app.js')
     
 </head>
 <body class="h-screen bg-slate-300">
@@ -74,25 +77,13 @@
   </main>
 
   <!-- SweetAlert CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-
-
-  {{-- loading indicator modal trigger script --}}
-  {{-- <script>
-      function showLoadingModal() {
-          document.getElementById('loading-modal').classList.remove('hidden');
-      }
-  </script> --}}
-
 
   {{-- Flowbite CDN --}}
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
   {{-- select2 cdn --}}
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-  {{-- tailwind cdn --}}
-  <script src="https://cdn.tailwindcss.com"></script>
 
 </html>

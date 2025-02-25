@@ -313,116 +313,89 @@
         </div>
         
         {{-- Kolom 3 --}}
-        <div class="relative">
-          @php
-            $alamatKtp = json_decode($customer->alamat_ktp, true)['alamat'] ?? '';
-          @endphp
+<div class="relative">
+  @php
+    $alamatKtp = json_decode($customer->alamat_ktp, true) ?? [];
+    $alamatDomisili = json_decode($customer->alamat_domisili, true) ?? [];
+  @endphp
 
-          <div>
-            <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">
-              Alamat Sesuai KTP
-            </label>
-            <textarea id="alamat_ktp" rows="2" name="alamat_ktp"
-            class="block p-2.5 w-full text-sm text-black bg-white shadow-md shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Alamat KTP...">{{ $alamatKtp }}</textarea>
-          </div>
+  <!-- Alamat KTP -->
+  <div>
+    <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
+    <textarea id="alamat_ktp" rows="2" name="alamat_ktp" 
+      class="block p-2.5 w-full text-sm text-black bg-white shadow-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+      placeholder="Alamat KTP...">{{ old('alamat_ktp', $alamatKtp['alamat'] ?? '') }}</textarea>
+  </div>
 
-          <div class="shadow-md">
-            <label for="provinsi_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
-            <select name="provinsi_ktp_id" id="provinsi_ktp" required
-              class="w-full text-gray-900 shadow-md shadow-slate-400 shadow-slate-400bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih Provinsi</option>
-                @forelse ($provinsi as $prov)
-                  <option value="{{ $prov->id }}" 
-                    {{ old('provinsi_ktp_id', $provinsi_selected->id ?? '') == $prov->id ? 'selected' : '' }}>
-                    {{ $prov->provinsi }}
-                  </option>
-                @empty
-                  <option value="">Provinsi masih kosong</option>
-              @endforelse
-            </select>
-          </div>
+  <!-- Provinsi KTP -->
+  <div class="shadow-md">
+    <label for="provinsi_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Provinsi</label>
+    <select name="provinsi_ktp_id" id="provinsi_ktp" required
+      class="w-full text-gray-900 shadow-md bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+      <option value="">Pilih Provinsi</option>
+      @foreach ($provinsi as $prov)
+        <option value="{{ $prov->id }}" 
+          {{ old('provinsi_ktp_id', $alamatKtp['provinsi_id'] ?? '') == $prov->id ? 'selected' : '' }}>
+          {{ $prov->provinsi }}
+        </option>
+      @endforeach
+    </select>
+  </div>
 
-          <div class="shadow-md">
-            <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Kota
-            </label>
-            <select name="kota_ktp_id" id="kota_ktp" required
-              class="w-full text-gray-900 shadow-md shadow-slate-400 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kota</option>
-              @forelse ($kota as $kt)
-                <option value="{{ $kt->id }}" 
-                  {{ old('kota_ktp_id', $kota_selected->id ?? '') == $kt->id ? 'selected' : '' }}>
-                  {{ $kt->kota }}
-                </option>
-              @empty
-                <option value="">Kota masih kosong</option>
-              @endforelse
-            </select>
-          </div>
-        
-          <div class="shadow-md">
-            <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Kecamatan
-            </label>
-            <select name="kecamatan_ktp_id" id="kecamatan_ktp" required
-              class="w-full text-gray-900 shadow-md shadow-slate-400 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kecamatan</option>
-              @forelse ($kecamatan as $kc)
-                <option value="{{ $kc->id }}" 
-                  {{ old('kecamatan_ktp_id', $kecamatan_selected->id ?? '') == $kc->id ? 'selected' : '' }}>
-                  {{ $kc->kecamatan }}
-                </option>
-              @empty
-                <option value="">Kota masih kosong</option>
-              @endforelse
-            </select>
-          </div>
+  <!-- Kota KTP -->
+  <div class="shadow-md">
+    <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Kota</label>
+    <select name="kota_ktp_id" id="kota_ktp" required
+      class="w-full text-gray-900 shadow-md bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+      <option value="">Pilih Kota</option>
+      @foreach ($kota as $kt)
+        <option value="{{ $kt->id }}" 
+          {{ old('kota_ktp_id', $alamatKtp['kota_id'] ?? '') == $kt->id ? 'selected' : '' }}>
+          {{ $kt->kota }}
+        </option>
+      @endforeach
+    </select>
+  </div>
 
-          <div class="relative">
-            <div class="flex gap-4 mt-4">
-              <!-- Kolom Kelurahan (Lebih Lebar) -->
-              <div class="w-full shadow-md">
-                <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_ktp_id" id="kelurahan_ktp" required
-                    class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                    <option value="">Pilih Kelurahan</option>
-                    @forelse ($kelurahan as $kl)
-                      <option value="{{ $kl->id }}" data-kode-pos="{{ $kl->kode_pos }}"
-                        {{ old('kelurahan_ktp_id', $kelurahan_selected->id ?? '') == $kl->id ? 'selected' : '' }}>
-                        {{ $kl->kelurahan }}
-                      </option>
-                    @empty
-                      <option value="">Kelurahan masih kosong</option>
-                    @endforelse
-                </select>
-              </div>
-      
-              <!-- Kolom Kode Pos (Lebih Kecil) -->
-              {{-- <div class="w-1/4">
-                <label for="kode_pos_ktp" class="block text-sm font-medium leading-6 text-[#099AA7]">Kode Pos</label>
-                <input type="text" id="kode_pos_ktp" name="kode_pos_ktp" 
-                value="{{ old('kode_pos_ktp', $kode_pos ?? '') }}"
-                class="bg-gray-100 border shadow-md shadow-slate-400 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed"
-                readonly>
-              </div> --}}
-            </div>            
-          </div>
-          
-          @php
-            $alamatDomisili = is_array($customer->alamat_domisili) 
-              ? $customer->alamat_domisili
-              : json_decode($customer->alamat_domisili, true) ?? [];
-          @endphp
-      
-          <div>
-            <label for="alamat_domisili" class="block mt-4 mb-2 text-sm font-medium text-[#099AA7]">
-              Alamat Domisili
-            </label>
-            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
-              class="mb-4 block p-2.5 w-full shadow-md shadow-slate-400 text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Alamat Domisili...">{{ old('alamat_domisili', $alamatDomisili['alamat'] ?? '') }}</textarea>
-          </div>
+  <!-- Kecamatan KTP -->
+  <div class="shadow-md">
+    <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
+    <select name="kecamatan_ktp_id" id="kecamatan_ktp" required
+      class="w-full text-gray-900 shadow-md bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+      <option value="">Pilih Kecamatan</option>
+      @foreach ($kecamatan as $kc)
+        <option value="{{ $kc->id }}" 
+          {{ old('kecamatan_ktp_id', $alamatKtp['kecamatan_id'] ?? '') == $kc->id ? 'selected' : '' }}>
+          {{ $kc->kecamatan }}
+        </option>
+      @endforeach
+    </select>
+  </div>
+
+  <!-- Kelurahan & Kode Pos KTP -->
+  <div class="flex gap-4 mt-4">
+    <div class="w-full shadow-md">
+      <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Kelurahan</label>
+      <select name="kelurahan_ktp_id" id="kelurahan_ktp" required
+        class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+        <option value="">Pilih Kelurahan</option>
+        @foreach ($kelurahan as $kl)
+          <option value="{{ $kl->id }}" 
+            {{ old('kelurahan_ktp_id', $alamatKtp['kelurahan_id'] ?? '') == $kl->id ? 'selected' : '' }}>
+            {{ $kl->kelurahan }}
+          </option>
+        @endforeach
+      </select>
+    </div>
+  </div>
+
+  <!-- Alamat Domisili -->
+  <div>
+    <label for="alamat_domisili" class="block mt-4 mb-2 text-sm font-medium text-[#099AA7]">Alamat Domisili</label>
+    <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
+      class="mb-4 block p-2.5 w-full shadow-md text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+      placeholder="Alamat Domisili...">{{ old('alamat_domisili', $alamatDomisili['alamat'] ?? '') }}</textarea>
+  </div>
       
           <!-- Provinsi -->
           <div class="shadow-md">
@@ -461,9 +434,9 @@
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kecamatan</option>
               @foreach ($kecamatan as $kc)
-                <option value="{{ $kc->id }}" {{ old('kecamatan_domisili_id', $alamat_domisili['kecamatan_id'] ?? '') == $kc->id ? 'selected' : '' }}>
-                  {{ $kc->kecamatan }}
-                </option>
+              <option value="{{ $kc->id }}" {{ old('kecamatan_domisili_id', $alamatDomisili['kecamatan_id'] ?? '') == $kc->id ? 'selected' : '' }}>
+                {{ $kc->kecamatan }}
+              </option>              
               @endforeach
             </select>
           </div>

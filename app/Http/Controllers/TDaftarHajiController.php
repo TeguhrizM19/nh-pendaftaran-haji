@@ -36,17 +36,17 @@ class TDaftarHajiController extends Controller
     $kota = Kota::all(); // Ambil sekali, gunakan dua kali
 
     return view('pendaftaran-haji.create', [
-      'wilayahKota' => $kota, // Tidak perlu keyBy
+      'wilayahKota' => $kota,
+      'tempatLahir' => $kota,
       'cabang' => MCabang::all(),
       'sumberInfo' => MSumberInfo::all(),
       'dokumen' => MDokHaji::all(),
-      'provinsi' => Provinsi::all()->keyBy('id'),
-      'kota' => $kota->keyBy('id'), // Gunakan hasil yang sama, hanya tambahkan keyBy
-      'kecamatan' => Kecamatan::all()->keyBy('id'),
-      'kelurahan' => Kelurahan::all()->keyBy('id')
+      'provinsi' => Provinsi::all(),
+      // 'kota' => $kota->keyBy('id'),
+      // 'kecamatan' => Kecamatan::all()->keyBy('id'),
+      // 'kelurahan' => Kelurahan::all()->keyBy('id')
     ]);
   }
-
 
   /**
    * Store a newly created resource in storage.
