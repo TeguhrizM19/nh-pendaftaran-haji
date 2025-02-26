@@ -19,6 +19,9 @@ class TDaftarHaji extends Model
   use HasFactory;
 
   protected $guarded = ['id'];
+  // protected $casts = [
+  //   'dokumen' => 'array',
+  // ];
 
   public function customer()
   {
@@ -35,7 +38,7 @@ class TDaftarHaji extends Model
     return $this->belongsTo(MSumberInfo::class, 'sumber_info_id');
   }
 
-  public function wilayahKota()
+  public function wilayahDaftar()
   {
     return $this->belongsTo(Kota::class, 'wilayah_daftar', 'id');
   }
@@ -45,7 +48,7 @@ class TDaftarHaji extends Model
     return $this->belongsToMany(MDokHaji::class, 't_daftar_haji_documents', 'daftar_haji_id', 'dokumen_id');
   }
 
-  public function kotaLahir()
+  public function tempatLahir()
   {
     return $this->belongsTo(Kota::class, 'tempat_lahir');
   }

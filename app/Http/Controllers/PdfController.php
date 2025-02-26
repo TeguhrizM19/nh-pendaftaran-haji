@@ -16,47 +16,47 @@ class PdfController extends Controller
   public function cetak($id)
   {
     $daftar = TDaftarHaji::with([
-      'customer.kotaLahir',
+      'customer.tempatLahir',
       'customer.provinsi',
       'customer.kota',
       'customer.kecamatan',
       'customer.kelurahan',
-      'wilayahKota',
+      // 'customer.provinsiDomisili',
+      // 'customer.kotaDomisili',
+      // 'customer.kecamatanDomisili',
+      // 'customer.kelurahanDomisili',
+      'wilayahDaftar',
       'sumberInfo'
     ])->findOrFail($id);
 
     // ====================== Alamat KTP ======================
-    $alamatKtp = json_decode($daftar->customer->alamat_ktp, true) ?? [];
-    $provinsi = optional(Provinsi::find($alamatKtp['provinsi_id']))->provinsi ?? '-';
-    $kota = optional(Kota::find($alamatKtp['kota_id']))->kota ?? '-';
-    $kecamatan = optional(Kecamatan::find($alamatKtp['kecamatan_id']))->kecamatan ?? '-';
-    $kelurahan = optional(Kelurahan::find($alamatKtp['kelurahan_id']))->kelurahan ?? '-';
+    $provinsi = optional($daftar->customer->provinsi)->provinsi ?? '-';
+    $kota = optional($daftar->customer->kota)->kota ?? '-';
+    $kecamatan = optional($daftar->customer->kecamatan)->kecamatan ?? '-';
+    $kelurahan = optional($daftar->customer->kelurahan)->kelurahan ?? '-';
 
     // ====================== Alamat Domisili ======================
-    $alamatDomisili = json_decode($daftar->customer->alamat_domisili, true) ?? [];
-    $provinsiDomisili = optional(Provinsi::find($alamatDomisili['provinsi_id']))->provinsi ?? '-';
-    $kotaDomisili = optional(Kota::find($alamatDomisili['kota_id']))->kota ?? '-';
-    $kecamatanDomisili = optional(Kecamatan::find($alamatDomisili['kecamatan_id']))->kecamatan ?? '-';
-    $kelurahanDomisili = optional(Kelurahan::find($alamatDomisili['kelurahan_id']))->kelurahan ?? '-';
-    $kodePosDomisili = optional(Kelurahan::find($alamatDomisili['kelurahan_id']))->kode_pos ?? '-';
+    $provinsiDomisili = optional($daftar->customer->provinsiDomisili)->provinsi ?? '-';
+    $kotaDomisili = optional($daftar->customer->kotaDomisili)->kota ?? '-';
+    $kecamatanDomisili = optional($daftar->customer->kecamatanDomisili)->kecamatan ?? '-';
+    $kelurahanDomisili = optional($daftar->customer->kelurahanDomisili)->kelurahan ?? '-';
+    $kodePosDomisili = optional($daftar->customer->kelurahanDomisili)->kode_pos ?? '-';
 
     // ====================== Dokumen ======================
-    $dokumenIds = json_decode($daftar->dokumen, true) ?? []; // Ambil JSON ID dokumen
-    $dokumen = MDokHaji::whereIn('id', $dokumenIds)->get(['id', 'dokumen']); // Ambil nama dokumen
+    $dokumenIds = is_array($daftar->dokumen) ? $daftar->dokumen : json_decode($daftar->dokumen, true) ?? [];
+    $dokumen = MDokHaji::whereIn('id', $dokumenIds)->get(['id', 'dokumen']);
 
     // Kirim semua data ke view PDF
     $pdf = Pdf::loadView('pdf.daftar_haji', [
       'daftar' => $daftar,
 
       // Data Alamat KTP
-      'alamat_ktp' => $alamatKtp,
       'provinsi' => $provinsi,
       'kota' => $kota,
       'kecamatan' => $kecamatan,
       'kelurahan' => $kelurahan,
 
       // Data Alamat Domisili
-      'alamat_domisili' => $alamatDomisili,
       'provinsi_domisili' => $provinsiDomisili,
       'kota_domisili' => $kotaDomisili,
       'kecamatan_domisili' => $kecamatanDomisili,

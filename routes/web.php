@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomerController;
@@ -19,6 +17,16 @@ Route::get('/get-kota/{provinsi_id}', [TDaftarHajiController::class, 'getKota'])
 Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecamatan']);
 Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
+
+Route::get('/cabang/search', [TDaftarHajiController::class, 'searchCabang'])->name('cabang.search');
+Route::get('/wilayah/search', [TDaftarHajiController::class, 'searchWilayah'])->name('wilayah.search');
+Route::get('/tempat-lahir/search', [TDaftarHajiController::class, 'searchTempatLhr'])->name('tempat-lahir.search');
+Route::get('/search-provinsi', [TDaftarHajiController::class, 'searchProvinsi'])->name('provinsi.search');
+Route::get('/search-kota/{provinsi_id}', [TDaftarHajiController::class, 'searchKota']);
+Route::get('/search-kecamatan/{kota_id}', [TDaftarHajiController::class, 'searchKecamatan']);
+Route::get('/search-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'searchKelurahan']);
+
+
 
 Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
 Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);

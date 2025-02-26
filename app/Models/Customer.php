@@ -17,10 +17,6 @@ class Customer extends Model
 
   protected $table = 'm_customers';
   protected $guarded = ['id'];
-  protected $casts = [
-    'alamat_ktp' => 'array',
-    'alamat_domisili' => 'array', // Mengubah alamat_ktp menjadi array
-  ];
 
   // Awal Relasi Wilayah Indonesia
   public function provinsi()
@@ -44,7 +40,7 @@ class Customer extends Model
   }
 
   // Relasi Tempat Lahir ke Tabel Kota
-  public function kotaLahir()
+  public function tempatLahir()
   {
     return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
   }
