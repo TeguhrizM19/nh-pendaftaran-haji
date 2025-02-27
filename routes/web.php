@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PencarianSelect2Controller;
 use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
 
@@ -19,16 +20,16 @@ Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getK
 Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
 
 Route::get('/cabang/search', [TDaftarHajiController::class, 'searchCabang'])->name('cabang.search');
-Route::get('/wilayah/search', [TDaftarHajiController::class, 'searchWilayah'])->name('wilayah.search');
-Route::get('/tempat-lahir/search', [TDaftarHajiController::class, 'searchTempatLhr'])->name('tempat-lahir.search');
-Route::get('/search-provinsi', [TDaftarHajiController::class, 'searchProvinsi'])->name('provinsi.search');
-Route::get('/search-kota/{provinsi_id}', [TDaftarHajiController::class, 'searchKota']);
-Route::get('/search-kecamatan/{kota_id}', [TDaftarHajiController::class, 'searchKecamatan']);
-Route::get('/search-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'searchKelurahan']);
-
-
+Route::get('/wilayah/search', [PencarianSelect2Controller::class, 'searchWilayah'])->name('wilayah.search');
+Route::get('/tempat-lahir/search', [PencarianSelect2Controller::class, 'searchTempatLhr'])->name('tempat-lahir.search');
+Route::get('/search-provinsi', [PencarianSelect2Controller::class, 'searchProvinsi'])->name('provinsi.search');
+Route::get('/search-kota/{provinsi_id}', [PencarianSelect2Controller::class, 'searchKota']);
+Route::get('/search-kecamatan/{kota_id}', [PencarianSelect2Controller::class, 'searchKecamatan']);
+Route::get('/search-kelurahan/{kecamatan_id}', [PencarianSelect2Controller::class, 'searchKelurahan']);
+Route::get('/kota-bank/search', [PencarianSelect2Controller::class, 'searchKotaBank'])->name('kota-bank.search');
 
 Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
+
 Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
 Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
 

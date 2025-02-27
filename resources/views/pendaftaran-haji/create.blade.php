@@ -357,53 +357,62 @@
             <label for="provinsi" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <select name="provinsi_ktp" id="provinsi_ktp" value="{{ old('provinsi_ktp') }}" required
+            <select name="provinsi_ktp" id="provinsi_ktp" required
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
-              @forelse ($provinsi as $prov)
-                <option value="{{ $prov->id }}">{{ $prov->provinsi }}</option>
-              @empty
-                <option value="">Provinsi masih kosong</option>
-              @endforelse
+              @foreach ($provinsi as $prov)
+                <option value="{{ $prov->id }}" {{ old('provinsi_ktp', $selectedProvinsi ?? '') == $prov->id ? 'selected' : '' }}>
+                  {{ $prov->provinsi }}
+                </option>
+              @endforeach
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_ktp" id="kota_ktp" value="{{ old('kota_ktp') }}" required
+            <select name="kota_ktp" id="kota_ktp" required
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kota</option>
+              @if(old('kota_ktp', $selectedKota ?? false))
+                <option value="{{ old('kota_ktp', $selectedKota) }}" selected>{{ $namaKota ?? 'Kota Terpilih' }}</option>
+              @endif
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_ktp" id="kecamatan_ktp" value="{{ old('kecamatan_ktp') }}" required
+            <select name="kecamatan_ktp" id="kecamatan_ktp" required
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kecamatan</option>
+              @if(old('kecamatan_ktp', $selectedKecamatan ?? false))
+                <option value="{{ old('kecamatan_ktp', $selectedKecamatan) }}" selected>{{ $namaKecamatan ?? 'Kecamatan Terpilih' }}</option>
+              @endif
             </select>
           </div>
 
           <div class="relative">
             <div class="flex gap-4 mt-4">
               <!-- Kolom Kelurahan (Lebih Lebar) -->
-              <div class="w-3/4 shadow-md shadow-slate-400">
+              <div class="w-full shadow-md shadow-slate-400">
                 <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_ktp" id="kelurahan_ktp" value="{{ old('kelurahan_ktp') }}" required
+                <select name="kelurahan_ktp" id="kelurahan_ktp" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Kelurahan</option>
+                  @if(old('kelurahan_ktp', $selectedKelurahan ?? false))
+                    <option value="{{ old('kelurahan_ktp', $selectedKelurahan) }}" selected>{{ $namaKelurahan ?? 'Kelurahan Terpilih' }}</option>
+                  @endif
                 </select>
               </div>
       
               <!-- Kolom Kode Pos (Lebih Kecil) -->
-              <div class="w-1/4">
+              {{-- <div class="w-1/4">
                 <label for="kode_pos_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
                   Kode Pos
                 </label>
                 <input type="text" id="kode_pos_ktp"
                   class="bg-gray-100 border border-gray-300 text-gray-900 shadow-md shadow-slate-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed"
                   disabled>
-              </div>
+              </div> --}}
             </div>            
           </div>
 
@@ -426,32 +435,36 @@
 
           <div class="shadow-md shadow-slate-400">
             <label for="provinsi_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
-            <select name="provinsi_domisili" id="provinsi_domisili"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" value="{{ old('provinsi_domisili') }}" required>
+            <select name="provinsi_domisili" id="provinsi_domisili" required
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
-              @forelse ($provinsi as $prov)
-                <option value="{{ $prov->id }}">{{ $prov->provinsi }}</option>
-              @empty
-                <option value="">Provinsi masih kosong</option>
-              @endforelse
+              @foreach ($provinsi as $prov)
+                <option value="{{ $prov->id }}" {{ old('provinsi_domisili', $selectedProvinsiDom ?? '') == $prov->id ? 'selected' : '' }}>
+                  {{ $prov->provinsi }}
+                </option>
+              @endforeach
             </select>
             <input type="hidden" name="provinsi_domisili" id="hidden_provinsi_domisili">
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_domisili" id="kota_domisili" value="{{ old('kota_domisili') }}"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
-              <option value="">Pilih Kota</option>
+            <select name="kota_domisili" id="kota_domisili" required
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ old('kota_domisili', $selectedKotaDom ?? '') }}" selected>
+                {{ $namaKotaDom ?? 'Pilih Kota' }}
+              </option>
             </select>
             <input type="hidden" name="kota_domisili" id="hidden_kota_domisili">
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_domisili" id="kecamatan_domisili"
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" value="{{ old('kecamatan_domisili') }}" required>
-              <option value="">Pilih Kecamatan</option>
+            <select name="kecamatan_domisili" id="kecamatan_domisili" required
+            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ old('kecamatan_domisili', $selectedKecamatanDom ?? '') }}" selected>
+                {{ $namaKecamatanDom ?? 'Pilih Kecamatan' }}
+              </option>
             </select>
             <input type="hidden" name="kecamatan_domisili" id="hidden_kecamatan_domisili">
           </div>
@@ -459,22 +472,24 @@
           <div class="relative">
             <div class="flex gap-4 mt-4">
               <!-- Kolom Kelurahan (Lebih Lebar) -->
-              <div class="w-3/4 shadow-md shadow-slate-400">
+              <div class="w-full shadow-md shadow-slate-400">
                 <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_domisili" id="kelurahan_domisili"
-                  class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" value="{{ old('kelurahan_domisili') }}" required>
-                  <option value="">Pilih Kelurahan</option>
+                <select name="kelurahan_domisili" id="kelurahan_domisili" required
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                  <option value="{{ old('kelurahan_domisili', $selectedKelurahanDom ?? '') }}" selected>
+                    {{ $namaKelurahanDom ?? 'Pilih Kelurahan' }}
+                  </option>
                 </select>
                 <input type="hidden" name="kelurahan_domisili" id="hidden_kelurahan_domisili">
               </div>
 
               <!-- Kolom Kode Pos (Lebih Kecil) -->
-              <div class="w-1/4">
+              {{-- <div class="w-1/4">
                 <label for="kode_pos_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kode Pos</label>
                 <input type="text" id="kode_pos_domisili"
                   class="bg-gray-100 border border-gray-300 text-gray-900 shadow-md shadow-slate-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed"
                   disabled>
-              </div>
+              </div> --}}
             </div>
           </div>
         </div>
@@ -647,7 +662,6 @@ document.getElementById('copy-checkbox').addEventListener('change', function () 
     }
 });
 
-
   // Select2
   // Tempat Lahir
   $(document).ready(function () {
@@ -738,94 +752,94 @@ document.getElementById('copy-checkbox').addEventListener('change', function () 
   });
   // Ketika provinsi dipilih, ambil kota yang sesuai
   $('#provinsi_ktp').on('change', function () {
-      let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
-      $('#kota_ktp').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
+    let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
+    $('#kota_ktp').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
 
-      if (provinsiID) {
-        $.ajax({
-          url: `/get-kota/${provinsiID}`, // Panggil route Laravel
-          type: "GET",
-          dataType: "json",
-          success: function (data) {
-              $.each(data, function (key, value) {
-                  $('#kota_ktp').append(`<option value="${value.id}">${value.kota}</option>`);
-              });
-            }
-        });
-      }
+    if (provinsiID) {
+      $.ajax({
+        url: `/get-kota/${provinsiID}`, // Panggil route Laravel
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          $.each(data, function (key, value) {
+            $('#kota_ktp').append(`<option value="${value.id}">${value.kota}</option>`);
+          });
+        }
+      });
+    }
+  });
+
+  // Kecamatan
+  $(document).ready(function () {
+    $('#kecamatan_ktp').select2({
+      placeholder: "Pilih Kecamatan", // Placeholder
+      allowClear: true, // Bisa menghapus pilihan
+      width: '100%' // Sesuaikan dengan Tailwind
     });
+  });
+  // Ketika kota dipilih, ambil kecamatan yang sesuai
+  $('#kota_ktp').on('change', function () {
+    let kotaID = $(this).val();
+    $('#kecamatan_ktp').empty().append('<option value="">Pilih Kecamatan</option>');
 
-        // Kecamatan
-        $(document).ready(function () {
-            $('#kecamatan_ktp').select2({
-                placeholder: "Pilih Kecamatan", // Placeholder
-                allowClear: true, // Bisa menghapus pilihan
-                width: '100%' // Sesuaikan dengan Tailwind
-            });
-        });
-        // Ketika kota dipilih, ambil kecamatan yang sesuai
-        $('#kota_ktp').on('change', function () {
-            let kotaID = $(this).val();
-            $('#kecamatan_ktp').empty().append('<option value="">Pilih Kecamatan</option>');
+    if (kotaID) {
+      $.ajax({
+        url: `/get-kecamatan/${kotaID}`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          $.each(data, function (key, value) {
+            $('#kecamatan_ktp').append(`<option value="${value.id}">${value.kecamatan}</option>`);
+          });
+        }
+      });
+    }
+  });
 
-            if (kotaID) {
-                $.ajax({
-                    url: `/get-kecamatan/${kotaID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kecamatan_ktp').append(`<option value="${value.id}">${value.kecamatan}</option>`);
-                        });
-                    }
-                });
-            }
-        });
+  // Kelurahan
+  $(document).ready(function () {
+    $('#kelurahan_ktp').select2({
+      placeholder: "Pilih Kelurahan", // Placeholder
+      allowClear: true, // Bisa menghapus pilihan
+      width: '100%' // Sesuaikan dengan Tailwind
+    });
+  });
 
-        // Kelurahan
-        $(document).ready(function () {
-            $('#kelurahan_ktp').select2({
-                placeholder: "Pilih Kelurahan", // Placeholder
-                allowClear: true, // Bisa menghapus pilihan
-                width: '100%' // Sesuaikan dengan Tailwind
-            });
-        });
+  // Ketika kecamatan dipilih, ambil kelurahan yang sesuai
+  $('#kecamatan_ktp').on('change', function () {
+    let kecamatanID = $(this).val();
+    $('#kelurahan_ktp').empty().append('<option value="">Pilih Kelurahan</option>');
 
-        // Ketika kecamatan dipilih, ambil kelurahan yang sesuai
-        $('#kecamatan_ktp').on('change', function () {
-            let kecamatanID = $(this).val();
-            $('#kelurahan_ktp').empty().append('<option value="">Pilih Kelurahan</option>');
+    if (kecamatanID) {
+      $.ajax({
+        url: `/get-kelurahan/${kecamatanID}`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          $.each(data, function (key, value) {
+            $('#kelurahan_ktp').append(`<option value="${value.id}">${value.kelurahan}</option>`);
+          });
+        }
+      });
+    }
+  });
 
-            if (kecamatanID) {
-                $.ajax({
-                    url: `/get-kelurahan/${kecamatanID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kelurahan_ktp').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-                        });
-                    }
-                });
-            }
-        });
+  // Ketika kelurahan dipilih, ambil kode pos
+  $('#kelurahan_ktp').on('change', function () {
+    let kelurahanID = $(this).val();
+    $('#kode_pos_ktp').val(''); // Reset kode pos
 
-        // Ketika kelurahan dipilih, ambil kode pos
-        $('#kelurahan_ktp').on('change', function () {
-            let kelurahanID = $(this).val();
-            $('#kode_pos_ktp').val(''); // Reset kode pos
-
-            if (kelurahanID) {
-                $.ajax({
-                    url: `/get-kodepos/${kelurahanID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $('#kode_pos_ktp').val(data.kode_pos);
-                    }
-                });
-            }
-        });
+    if (kelurahanID) {
+      $.ajax({
+        url: `/get-kodepos/${kelurahanID}`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          $('#kode_pos_ktp').val(data.kode_pos);
+        }
+      });
+    }
+  });
 
 
   // JS untuk Domisili

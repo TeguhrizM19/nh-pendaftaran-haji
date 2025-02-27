@@ -17,7 +17,7 @@ class TGabungHaji extends Model
     return $this->belongsTo(Customer::class, 'customer_id');
   }
 
-  public function kotaLahir()
+  public function tempatLahir()
   {
     return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
   }
@@ -30,7 +30,7 @@ class TGabungHaji extends Model
 
   public function kotaBank()
   {
-    return $this->belongsTo(Kota::class, 'kota_id');
+    return $this->belongsTo(Kota::class, 'kota_bank', 'id');
   }
 
   // Relasi ke Kota

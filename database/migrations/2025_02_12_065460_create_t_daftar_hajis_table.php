@@ -13,10 +13,10 @@ return new class extends Migration
   {
     Schema::create('t_daftar_hajis', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('customer_id')->nullable()->constrained('m_customers')->onDelete('cascade');
-      $table->foreignId('cabang_id')->nullable()->constrained('m_cabangs')->onDelete('cascade');
-      $table->foreignId('sumber_info_id')->nullable()->constrained('m_sumber_infos')->onDelete('cascade');
-      $table->foreignId('wilayah_daftar')->nullable()->constrained('m_kotas')->onDelete('cascade');
+      $table->foreignId('customer_id')->constrained('m_customers')->onDelete('cascade');
+      $table->foreignId('cabang_id')->constrained('m_cabangs')->onDelete('cascade');
+      $table->foreignId('sumber_info_id')->constrained('m_sumber_infos')->onDelete('cascade');
+      $table->foreignId('wilayah_daftar')->constrained('m_kotas')->onDelete('cascade');
       $table->bigInteger('no_porsi_haji')->nullable();
       $table->string('paket_haji')->nullable();
       $table->bigInteger('bpjs')->nullable();

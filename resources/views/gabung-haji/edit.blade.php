@@ -59,14 +59,11 @@
               <div class="shadow-md">
                 <select name="kota_bank" id="kota_bank" 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="">Pilih Kota Bank</option>
-                  @forelse ($kotaBank as $kb)
-                    <option value="{{ $kb->id }}" {{ $kb->id == $gabung_haji->kota_bank ? 'selected' : '' }}>
-                      {{ $kb->kota }}
+                  @if(isset($gabung_haji->kota_bank))
+                    <option value="{{ $gabung_haji->kota_bank }}" selected>
+                      {{ $kotaBank->kota ?? 'Pilih Wilayah Daftar' }}
                     </option>
-                  @empty
-                    <option value="">Wilayah Masih Kosong</option>
-                  @endforelse
+                  @endif
                 </select>
               </div>
             </div>
@@ -183,15 +180,9 @@
               </label>
               <select name="tempat_lahir" id="tempat_lahir" 
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih Tempat Lahir</option>
-                @forelse ($tempat_lahir as $tl)
-                  <option value="{{ $tl->id }}" 
-                    {{ $customer->tempat_lahir == $tl->id ? 'selected' : '' }}>
-                    {{ $tl->kota }}
-                  </option>
-                @empty
-                  <option value="">Tempat Lahir masih kosong</option>
-                @endforelse
+                <option value="{{ $customer->tempat_lahir }}" selected>
+                  {{ $customer->tempatLahir->kota ?? 'Pilih Tempat Lahir' }}
+                </option>
               </select>
             </div>
         
@@ -239,66 +230,45 @@
               </select>
             </div>            
           </div>
-        
-          @php
-            $alamatKtp = json_decode($customer->alamat_ktp, true)['alamat'] ?? '';
-          @endphp
+
           <div>
             <label for="alamat_ktp" class="block mt-4 mb-2 text-sm font-medium text-[#099AA7]">
               Alamat Sesuai KTP
             </label>
             <textarea id="alamat_ktp" rows="2" name="alamat_ktp"
             class="block p-2.5 w-full text-sm text-black bg-white shadow-md shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Write your thoughts here...">{{ $alamatKtp }}</textarea>
+            placeholder="Write your thoughts here...">{{ old('alamat_ktp', $customer->alamat_ktp) }}</textarea>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="provinsi" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <select name="provinsi_ktp_id" id="provinsi_ktp"
+            <select name="provinsi_ktp" id="provinsi_ktp"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-            <option value="">Pilih Provinsi</option>
-              @forelse ($provinsi as $prov)
-                <option value="{{ $prov->id }}" 
-                  {{ old('provinsi_ktp_id', $provinsi_selected->id ?? '') == $prov->id ? 'selected' : '' }}>
-                  {{ $prov->provinsi }}
-                </option>
-              @empty
-                <option value="">Provinsi masih kosong</option>
-            @endforelse
+            <option value="{{ $customer->provinsi_ktp ?? '' }}" selected>
+              {{ $provinsi_ktp->provinsi ?? 'Pilih Provinsi' }}
+            </option>
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kota_ktp" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_ktp_id" id="kota_ktp"
+            <select name="kota_ktp" id="kota_ktp" data-selected="{{ $customer->kota_ktp ?? '' }}"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kota</option>
-              @forelse ($kota as $kt)
-                <option value="{{ $kt->id }}" 
-                  {{ old('kota_ktp_id', $kota_selected->id ?? '') == $kt->id ? 'selected' : '' }}>
-                  {{ $kt->kota }}
-                </option>
-              @empty
-                <option value="">Kota masih kosong</option>
-              @endforelse
+            <option value="{{ $customer->kota_ktp ?? '' }}" selected>
+              {{ $kota_ktp->kota ?? 'Pilih Kota' }}
+            </option>
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kecamatan_ktp" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_ktp_id" id="kecamatan_ktp"
+            <select name="kecamatan_ktp" id="kecamatan_ktp" data-selected="{{ $customer->kecamatan_ktp ?? '' }}"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kecamatan</option>
-              @forelse ($kecamatan as $kc)
-                <option value="{{ $kc->id }}" 
-                  {{ old('kecamatan_ktp_id', $kecamatan_selected->id ?? '') == $kc->id ? 'selected' : '' }}>
-                  {{ $kc->kecamatan }}
-                </option>
-              @empty
-                <option value="">Kota masih kosong</option>
-              @endforelse
+            <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
+              {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
+            </option>
             </select>
           </div>
 
@@ -307,17 +277,11 @@
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full shadow-md shadow-slate-400">
                 <label for="kelurahan_ktp" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_ktp_id" id="kelurahan_ktp"
+                <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="">Pilih Kelurahan</option>
-                  @forelse ($kelurahan as $kl)
-                      <option value="{{ $kl->id }}" data-kode-pos="{{ $kl->kode_pos }}"
-                        {{ old('kelurahan_ktp_id', $kelurahan_selected->id ?? '') == $kl->id ? 'selected' : '' }}>
-                        {{ $kl->kelurahan }}
-                      </option>
-                    @empty
-                      <option value="">Kelurahan masih kosong</option>
-                    @endforelse
+                  <option value="{{ $customer->kelurahan_ktp ?? '' }}" selected>
+                    {{ $kelurahan_ktp->kelurahan ?? 'Pilih Kelurahan' }}
+                  </option>
                 </select>
               </div>
       
@@ -399,56 +363,42 @@
             </div>
           </div>
 
-          @php
-            $alamatDomisili = is_array($customer->alamat_domisili) 
-              ? $customer->alamat_domisili
-              : json_decode($customer->alamat_domisili, true) ?? [];
-          @endphp
           <div>
             <label for="alamat_domisili" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Alamat Domisili
             </label>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
               class="mb-4 block p-2.5 w-full shadow-md shadow-slate-400 text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Alamat Domisili...">{{ old('alamat_domisili', $alamatDomisili['alamat'] ?? '') }}</textarea>
+              placeholder="Alamat Domisili...">{{ old('alamat_domisili', $customer->alamat_domisili) }}</textarea>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="provinsi_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
-            <select name="provinsi_domisili_id" id="provinsi_domisili"
+            <select name="provinsi_domisili" id="provinsi_domisili"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Provinsi</option>
-              @foreach ($provinsi as $prov)
-                <option value="{{ $prov->id }}" {{ old('provinsi_domisili_id', $alamatDomisili['provinsi_id'] ?? '') == $prov->id ? 'selected' : '' }}>
-                  {{ $prov->provinsi }}
-                </option>
-              @endforeach
+              <option value="{{ $customer->provinsi_domisili ?? '' }}" selected>
+                {{ $provinsi_domisili->provinsi ?? 'Pilih Provinsi' }}
+              </option>
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kota_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_domisili_id" id="kota_domisili"
+            <select name="kota_domisili" id="kota_domisili" data-selected="{{ $customer->kota_domisili ?? '' }}"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kota</option>
-              @foreach ($kota as $kt)
-                <option value="{{ $kt->id }}" {{ old('kota_domisili_id', $alamat_domisili['kota_id'] ?? '') == $kt->id ? 'selected' : '' }}>
-                  {{ $kt->kota }}
-                </option>
-              @endforeach
+            <option value="{{ $customer->kota_domisili ?? '' }}" selected>
+              {{ $kota_domisili->kota ?? 'Pilih Kota' }}
+            </option>
             </select>
           </div>
 
           <div class="shadow-md shadow-slate-400">
             <label for="kecamatan_domisili" class="mt-4 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_domisili_id" id="kecamatan_domisili"
+            <select name="kecamatan_domisili" id="kecamatan_domisili" data-selected="{{ $customer->kecamatan_domisili ?? '' }}"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-              <option value="">Pilih Kecamatan</option>
-              @foreach ($kecamatan as $kc)
-                <option value="{{ $kc->id }}" {{ old('kecamatan_domisili_id', $alamat_domisili['kecamatan_id'] ?? '') == $kc->id ? 'selected' : '' }}>
-                  {{ $kc->kecamatan }}
-                </option>
-              @endforeach
+              <option value="{{ $customer->kecamatan_domisili ?? '' }}" selected>
+                {{ $kecamatan_domisili->kecamatan ?? 'Pilih Kecamatan' }}
+              </option>
             </select>
           </div>
 
@@ -457,15 +407,11 @@
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full shadow-md shadow-slate-400">
                 <label for="kelurahan_domisili" class="block text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_domisili_id" id="kelurahan_domisili"
+                <select name="kelurahan_domisili" id="kelurahan_domisili" data-selected="{{ $customer->kelurahan_domisili ?? '' }}"
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="">Pilih Kelurahan</option>
-                  @foreach ($kelurahan as $kl)
-                    <option value="{{ $kl->id }}" data-kode-pos="{{ $kl->kode_pos }}"
-                      {{ old('kelurahan_domisili_id', $alamat_domisili['kelurahan_id'] ?? '') == $kl->id ? 'selected' : '' }}>
-                      {{ $kl->kelurahan }}
-                    </option>
-                  @endforeach
+                  <option value="{{ $customer->kelurahan_domisili ?? '' }}" selected>
+                    {{ $kelurahan_domisili->kelurahan ?? 'Pilih kelurahan' }}
+                  </option>
                 </select>
               </div>
 
@@ -518,260 +464,428 @@
 <script>
   // Select2
   // Tempat Lahir
-  $(document).ready(function () {
+  $(document).ready(function () { 
     $('#tempat_lahir').select2({
-      placeholder: "Pilih", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
-    });
-  });
-
-  // Wilayah daftar
-  $(document).ready(function () {
-    $('#wilayah_daftar').select2({
-      placeholder: "Pilih", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
-    });
-  });
-
-  // Cabang
-  $(document).ready(function () {
-    $('#cabang_id').select2({
-      placeholder: "Pilih", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
+      placeholder: "Pilih Tempat Lahir",
+      allowClear: true,
+      width: '100%',
+      ajax: {
+        url: "{{ route('tempat-lahir.search') }}", // Route API untuk pencarian cabang
+        dataType: 'json',
+        delay: 250, // Mengurangi beban server dengan menunda request
+        data: function (params) {
+          return { q: params.term || '' }; // Langsung mencari meskipun input kosong
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.kota };
+            })
+          };
+        },
+        cache: true
+      }
     });
   });
 
   // Kota Bank
-  $(document).ready(function () {
+  $(document).ready(function () { 
     $('#kota_bank').select2({
-      placeholder: "Pilih", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
+      placeholder: "Pilih Kota",
+      allowClear: true,
+      width: '100%',
+      ajax: {
+        url: "{{ route('kota-bank.search') }}", // Route API untuk pencarian cabang
+        dataType: 'json',
+        delay: 250, // Mengurangi beban server dengan menunda request
+        data: function (params) {
+          return { q: params.term || '' }; // Langsung mencari meskipun input kosong
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.kota };
+            })
+          };
+        },
+        cache: true
+      }
     });
   });
 
   // JS untuk KTP
   // Provinsi
+  // Provinsi KTP
   $(document).ready(function () {
     $('#provinsi_ktp').select2({
-      placeholder: "Pilih Provinsi", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
-    });
-  });
-
-  // Kota
-  $(document).ready(function () {
-    $('#kota_ktp').select2({
-      placeholder: "Pilih Kota", // Placeholder
-      allowClear: true, // Bisa menghapus pilihan
-      width: '100%' // Sesuaikan dengan Tailwind
-    });
-  });
-  // Ketika provinsi dipilih, ambil kota yang sesuai
-  $('#provinsi_ktp').on('change', function () {
-      let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
-      $('#kota_ktp').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
-
-      if (provinsiID) {
-        $.ajax({
-          url: `/get-kota/${provinsiID}`, // Panggil route Laravel
-          type: "GET",
-          dataType: "json",
-          success: function (data) {
-              $.each(data, function (key, value) {
-                  $('#kota_ktp').append(`<option value="${value.id}">${value.kota}</option>`);
-              });
-            }
-        });
+      placeholder: "Cari Provinsi...",
+      ajax: {
+        url: '/search-provinsi',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return { q: params.term || '' };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.provinsi };
+            })
+          };
+        }
       }
     });
 
-        // Kecamatan
-        $(document).ready(function () {
-            $('#kecamatan_ktp').select2({
-                placeholder: "Pilih Kecamatan", // Placeholder
-                allowClear: true, // Bisa menghapus pilihan
-                width: '100%' // Sesuaikan dengan Tailwind
-            });
-        });
-        // Ketika kota dipilih, ambil kecamatan yang sesuai
-        $('#kota_ktp').on('change', function () {
-            let kotaID = $(this).val();
-            $('#kecamatan_ktp').empty().append('<option value="">Pilih Kecamatan</option>');
+    let selectedProvinsiId = $('#provinsi_ktp').val();
+    let selectedKotaId = $('#kota_ktp').data('selected');
+    let selectedKecamatanId = $('#kecamatan_ktp').data('selected');
+    let selectedKelurahanId = $('#kelurahan_ktp').data('selected');
 
-            if (kotaID) {
-                $.ajax({
-                    url: `/get-kecamatan/${kotaID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kecamatan_ktp').append(`<option value="${value.id}">${value.kecamatan}</option>`);
-                        });
-                    }
-                });
+    $('#kota_ktp').select2({
+      placeholder: "Cari Kota...",
+      ajax: {
+        url: function () {
+          return selectedProvinsiId ? '/search-kota/' + selectedProvinsiId : null;
+        },
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return { q: params.term || '' };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.kota };
+            })
+          };
+        }
+      }
+    });
+
+    if (selectedKotaId) {
+      $.ajax({
+        url: '/search-kota/' + selectedProvinsiId,
+        dataType: 'json',
+        success: function (data) {
+          let kota = data.find(item => item.id == selectedKotaId);
+          if (kota) {
+            let option = new Option(kota.kota, kota.id, true, true);
+            $('#kota_ktp').append(option).trigger('change');
+          }
+
+          loadKecamatan(selectedKotaId, selectedKecamatanId);
+        }
+      });
+    }
+
+    function loadKecamatan(kotaId, kecamatanId) {
+      $('#kecamatan_ktp').select2({
+        placeholder: "Cari Kecamatan...",
+        allowClear: true,
+        ajax: {
+          url: kotaId ? '/search-kecamatan/' + kotaId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                  return { id: item.id, text: item.kecamatan };
+              })
+            };
+          }
+        }
+      });
+
+      if (kecamatanId) {
+        let option = new Option("Loading...", kecamatanId, true, true);
+        $('#kecamatan_ktp').append(option).trigger('change');
+
+        $.ajax({
+          url: '/search-kecamatan/' + kotaId,
+          dataType: 'json',
+          success: function (data) {
+            let kecamatan = data.find(item => item.id == kecamatanId);
+            if (kecamatan) {
+                let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
+                $('#kecamatan_ktp').empty().append(option).trigger('change');
+
+                // **Panggil loadKelurahan setelah kecamatan terpilih**
+                loadKelurahan(kecamatanId, selectedKelurahanId);
             }
+          }
         });
+      }
+    }
 
-        // Kelurahan
-        $(document).ready(function () {
-            $('#kelurahan_ktp').select2({
-                placeholder: "Pilih Kelurahan", // Placeholder
-                allowClear: true, // Bisa menghapus pilihan
-                width: '100%' // Sesuaikan dengan Tailwind
-            });
-        });
+    function loadKelurahan(kecamatanId, kelurahanId) {
+      $('#kelurahan_ktp').select2({
+        placeholder: "Cari Kelurahan...",
+        allowClear: true,
+        ajax: {
+          url: kecamatanId ? '/search-kelurahan/' + kecamatanId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return { id: item.id, text: item.kelurahan };
+              })
+            };
+          }
+        }
+      });
 
-        // Ketika kecamatan dipilih, ambil kelurahan yang sesuai
-        $('#kecamatan_ktp').on('change', function () {
-            let kecamatanID = $(this).val();
-            $('#kelurahan_ktp').empty().append('<option value="">Pilih Kelurahan</option>');
+      if (kelurahanId) {
+        let option = new Option("Loading...", kelurahanId, true, true);
+        $('#kelurahan_ktp').append(option).trigger('change');
 
-            if (kecamatanID) {
-                $.ajax({
-                    url: `/get-kelurahan/${kecamatanID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kelurahan_ktp').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-                        });
-                    }
-                });
+        $.ajax({
+          url: '/search-kelurahan/' + kecamatanId,
+          dataType: 'json',
+          success: function (data) {
+            let kelurahan = data.find(item => item.id == kelurahanId);
+            if (kelurahan) {
+              let option = new Option(kelurahan.kelurahan, kelurahan.id, true, true);
+              $('#kelurahan_ktp').empty().append(option).trigger('change');
             }
+          }
         });
+      }
+    }
 
-        // Ketika kelurahan dipilih, ambil kode pos
-        $('#kelurahan_ktp').on('change', function () {
-            let kelurahanID = $(this).val();
-            $('#kode_pos_ktp').val(''); // Reset kode pos
+    $('#provinsi_ktp').change(function () {
+      let provinsiId = $(this).val();
+      $('#kota_ktp').val(null).trigger('change');
+      $('#kecamatan_ktp').val(null).trigger('change');
+      $('#kelurahan_ktp').val(null).trigger('change');
 
-            if (kelurahanID) {
-                $.ajax({
-                    url: `/get-kodepos/${kelurahanID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $('#kode_pos_ktp').val(data.kode_pos);
-                    }
-                });
-            }
-        });
+      $('#kota_ktp').select2({
+        placeholder: "Cari Kota...",
+        ajax: {
+          url: provinsiId ? '/search-kota/' + provinsiId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return { id: item.id, text: item.kota };
+              })
+            };
+          }
+        }
+      });
+    });
+
+    $('#kota_ktp').change(function () {
+        let kotaId = $(this).val();
+        $('#kecamatan_ktp').val(null).trigger('change');
+        $('#kelurahan_ktp').val(null).trigger('change');
+
+        loadKecamatan(kotaId, null);
+    });
+
+    $('#kecamatan_ktp').change(function () {
+        let kecamatanId = $(this).val();
+        $('#kelurahan_ktp').val(null).trigger('change');
+        loadKelurahan(kecamatanId, null);
+    });
+  });
 
 
   // JS untuk Domisili
-  // Provinsi
+  // Provinsi Domisili
   $(document).ready(function () {
-      $('#provinsi_domisili').select2({
-          placeholder: "Pilih Provinsi", // Placeholder
-          allowClear: true, // Bisa menghapus pilihan
-          width: '100%' // Sesuaikan dengan Tailwind
-      });
-  });
-
-  // Kota
-  $(document).ready(function () {
-      $('#kota_domisili').select2({
-          placeholder: "Pilih Kota", // Placeholder
-          allowClear: true, // Bisa menghapus pilihan
-          width: '100%' // Sesuaikan dengan Tailwind
-      });
-  });
-  // Ketika provinsi dipilih, ambil kota yang sesuai
-  $('#provinsi_domisili').on('change', function () {
-            let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
-            $('#kota_domisili').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
-
-            if (provinsiID) {
-                $.ajax({
-                    url: `/get-kota/${provinsiID}`, // Panggil route Laravel
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kota_domisili').append(`<option value="${value.id}">${value.kota}</option>`);
-                        });
-                    }
-                });
-            }
-        });
-
-        // Kecamatan
-        $(document).ready(function () {
-            $('#kecamatan_domisili').select2({
-                placeholder: "Pilih Kecamatan", // Placeholder
-                allowClear: true, // Bisa menghapus pilihan
-                width: '100%' // Sesuaikan dengan Tailwind
-            });
-        });
-        // Ketika kota dipilih, ambil kecamatan yang sesuai
-        $('#kota_domisili').on('change', function () {
-            let kotaID = $(this).val();
-            $('#kecamatan_domisili').empty().append('<option value="">Pilih Kecamatan</option>');
-
-            if (kotaID) {
-                $.ajax({
-                    url: `/get-kecamatan/${kotaID}`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, value) {
-                            $('#kecamatan_domisili').append(`<option value="${value.id}">${value.kecamatan}</option>`);
-                        });
-                    }
-                });
-            }
-        });
-
-        // Kelurahan
-        // Inisialisasi Select2 untuk Kelurahan Domisili
-$(document).ready(function () {
-    $('#kelurahan_domisili').select2({
-        placeholder: "Pilih Kelurahan",
-        allowClear: true,
-        width: '100%'
+    $('#provinsi_domisili').select2({
+      placeholder: "Cari Provinsi...",
+      ajax: {
+        url: '/search-provinsi',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return { q: params.term || '' };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.provinsi };
+            })
+          };
+        }
+      }
     });
-});
 
-// Ketika kecamatan domisili dipilih, ambil kelurahan yang sesuai
-$('#kecamatan_domisili').on('change', function () {
-    let kecamatanID = $(this).val();
-    $('#kelurahan_domisili').empty().append('<option value="">Pilih Kelurahan</option>');
+    let selectedProvinsiId = $('#provinsi_domisili').val();
+    let selectedKotaId = $('#kota_domisili').data('selected');
+    let selectedKecamatanId = $('#kecamatan_domisili').data('selected');
+    let selectedKelurahanId = $('#kelurahan_domisili').data('selected');
 
-    if (kecamatanID) {
-        $.ajax({
-            url: `/get-kelurahan/${kecamatanID}`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (key, value) {
-                    $('#kelurahan_domisili').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-                });
-            }
-        });
+    $('#kota_domisili').select2({
+      placeholder: "Cari Kota...",
+      ajax: {
+        url: function () {
+          return selectedProvinsiId ? '/search-kota/' + selectedProvinsiId : null;
+        },
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return { q: params.term || '' };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.kota };
+            })
+          };
+        }
+      }
+    });
+
+    if (selectedKotaId) {
+      $.ajax({
+        url: '/search-kota/' + selectedProvinsiId,
+        dataType: 'json',
+        success: function (data) {
+          let kota = data.find(item => item.id == selectedKotaId);
+          if (kota) {
+            let option = new Option(kota.kota, kota.id, true, true);
+            $('#kota_domisili').append(option).trigger('change');
+          }
+
+          loadKecamatan(selectedKotaId, selectedKecamatanId);
+        }
+      });
     }
-});
 
-// Ketika kelurahan domisili dipilih, ambil kode pos yang sesuai
-$('#kelurahan_domisili').on('change', function () {
-    let kelurahanID = $(this).val();
-    $('#kode_pos_domisili').val(''); // Reset kode pos
+    function loadKecamatan(kotaId, kecamatanId) {
+      $('#kecamatan_domisili').select2({
+        placeholder: "Cari Kecamatan...",
+        allowClear: true,
+        ajax: {
+          url: kotaId ? '/search-kecamatan/' + kotaId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                  return { id: item.id, text: item.kecamatan };
+              })
+            };
+          }
+        }
+      });
 
-    if (kelurahanID) {
+      if (kecamatanId) {
+        let option = new Option("Loading...", kecamatanId, true, true);
+        $('#kecamatan_domisili').append(option).trigger('change');
+
         $.ajax({
-            url: `/get-kodepos/${kelurahanID}`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $('#kode_pos_domisili').val(data.kode_pos);
+          url: '/search-kecamatan/' + kotaId,
+          dataType: 'json',
+          success: function (data) {
+            let kecamatan = data.find(item => item.id == kecamatanId);
+            if (kecamatan) {
+                let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
+                $('#kecamatan_domisili').empty().append(option).trigger('change');
+
+                // **Panggil loadKelurahan setelah kecamatan terpilih**
+                loadKelurahan(kecamatanId, selectedKelurahanId);
             }
+          }
         });
+      }
     }
-});
+
+    function loadKelurahan(kecamatanId, kelurahanId) {
+      $('#kelurahan_domisili').select2({
+        placeholder: "Cari Kelurahan...",
+        allowClear: true,
+        ajax: {
+          url: kecamatanId ? '/search-kelurahan/' + kecamatanId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return { id: item.id, text: item.kelurahan };
+              })
+            };
+          }
+        }
+      });
+
+      if (kelurahanId) {
+        let option = new Option("Loading...", kelurahanId, true, true);
+        $('#kelurahan_domisili').append(option).trigger('change');
+
+        $.ajax({
+          url: '/search-kelurahan/' + kecamatanId,
+          dataType: 'json',
+          success: function (data) {
+            let kelurahan = data.find(item => item.id == kelurahanId);
+            if (kelurahan) {
+              let option = new Option(kelurahan.kelurahan, kelurahan.id, true, true);
+              $('#kelurahan_domisili').empty().append(option).trigger('change');
+            }
+          }
+        });
+      }
+    }
+
+    $('#provinsi_domisili').change(function () {
+      let provinsiId = $(this).val();
+      $('#kota_domisili').val(null).trigger('change');
+      $('#kecamatan_domisili').val(null).trigger('change');
+      $('#kelurahan_domisili').val(null).trigger('change');
+
+      $('#kota_domisili').select2({
+        placeholder: "Cari Kota...",
+        ajax: {
+          url: provinsiId ? '/search-kota/' + provinsiId : null,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { q: params.term || '' };
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return { id: item.id, text: item.kota };
+              })
+            };
+          }
+        }
+      });
+    });
+
+    $('#kota_domisili').change(function () {
+        let kotaId = $(this).val();
+        $('#kecamatan_domisili').val(null).trigger('change');
+        $('#kelurahan_domisili').val(null).trigger('change');
+
+        loadKecamatan(kotaId, null);
+    });
+
+    $('#kecamatan_domisili').change(function () {
+        let kecamatanId = $(this).val();
+        $('#kelurahan_domisili').val(null).trigger('change');
+        loadKelurahan(kecamatanId, null);
+    });
+  });
 
 </script>
 </x-layout>
