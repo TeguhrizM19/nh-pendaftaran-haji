@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulir Pendaftaran Haji</title>
   <style>
-    body { font-family: 'Times New Roman', Times, serif; font-size: 16px; }
+    body { font-family: 'Times New Roman', Times, serif; font-size: 17px; }
     .header-table {
         width: 100%;
         border-collapse: collapse;
@@ -125,7 +125,7 @@
       </tr>
       <tr class="sub-header">
         <td>FORM <br> KBIH-01</td>
-        <td>PENDAFTARAN <br> HAJI</td>
+        <td>FORM BERGABUNG <br> HAJI</td>
         <td style="padding: 0px">
           <table border="1" style="border-collapse: collapse; width: 100%;">
             <tr style="border-collapse: collapse; width: 100%; border: 1px solid black;">
@@ -147,30 +147,35 @@
 
     <table class="table-format" style="margin-top: 20px">
       <tr>
-        <td class="label">Nomor Porsi Haji</td>
+        <td class="label">Nomor SPPH</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->no_porsi_haji }}</td>
+        <td>{{ $gabung->no_spph }}</td>
       </tr>
       <tr>
-        <td class="label">Paket Pendaftaran</td>
+        <td class="label">Nomor Porsi</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->paket_haji }}</td>
+        <td>{{ $gabung->no_porsi }}</td>
       </tr>
       <tr>
         <td class="label">Bank / Jumlah Setoran</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->bank }}</td>
+        <td>{{ $gabung->kotaBank->kota }}</td>
       </tr>
       <tr>
+        <td class="label">Depag</td>
+        <td class="separator">:</td>
+        <td>{{ $gabung->depag }}</td>
+      </tr>
+      {{-- <tr>
         <td class="label">Wilayah Daftar</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->wilayahDaftar->kota }}</td>
-      </tr>
-      <tr>
+        <td>{{ $gabung->wilayahDaftar->kota }}</td>
+      </tr> --}}
+      {{-- <tr>
         <td class="label">Sumber Informasi</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->sumberInfo->info }}</td>
-      </tr>
+        <td>{{ $gabung->sumberInfo->info }}</td>
+      </tr> --}}
     </table>
 
     <h4>DATA PRIBADI :</h4> 
@@ -178,31 +183,31 @@
       <tr>
         <td class="label">Nama Lengkap</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->customer->nama }}</td>
+        <td>{{ $gabung->customer->nama }}</td>
       </tr>
       <tr>
         <td class="label">Jenis Kelamin</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->customer->jenis_kelamin }}</td>
+        <td>{{ $gabung->customer->jenis_kelamin }}</td>
       </tr>
       <tr> 
         <td class="label">Tempat & Tanggal Lahir</td>
         <td class="separator">:</td>
         <td>
-          {{ $daftar->customer->tempatLahir->kota ?? '-' }} / 
-          {{ \Carbon\Carbon::parse($daftar->customer->tgl_lahir)->translatedFormat('d-F-Y') }}
+          {{ $gabung->customer->tempatLahir->kota ?? '-' }} / 
+          {{ \Carbon\Carbon::parse($gabung->customer->tgl_lahir)->translatedFormat('d-F-Y') }}
         </td>
       </tr>   
       <tr>    
         <td class="label" style="vertical-align: top;">Alamat KTP</td>
         <td class="separator" style="vertical-align: top;">:</td>
         <td>
-          {{ $daftar->customer->alamat_ktp }} <br>
+          {{ $gabung->customer->alamat_ktp }} <br>
           <span style="display: block; margin-top: 4px;">
-            {{ optional($daftar->customer->provinsiKtp)->provinsi ?? '-' }},
-            {{ optional($daftar->customer->kotaKtp)->kota ?? '-' }},
-            {{ optional($daftar->customer->kecamatanKtp)->kecamatan ?? '-' }},
-            {{ optional($daftar->customer->kelurahanKtp)->kelurahan ?? '-' }}
+            {{ optional($gabung->customer->provinsiKtp)->provinsi ?? '-' }},
+            {{ optional($gabung->customer->kotaKtp)->kota ?? '-' }},
+            {{ optional($gabung->customer->kecamatanKtp)->kecamatan ?? '-' }},
+            {{ optional($gabung->customer->kelurahanKtp)->kelurahan ?? '-' }}
           </span>
         </td>
       </tr>
@@ -210,28 +215,28 @@
         <td class="label" style="vertical-align: top;">Alamat Domisili</td>
         <td class="separator" style="vertical-align: top;">:</td>
         <td>
-          {{ $daftar->customer->alamat_domisili }}
+          {{ $gabung->customer->alamat_domisili }}
           <span style="display: block; margin-top: 4px;">
-            {{ optional($daftar->customer->provinsiDomisili)->provinsi ?? '-' }},
-            {{ optional($daftar->customer->kotaDomisili)->kota ?? '-' }},
-            {{ optional($daftar->customer->kecamatanDomisili)->kecamatan ?? '-' }},
-            {{ optional($daftar->customer->kelurahanDomisili)->kelurahan ?? '-' }}
+            {{ optional($gabung->customer->provinsiDomisili)->provinsi ?? '-' }},
+            {{ optional($gabung->customer->kotaDomisili)->kota ?? '-' }},
+            {{ optional($gabung->customer->kecamatanDomisili)->kecamatan ?? '-' }},
+            {{ optional($gabung->customer->kelurahanDomisili)->kelurahan ?? '-' }}
           </span>
         </td>
       </tr>
       <tr>
         <td class="label">No Telepon</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->customer->no_hp_1 }}</td>
+        <td>{{ $gabung->customer->no_hp_1 }}</td>
       </tr>
       <tr>
         <td class="label">Profesi</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->customer->pekerjaan }}</td>
+        <td>{{ $gabung->customer->pekerjaan }}</td>
       </tr>
     </table>
 
-    <h4>Berkas yang diserahkan :</h4>
+    {{-- <h4>Berkas yang diserahkan :</h4>
     @if (count($dokumen) > 0)
       <ul style="margin: 0; padding-left: 18px; list-style: none;">
         @foreach ($dokumen as $index => $doc)
@@ -240,36 +245,36 @@
       </ul>
     @else
       Tidak ada berkas
-    @endif
+    @endif --}}
 
-    <p>Dengan ini saya menyatakan mendaftarkan diri ikut program Haji KBHI Nurul Hayat dan selanjutnya akan mentaati syarat-syarat dan ketentuan yang berlaku. Demikian formulis ini saya isi dengan pernyataan yang sebenarnya.</p>
+    <p>Dengan mengucapkan <em>Bismillaahirrohmaanirrohiim</em>, Saya mendaftarkan diri ikut bergabungdi KBIH (Kelompok Bimbingan Ibadah Haji) NH</p>
   
     <table style="width: 100%; text-align: center; border-collapse: collapse;">
       <tr>
+        <td style="height: 30px;"></td>
+      </tr>
+      <tr>
+        <td style="width: 40%;"></td> <!-- Spasi di tengah -->
+        <td style="width: 40%;"></td> <!-- Spasi di tengah -->
         <td style="width: 50%; text-align: left;">Surabaya, ..................... 2025</td>
       </tr>
       <tr>
         <td style="height: 20px;"></td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
-        <td style="width: 40%; text-align: center;">Petugas</td>
+        <td style="width: 40%; text-align: center;">Pendaftar</td>
         <td style="width: 80%;"></td> <!-- Spasi di tengah -->
-        <td style="width: 40%; text-align: center;">Calon Jamaah Haji</td>
+        <td style="width: 40%; text-align: center;">Petugas KBHI</td>
       </tr>
       <tr>
         <td style="height: 60px;"></td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
-        <td style="text-align: center;">Nama User Login</td>
+        <td style="text-align: center;">{{ $gabung->customer->nama }}</td>
         <td></td>
-        <td style="text-align: center;">{{ $daftar->customer->nama }}</td>
+        <td style="text-align: center;">Nama User Login</td>
       </tr>
     </table>
-  
   </div>
 </body>
 </html>

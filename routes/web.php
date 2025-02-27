@@ -37,7 +37,8 @@ Route::post('/ambil-semua-data-pendaftaran/{id}/store', [TDaftarHajiController::
 Route::get('/ambil-semua-data-pendaftaran/{id}', [TDaftarHajiController::class, 'ambilSemuaData']);
 
 // Cetak PDF
-Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetak'])->name('daftar_haji.cetak');
+Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
+Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
 
 // Route Gabung Haji
 Route::resource('/gabung-haji', TGabungHajiController::class);

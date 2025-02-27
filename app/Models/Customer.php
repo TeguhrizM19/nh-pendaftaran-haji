@@ -66,4 +66,46 @@ class Customer extends Model
   {
     return $this->belongsTo(Kota::class, 'kota_id');
   }
+
+  // Wilayah KTP
+  public function provinsiKtp()
+  {
+    return $this->belongsTo(Provinsi::class, 'provinsi_ktp', 'id');
+  }
+
+  public function kotaKtp()
+  {
+    return $this->belongsTo(Kota::class, 'kota_ktp', 'id');
+  }
+
+  public function kecamatanKtp()
+  {
+    return $this->belongsTo(Kecamatan::class, 'kecamatan_ktp', 'id');
+  }
+
+  public function kelurahanKtp()
+  {
+    return $this->belongsTo(Kelurahan::class, 'kelurahan_ktp', 'id');
+  }
+
+  // Relasi untuk alamat domisili
+  public function provinsiDomisili()
+  {
+    return $this->belongsTo(Provinsi::class, 'provinsi_domisili', 'id');
+  }
+
+  public function kotaDomisili()
+  {
+    return $this->belongsTo(Kota::class, 'kota_domisili', 'id');
+  }
+
+  public function kecamatanDomisili()
+  {
+    return $this->belongsTo(Kecamatan::class, 'kecamatan_domisili', 'id');
+  }
+
+  public function kelurahanDomisili()
+  {
+    return $this->belongsTo(Kelurahan::class, 'kelurahan_domisili', 'id');
+  }
 }
