@@ -42,24 +42,25 @@
       <li>
         <a href="/pendaftaran-haji"
           class="flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->is('pendaftaran-haji') ? 'bg-white text-[#099AA7]' : 'text-white' }}">
-          <svg class="w-5 h-5 transition duration-75 group-hover:text-[#099AA7]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>
-          </svg>                
+          <svg class="w-6 h-6 transition duration-75 group-hover:text-[#099AA7]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z" clip-rule="evenodd"/>
+          </svg>                        
           <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Pendaftaran</span>
         </a>
       </li>
       <li>
         <a href="/gabung-haji"
             class="flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->is('gabung-haji') ? 'bg-white text-[#099AA7]' : 'text-white' }}">
-            <svg class="w-5 h-5 transition duration-75 group-hover:text-[#099AA7]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>
-            </svg>                
+            <svg class="w-6 h-6 transition duration-75 group-hover:text-[#099AA7]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4"/>
+            </svg>
+            
             <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Gabung</span>
         </a>
       </li>
 
       {{-- Master --}}
-      <li>
+      {{-- <li>
         <button
             class="w-full flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->segment(1) == 'suplier' || request()->segment(1) == 'gudang' || request()->segment(1) == 'item' || request()->segment(1) == 'satuan' || request()->segment(1) == 'jenis' || request()->segment(1) == 'tipe-pembayaran' || request()->segment(1) == 'cabang' ? 'bg-white text-[#099AA7]' : 'text-white' }}"
             aria-controls="dropdown-masters" data-collapse-toggle="dropdown-masters">
@@ -91,7 +92,7 @@
               class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-white hover:text-[#099AA7] {{ request()->segment(1) == 'customer' ? 'bg-white text-[#099AA7]' : 'text-white' }}">Customer</a>
             </li>
         </ul>
-    </li>
+      </li> --}}
     </ul>
   </div>
 </div>

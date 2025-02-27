@@ -514,7 +514,6 @@
   });
 
   // JS untuk KTP
-  // Provinsi
   // Provinsi KTP
   $(document).ready(function () {
     $('#provinsi_ktp').select2({
