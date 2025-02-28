@@ -20,13 +20,26 @@ class TDaftarHajiController extends Controller
    * Display a listing of the resource.
    */
 
-  public function index()
+  public function index(Request $request)
   {
-    return view('pendaftaran-haji.index', [
-      'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(5)
-    ]);
-  }
+    $query = TDaftarHaji::with('customer');
 
+    if ($request->has('search')) {
+      $search = $request->search;
+      $query->where('no_porsi_haji', 'like', "%{$search}%")
+        ->orWhereHas('customer', function ($q) use ($search) {
+          $q->where('nama', 'like', "%{$search}%");
+        });
+    }
+
+    $daftar_haji = $query->paginate(5);
+
+    if ($request->ajax()) {
+      return view('pendaftaran-haji.partial-table', compact('daftar_haji'))->render();
+    }
+
+    return view('pendaftaran-haji.index', compact('daftar_haji'));
+  }
 
 
 

@@ -28,8 +28,10 @@ Route::get('/search-kecamatan/{kota_id}', [PencarianSelect2Controller::class, 's
 Route::get('/search-kelurahan/{kecamatan_id}', [PencarianSelect2Controller::class, 'searchKelurahan']);
 Route::get('/kota-bank/search', [PencarianSelect2Controller::class, 'searchKotaBank'])->name('kota-bank.search');
 
-Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
+Route::get('/get-no-porsi', [PencarianSelect2Controller::class, 'searchNoPorsi']);
+Route::get('/filter-no-porsi', [PencarianSelect2Controller::class, 'filterNoPorsi']);
 
+Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
 Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
 Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
 

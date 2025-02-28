@@ -107,7 +107,7 @@
         @endforelse     
       </tbody>
     </table>
-    {{ $daftar_haji->links('pagination::tailwind') }}
+    {{ $gabung_haji->links('pagination::tailwind') }}
   </div>
 
   <script>

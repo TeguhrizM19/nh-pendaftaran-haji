@@ -7,6 +7,7 @@ use App\Models\MCabang;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\TDaftarHaji;
 use Illuminate\Http\Request;
 
 class PencarianSelect2Controller extends Controller
@@ -112,4 +113,33 @@ class PencarianSelect2Controller extends Controller
 
     return response()->json($wilayah);
   }
+
+  public function searchNoPorsi(Request $request)
+  {
+    $query = $request->q;
+
+    // Cari berdasarkan no_porsi_haji
+    $noPorsi = TDaftarHaji::where('no_porsi_haji', 'LIKE', "%$query%")
+      ->select('id', 'no_porsi_haji')
+      ->limit(10) // Batasi hasil agar tidak terlalu banyak
+      ->get();
+
+    return response()->json($noPorsi);
+  }
+
+  // public function filterNoPorsi(Request $request)
+  // {
+  //   $start = (int) $request->start;
+  //   $end = (int) $request->end;
+
+  //   \Log::info("Filter No Porsi Haji dari $start sampai $end"); // Debugging
+
+  //   $data = TDaftarHaji::whereBetween('no_porsi_haji', [$start, $end])
+  //     ->orderBy('no_porsi_haji', 'asc')
+  //     ->get();
+
+  //   \Log::info("Data yang ditemukan:", $data->toArray()); // Debugging
+
+  //   return view('partials.table-porsi', compact('data'));
+  // }
 }
