@@ -19,12 +19,16 @@ class TDaftarHajiController extends Controller
   /**
    * Display a listing of the resource.
    */
+
   public function index()
   {
     return view('pendaftaran-haji.index', [
       'daftar_haji' => TDaftarHaji::with('customer')->latest()->paginate(5)
     ]);
   }
+
+
+
 
   /**
    * Show the form for creating a new resource.

@@ -17,9 +17,24 @@
   <div>
     <x-page-title>Data Pendaftaran Haji</x-page-title>
   </div>
-  <div class="mt-4">
+
+  <div class="mt-4 flex justify-between items-center">
     <a href="/pendaftaran-haji/create"
-    class="min-w-[120px] text-center rounded-md bg-[#099AA7] ms-auto px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">Tambah Pendaftaran</a>
+        class="min-w-[120px] text-center rounded-md bg-[#099AA7] px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">
+        Tambah Pendaftaran
+    </a>
+
+    <form method="GET" action="{{ route('pendaftaran-haji.index') }}" class="w-[300px]">
+      <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+        </div>
+        <input type="search" id="search-input" name="search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari data..." />
+      </div>
+    </form>  
   </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
@@ -39,24 +54,24 @@
       <tbody>
         @forelse ($daftar_haji as $daftar )
           <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $loop->iteration }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->no_porsi_haji }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->nama }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->paket_haji }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->jenis_kelamin }}
-            </th>
-            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $daftar->customer->no_hp_1 }}
-            </th>
+            </td>
             <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
               <a href="{{ route('daftar_haji.cetak', $daftar->id) }}" target="_blank" class="text-blue-600 hover:underline">
                 <svg class="w-6 h-6 text-blue-500 inline-block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -87,9 +102,11 @@
             </td>
           </tr>
         @empty
-          <tr>
-            <td class="text-center">Data Masih Kosong</td>
-          </tr>
+        <tr>
+          <td colspan="7" class="text-center text-red-500 font-semibold py-4">
+            <p>Data Masih Kosong</p>
+          </td>
+        </tr>
         @endforelse     
       </tbody>
     </table>
@@ -121,21 +138,27 @@
       });
     });
 
-  // Data Table
-  $(document).ready(function () {
-    $('#myTable').DataTable({
-      responsive: true,
-      language: {
-        search: "Cari:",
-        lengthMenu: "Tampilkan _MENU_ data",
-        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-        paginate: {
-          first: "Awal",
-          last: "Akhir",
-          next: "Berikutnya",
-          previous: "Sebelumnya"
-        },
-        emptyTable: "Tidak ada data tersedia"
+    // Search
+    document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const tableRows = document.querySelectorAll("#myTable tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+      let searchTerm = searchInput.value.toLowerCase();
+
+      tableRows.forEach((row) => {
+        let rowData = row.textContent.toLowerCase();
+        row.style.display = rowData.includes(searchTerm) ? "" : "none";
+      });
+    });
+
+    // Event listener untuk tombol "X" (input clear)
+    searchInput.addEventListener("input", function () {
+      if (searchInput.value === "") {
+        // Jika input kosong, tampilkan kembali semua baris tabel
+        tableRows.forEach((row) => {
+          row.style.display = "";
+        });
       }
     });
   });

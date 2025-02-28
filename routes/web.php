@@ -19,7 +19,7 @@ Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecama
 Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
 Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
 
-Route::get('/cabang/search', [TDaftarHajiController::class, 'searchCabang'])->name('cabang.search');
+Route::get('/cabang/search', [PencarianSelect2Controller::class, 'searchCabang'])->name('cabang.search');
 Route::get('/wilayah/search', [PencarianSelect2Controller::class, 'searchWilayah'])->name('wilayah.search');
 Route::get('/tempat-lahir/search', [PencarianSelect2Controller::class, 'searchTempatLhr'])->name('tempat-lahir.search');
 Route::get('/search-provinsi', [PencarianSelect2Controller::class, 'searchProvinsi'])->name('provinsi.search');

@@ -20,7 +20,7 @@ class TGabungHajiController extends Controller
   public function index()
   {
     return view('gabung-haji.index', [
-      'gabung_haji' => TGabungHaji::with('customer')->latest()->get()
+      'gabung_haji' => TGabungHaji::with('customer')->latest()->paginate(5)
     ]);
   }
 
