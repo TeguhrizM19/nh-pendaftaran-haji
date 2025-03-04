@@ -614,20 +614,24 @@
     }
 
     function loadKecamatan(kotaId, kecamatanId) {
+    // console.log("Loading kecamatan untuk kota ID:", kotaId); // Debugging
+    if (!kotaId) return;
+
       $('#kecamatan_ktp').select2({
         placeholder: "Cari Kecamatan...",
         allowClear: true,
         ajax: {
-          url: kotaId ? '/search-kecamatan/' + kotaId : null,
+          url: '/search-kecamatan/' + kotaId,
           dataType: 'json',
-          delay: 250,
+          delay: 250, // Kurangi delay untuk mempercepat loading
           data: function (params) {
             return { q: params.term || '' };
           },
           processResults: function (data) {
-            return {
+            // console.log("Data kecamatan diterima:", data); // Debugging
+          return {
               results: $.map(data, function (item) {
-                  return { id: item.id, text: item.kecamatan };
+                return { id: item.id, text: item.kecamatan };
               })
             };
           }
@@ -635,21 +639,20 @@
       });
 
       if (kecamatanId) {
-        let option = new Option("Loading...", kecamatanId, true, true);
-        $('#kecamatan_ktp').append(option).trigger('change');
-
+        // console.log("Memuat kecamatan terpilih:", kecamatanId);
         $.ajax({
           url: '/search-kecamatan/' + kotaId,
           dataType: 'json',
           success: function (data) {
             let kecamatan = data.find(item => item.id == kecamatanId);
             if (kecamatan) {
-                let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
-                $('#kecamatan_ktp').empty().append(option).trigger('change');
-
-                // **Panggil loadKelurahan setelah kecamatan terpilih**
-                loadKelurahan(kecamatanId, selectedKelurahanId);
+              let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
+              $('#kecamatan_ktp').empty().append(option).trigger('change');
+              loadKelurahan(kecamatanId, selectedKelurahanId);
             }
+          },
+          error: function () {
+            console.log("Gagal mengambil data kecamatan");
           }
         });
       }
@@ -801,18 +804,22 @@
     }
 
     function loadKecamatan(kotaId, kecamatanId) {
+    // console.log("Loading kecamatan untuk kota ID:", kotaId); // Debugging
+    if (!kotaId) return;
+
       $('#kecamatan_domisili').select2({
         placeholder: "Cari Kecamatan...",
         allowClear: true,
         ajax: {
-          url: kotaId ? '/search-kecamatan/' + kotaId : null,
+          url: '/search-kecamatan/' + kotaId,
           dataType: 'json',
-          delay: 250,
+          delay: 250, // Kurangi delay untuk mempercepat loading
           data: function (params) {
-            return { q: params.term || '' };
+              return { q: params.term || '' };
           },
           processResults: function (data) {
-            return {
+            // console.log("Data kecamatan diterima:", data); // Debugging
+          return {
               results: $.map(data, function (item) {
                   return { id: item.id, text: item.kecamatan };
               })
@@ -822,21 +829,20 @@
       });
 
       if (kecamatanId) {
-        let option = new Option("Loading...", kecamatanId, true, true);
-        $('#kecamatan_domisili').append(option).trigger('change');
-
+        // console.log("Memuat kecamatan terpilih:", kecamatanId);
         $.ajax({
           url: '/search-kecamatan/' + kotaId,
           dataType: 'json',
           success: function (data) {
             let kecamatan = data.find(item => item.id == kecamatanId);
             if (kecamatan) {
-                let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
-                $('#kecamatan_domisili').empty().append(option).trigger('change');
-
-                // **Panggil loadKelurahan setelah kecamatan terpilih**
-                loadKelurahan(kecamatanId, selectedKelurahanId);
+              let option = new Option(kecamatan.kecamatan, kecamatan.id, true, true);
+              $('#kecamatan_domisili').empty().append(option).trigger('change');
+              loadKelurahan(kecamatanId, selectedKelurahanId);
             }
+          },
+          error: function () {
+            console.log("Gagal mengambil data kecamatan");
           }
         });
       }
