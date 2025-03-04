@@ -31,17 +31,17 @@
         <div class="relative">
           <input type="search" id="no_porsi_haji_1" name="no_porsi_haji_1" class="block w-full p-3 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji..." />
         </div>
-        {{-- <div class="relative">
+        <div class="relative">
           <input type="search" id="no_porsi_haji_2" name="no_porsi_haji_2" class="block w-full p-3 ps-5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji..." />
         </div>
-        <button type="submit" class="p-2.5 text-sm font-medium text-white bg-[#099AA7] rounded-lg hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300">
+        <button type="submit" id="search-btn" class="p-2.5 text-sm font-medium text-white bg-[#099AA7] rounded-lg hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300">
           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
           </svg>          
-        </button>    --}}
+        </button>   
       </div>
       {{-- Search --}}
-      <form method="GET" action="{{ route('pendaftaran-haji.index') }}" class="w-[300px]">
+      <form method="GET" action="{{ route('pendaftaran-haji.index') }}" class="w-[220px]">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -73,9 +73,12 @@
         @include('pendaftaran-haji.partial-table') 
       </tbody>
     </table>
-    @if(!request('search'))
-      {{ $daftar_haji->links('pagination::tailwind') }}
-    @endif
+    {{-- Cek apakah data dipaginate --}}
+    <div id="pagination-container" class="mt-4" style="{{ request()->hasAny(['search', 'no_porsi_haji_1', 'no_porsi_haji_2']) ? 'display: none;' : '' }}">
+      <div id="pagination-links" class="mt-4">
+        {{ $daftar_haji->links('pagination::tailwind') }}
+      </div>
+    </div>
   </div>
 
   {{-- Style select2 agar lebih panjang --}}
@@ -118,148 +121,96 @@
   });
 
   // Search
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () { 
     const searchInput = document.getElementById("search-input");
     const tableBody = document.getElementById("table-body");
 
     searchInput.addEventListener("input", function () {
-        let searchTerm = searchInput.value.trim();
+      let searchTerm = searchInput.value.trim();
+      let url = searchTerm ? `/pendaftaran-haji?search=${searchTerm}` : "/pendaftaran-haji";
 
-        let url = searchTerm ? `/pendaftaran-haji?search=${searchTerm}` : "/pendaftaran-haji";
-
-        fetch(url, {
-            headers: {
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        })
-            .then(response => response.text())
-            .then(data => {
-                tableBody.innerHTML = data;
-            })
-            .catch(error => console.error("Error fetching data:", error));
+      fetch(url, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+      .then(response => response.json()) // Ubah ke JSON
+      .then(data => {
+        if (data.html) {
+          tableBody.innerHTML = data.html.trim(); // Bersihkan whitespace
+        }
+      })
+      .catch(error => console.error("Error fetching data:", error));
     });
-});
+  });
 
-  // // No Porsi Haji 1
-  // $(document).ready(function () {
-  //   $('#no_porsi_haji_1').select2({
-  //     placeholder: "Cari No. Porsi Haji",
-  //     allowClear: true,
-  //     width: '70%',
-  //     hight: '100%',
-  //     ajax: {
-  //       url: '/get-no-porsi', // URL ke controller
-  //       dataType: 'json',
-  //       delay: 250, // Hindari spam request
-  //       data: function (params) {
-  //         return {
-  //           q: params.term // Kirim query pencarian
-  //         };
-  //       },
-  //       processResults: function (data) {
-  //         return {
-  //           results: $.map(data, function (item) {
-  //             return {
-  //               id: item.id, // ID tetap
-  //               text: item.no_porsi_haji // Tampilkan No. Porsi Haji
-  //             };
-  //           })
-  //         };
-  //       }
-  //     }
-  //   });
+  // Filter rentang no porsi haji
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.getElementById("search-btn");
+    const tableBody = document.getElementById("table-body");
+    const paginationContainer = document.getElementById("pagination-container");
+    const noPorsi1 = document.getElementById("no_porsi_haji_1");
+    const noPorsi2 = document.getElementById("no_porsi_haji_2");
 
-  //   // Pastikan tinggi Select2 sama dengan input search
-  //   $('.select2-selection').css('height', '45px');
-  // });
+    // Fungsi untuk me-reset tabel ke kondisi awal
+    function resetTable() {
+      fetch(`/pendaftaran-haji`, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (tableBody) {
+          tableBody.innerHTML = data.html;
+        }
 
-  // // No Porsi Haji 2
-  // $(document).ready(function () {
-  //   $('#no_porsi_haji_2').select2({
-  //     placeholder: "Cari No. Porsi Haji",
-  //     allowClear: true,
-  //     width: '70%',
-  //     hight: '100%',
-  //     ajax: {
-  //       url: '/get-no-porsi', // URL ke controller
-  //       dataType: 'json',
-  //       delay: 250, // Hindari spam request
-  //       data: function (params) {
-  //         return {
-  //           q: params.term // Kirim query pencarian
-  //         };
-  //       },
-  //       processResults: function (data) {
-  //         return {
-  //           results: $.map(data, function (item) {
-  //             return {
-  //               id: item.id, // ID tetap
-  //               text: item.no_porsi_haji // Tampilkan No. Porsi Haji
-  //             };
-  //           })
-  //         };
-  //       }
-  //     }
-  //   });
+        // Tampilkan pagination kembali
+        if (paginationContainer) {
+          paginationContainer.style.display = data.paginate ? "block" : "none";
+        }
+      })
+      .catch(error => console.error("Error fetching data:", error));
+    }
 
-  //   // Pastikan tinggi Select2 sama dengan input search
-  //   $('.select2-selection').css('height', '45px');
-  // });
+    // Event listener untuk tombol pencarian
+    searchButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      console.log("Tombol pencarian ditekan!");
 
-  // Filter No Porsi Haji
-  // $(document).ready(function () {
-  //   function initSelect2(id) {
-  //       $('#' + id).select2({
-  //           placeholder: "Cari No. Porsi Haji",
-  //           allowClear: true,
-  //           width: '70%',
-  //           ajax: {
-  //               url: '/get-no-porsi', // Endpoint untuk mendapatkan data
-  //               dataType: 'json',
-  //               delay: 250,
-  //               data: function (params) {
-  //                   return { q: params.term };
-  //               },
-  //               processResults: function (data) {
-  //                   return {
-  //                       results: $.map(data, function (item) {
-  //                           return {
-  //                               id: item.id,
-  //                               text: item.no_porsi_haji
-  //                           };
-  //                       })
-  //                   };
-  //               }
-  //           }
-  //       });
-  //   }
+      let noPorsi1Value = noPorsi1.value.trim();
+      let noPorsi2Value = noPorsi2.value.trim();
 
-  //   // Inisialisasi Select2 untuk kedua input
-  //   initSelect2('no_porsi_haji_1');
-  //   initSelect2('no_porsi_haji_2');
+      console.log("No Porsi Haji 1:", noPorsi1Value);
+      console.log("No Porsi Haji 2:", noPorsi2Value);
 
-  //   // Ketika kedua Select2 berubah, ambil datanya dan kirimkan filter ke server
-  //   $('#no_porsi_haji_1, #no_porsi_haji_2').on('change', function () {
-  //   let noPorsi1 = $('#no_porsi_haji_1').val();
-  //   let noPorsi2 = $('#no_porsi_haji_2').val();
+      fetch(`/pendaftaran-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (tableBody) {
+            tableBody.innerHTML = data.html;
+          }
 
-  //   console.log("Filter dari:", noPorsi1, "sampai", noPorsi2); // Debugging
+          // Sembunyikan pagination jika filter aktif
+          if (paginationContainer) {
+            paginationContainer.style.display = data.paginate ? "block" : "none";
+          }
+        })
+        .catch(error => console.error("Error fetching data:", error));
+      });
 
-  //   if (noPorsi1 && noPorsi2) {
-  //       $.ajax({
-  //           url: '/filter-no-porsi',
-  //           type: 'GET',
-  //           data: { start: noPorsi1, end: noPorsi2 },
-  //           success: function (response) {
-  //               console.log("Response data:", response); // Debugging
-  //               $('#table-body').html(response);
-  //               console.log("Tabel diperbarui!");
-  //           }
-  //       });
-  //     }
-  //   });
-  // });
-
-
+    // Event listener saat tombol "x" ditekan pada input search
+    [noPorsi1, noPorsi2].forEach(input => {
+      input.addEventListener("input", function () {
+        if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
+          resetTable();
+        }
+      });
+    });
+  });
   </script>
 </x-layout>

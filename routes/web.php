@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\GroupKeberangkatan;
 use App\Http\Controllers\PencarianSelect2Controller;
 use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
@@ -50,6 +51,8 @@ Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRep
 
 Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambilSemuaData']);
 Route::post('/ambil-semua-data-gabung/{id}/store', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
+
+Route::get('/keberangkatan', [GroupKeberangkatan::class, 'index']);
 
 // Route Customer Master
 Route::resource('/customer', CustomerController::class);

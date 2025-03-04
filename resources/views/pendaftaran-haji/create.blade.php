@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="/pendaftaran-haji" method="POST">
+    <form action="/pendaftaran-haji" method="POST" enctype="multipart/form-data">
       @csrf
 
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
@@ -31,12 +31,20 @@
           </div>
 
           <div>
-            <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
-            <input type="number" name="no_porsi_haji" placeholder="Nomor Porsi Haji" value="{{ old('no_porsi_haji') }}" required
-              class="mb-3 block w-full rounded-md  border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            <label for="no_porsi_haji" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+              Nomor Porsi Haji
+            </label>
+            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji"
+            class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+            @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+            @error('no_porsi_haji')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
             <div class="">
               <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Cabang Daftar
@@ -100,14 +108,15 @@
             </div>
           </div>
 
-          <div class="flex gap-6 mt-3">
-            <!-- Kolom Paket Pendaftaran -->
-            <div class="w-1/2">
-              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
-              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
-                <li class="w-full border-b border-gray-200">
+          <div class="mt-1">
+            <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
+            <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
+              <div class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Reguler Tunai -->
+                <li class="border-b border-gray-200">
                   <div class="flex items-center ps-3">
-                    <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji" 
+                    <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji"
                       {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }} required
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
@@ -115,7 +124,8 @@
                     </label>
                   </div>
                 </li>
-                <li class="w-full border-b border-gray-200">
+                <!-- Reguler Talangan (di desktop ada di bawah Reguler Tunai, di HP tetap urut) -->
+                <li class="border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="reguler-talangan" type="radio" value="Reguler Talangan" name="paket_haji"
                       {{ old('paket_haji') == 'Reguler Talangan' ? 'checked' : '' }}
@@ -125,19 +135,21 @@
                     </label>
                   </div>
                 </li>
-                <li class="w-full">
-                  <div class="flex items-center ps-3">
-                    <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
-                      {{ old('paket_haji') == 'Khusus/Plus' ? 'checked' : '' }}
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Khusus/Plus
-                    </label>
-                  </div>
-                </li>
-              </ul>
-            </div>          
+              </div>
+              <!-- Khusus/Plus (di HP ada di bawah Reguler Talangan) -->
+              <li class="w-full">
+                <div class="flex items-center ps-3">
+                  <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
+                    {{ old('paket_haji') == 'Khusus/Plus' ? 'checked' : '' }}
+                    class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                  <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                    Khusus/Plus
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
+                  
 
           <div>
             <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
@@ -339,7 +351,40 @@
                 </li>
               @endforeach
             </ul>
-          </div>          
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+            <!-- KTP -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+              <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="ktp" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- KK -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+              <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="kk" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- Surat Nikah/Akte lahir/Ijazah -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+              <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="surat" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- SPPH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+              <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="spph" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- BPIH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+              <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="bpih" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- Pas Photo -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+              <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="photo" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+          </div>
         </div>
         
         {{-- Kolom 3 Alamat --}}
@@ -509,25 +554,24 @@
   </div>
 
   <!-- Modal Box -->
-<div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white w-full sm:w-[1000px] max-h-[90vh] p-6 rounded-lg shadow-lg relative overflow-y-auto">
-    <!-- Tombol Close -->
-    <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
+  <div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white w-full sm:w-[1000px] max-h-[90vh] p-6 rounded-lg shadow-lg relative overflow-y-auto">
+      <!-- Tombol Close -->
+      <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
 
-    <!-- Input Pencarian -->
-    <input type="text" id="searchInput"
-      class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
-      placeholder="Search Data..." autocomplete="off">
+      <!-- Input Pencarian -->
+      <input type="text" id="searchInput"
+        class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
+        placeholder="Search Data..." autocomplete="off">
 
-    <!-- Dropdown hasil pencarian -->
-    <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg max-h-[60vh] overflow-y-auto hidden">
-      <ul id="customerList" class="divide-y divide-gray-200">
-        <!-- Hasil pencarian akan ditampilkan di sini -->
-      </ul>
+      <!-- Dropdown hasil pencarian -->
+      <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg max-h-[60vh] overflow-y-auto hidden">
+        <ul id="customerList" class="divide-y divide-gray-200">
+          <!-- Hasil pencarian akan ditampilkan di sini -->
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-
 
 <script>
   // Tampilkan modal pencarian
@@ -613,55 +657,55 @@
   });
 
   // Checkbox Gunakan alamat KTP 
-document.getElementById('copy-checkbox').addEventListener('change', function () { 
+  document.getElementById('copy-checkbox').addEventListener('change', function () { 
     const isChecked = this.checked;
 
     if (isChecked) {
-        document.getElementById('alamat_domisili').value = document.getElementById('alamat_ktp').value;
-        document.getElementById('provinsi_domisili').value = document.getElementById('provinsi_ktp').value;
-        document.getElementById('hidden_provinsi_domisili').value = document.getElementById('provinsi_ktp').value;
-        $('#provinsi_domisili').trigger('change');
+      document.getElementById('alamat_domisili').value = document.getElementById('alamat_ktp').value;
+      document.getElementById('provinsi_domisili').value = document.getElementById('provinsi_ktp').value;
+      document.getElementById('hidden_provinsi_domisili').value = document.getElementById('provinsi_ktp').value;
+      $('#provinsi_domisili').trigger('change');
 
-        setTimeout(() => {
-            document.getElementById('kota_domisili').value = document.getElementById('kota_ktp').value;
-            document.getElementById('hidden_kota_domisili').value = document.getElementById('kota_ktp').value;
-            $('#kota_domisili').trigger('change');
-        }, 1000);
-
-        setTimeout(() => {
-            document.getElementById('kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
-            document.getElementById('hidden_kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
-            $('#kecamatan_domisili').trigger('change');
-        }, 1800);
-
-        setTimeout(() => {
-            document.getElementById('kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
-            document.getElementById('hidden_kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
-            $('#kelurahan_domisili').trigger('change');
-        }, 2300);
-
-        document.getElementById('kode_pos_domisili').value = document.getElementById('kode_pos_ktp').value;
-    } else {
-        document.getElementById('alamat_domisili').value = "";
-        document.getElementById('provinsi_domisili').value = "";
-        document.getElementById('hidden_provinsi_domisili').value = "";
-        $('#provinsi_domisili').trigger('change');
-
-        document.getElementById('kota_domisili').value = "";
-        document.getElementById('hidden_kota_domisili').value = "";
+      setTimeout(() => {
+        document.getElementById('kota_domisili').value = document.getElementById('kota_ktp').value;
+        document.getElementById('hidden_kota_domisili').value = document.getElementById('kota_ktp').value;
         $('#kota_domisili').trigger('change');
+      }, 1000);
 
-        document.getElementById('kecamatan_domisili').value = "";
-        document.getElementById('hidden_kecamatan_domisili').value = "";
+      setTimeout(() => {
+        document.getElementById('kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
+        document.getElementById('hidden_kecamatan_domisili').value = document.getElementById('kecamatan_ktp').value;
         $('#kecamatan_domisili').trigger('change');
+      }, 1800);
 
-        document.getElementById('kelurahan_domisili').value = "";
-        document.getElementById('hidden_kelurahan_domisili').value = "";
+      setTimeout(() => {
+        document.getElementById('kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
+        document.getElementById('hidden_kelurahan_domisili').value = document.getElementById('kelurahan_ktp').value;
         $('#kelurahan_domisili').trigger('change');
+      }, 2300);
 
-        document.getElementById('kode_pos_domisili').value = "";
+      document.getElementById('kode_pos_domisili').value = document.getElementById('kode_pos_ktp').value;
+    } else {
+      document.getElementById('alamat_domisili').value = "";
+      document.getElementById('provinsi_domisili').value = "";
+      document.getElementById('hidden_provinsi_domisili').value = "";
+      $('#provinsi_domisili').trigger('change');
+
+      document.getElementById('kota_domisili').value = "";
+      document.getElementById('hidden_kota_domisili').value = "";
+      $('#kota_domisili').trigger('change');
+
+      document.getElementById('kecamatan_domisili').value = "";
+      document.getElementById('hidden_kecamatan_domisili').value = "";
+      $('#kecamatan_domisili').trigger('change');
+
+      document.getElementById('kelurahan_domisili').value = "";
+      document.getElementById('hidden_kelurahan_domisili').value = "";
+      $('#kelurahan_domisili').trigger('change');
+
+      document.getElementById('kode_pos_domisili').value = "";
     }
-});
+  });
 
   // Select2
   // Tempat Lahir
@@ -909,35 +953,35 @@ document.getElementById('copy-checkbox').addEventListener('change', function () 
 
         // Kelurahan
         // Inisialisasi Select2 untuk Kelurahan Domisili
-$(document).ready(function () {
+  $(document).ready(function () {
     $('#kelurahan_domisili').select2({
-        placeholder: "Pilih Kelurahan",
-        allowClear: true,
-        width: '100%'
+      placeholder: "Pilih Kelurahan",
+      allowClear: true,
+      width: '100%'
     });
-});
+  });
 
-// Ketika kecamatan domisili dipilih, ambil kelurahan yang sesuai
-$('#kecamatan_domisili').on('change', function () {
-    let kecamatanID = $(this).val();
-    $('#kelurahan_domisili').empty().append('<option value="">Pilih Kelurahan</option>');
+  // Ketika kecamatan domisili dipilih, ambil kelurahan yang sesuai
+  $('#kecamatan_domisili').on('change', function () {
+      let kecamatanID = $(this).val();
+      $('#kelurahan_domisili').empty().append('<option value="">Pilih Kelurahan</option>');
 
-    if (kecamatanID) {
-        $.ajax({
-            url: `/get-kelurahan/${kecamatanID}`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (key, value) {
-                    $('#kelurahan_domisili').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-                });
-            }
-        });
-    }
-});
+      if (kecamatanID) {
+          $.ajax({
+              url: `/get-kelurahan/${kecamatanID}`,
+              type: "GET",
+              dataType: "json",
+              success: function (data) {
+                  $.each(data, function (key, value) {
+                      $('#kelurahan_domisili').append(`<option value="${value.id}">${value.kelurahan}</option>`);
+                  });
+              }
+          });
+      }
+  });
 
-// Ketika kelurahan domisili dipilih, ambil kode pos yang sesuai
-$('#kelurahan_domisili').on('change', function () {
+  // Ketika kelurahan domisili dipilih, ambil kode pos yang sesuai
+  $('#kelurahan_domisili').on('change', function () {
     let kelurahanID = $(this).val();
     $('#kode_pos_domisili').val(''); // Reset kode pos
 
@@ -951,7 +995,70 @@ $('#kelurahan_domisili').on('change', function () {
             }
         });
     }
-});
+  });
+
+  // Kompres Gambar
+  function imageInput(event) {
+    const file = event.target.files[0];
+    if (file) {
+      compressImage(event);
+    }
+  }
+
+  function compressImage(event) {
+    const files = event.target.files;
+    const dataTransfer = new DataTransfer();
+    const MAX_WIDTH = 800;
+    const MAX_HEIGHT = 800;
+
+    function processFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob((blob) => {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now()
+              });
+
+              dataTransfer.items.add(compressedFile);
+              event.target.files = dataTransfer.files; // Menetapkan file yang telah dikompresi
+              
+              console.log("File setelah dikompresi:", event.target.files);
+          }, 'image/jpeg', 0.7);
+        };
+      };
+    }
+
+    if (files.length > 0) {
+      processFile(files[0]); // Mulai proses kompresi pada file pertama
+    }
+  }
 
 </script>
 </x-layout>

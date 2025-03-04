@@ -10,6 +10,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\TGabungHaji;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
 class TGabungHajiController extends Controller
@@ -17,11 +18,54 @@ class TGabungHajiController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+
+  public function index(Request $request)
   {
-    return view('gabung-haji.index', [
-      'gabung_haji' => TGabungHaji::with('customer')->latest()->paginate(5)
-    ]);
+    $query = TGabungHaji::with('customer');
+
+    // Cek apakah ada filter yang aktif
+    $isFiltered = false;
+
+    // Filter berdasarkan search umum
+    if ($request->has('search')) {
+      $search = $request->search;
+      $query->where('no_porsi', 'like', "%{$search}%")
+        ->orWhere('no_spph', 'like', "%{$search}%")
+        ->orWhereHas('customer', function ($q) use ($search) {
+          $q->where('nama', 'like', "%{$search}%")
+            ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+            ->orWhere('no_hp_1', 'like', "%{$search}%");
+        });
+
+      $isFiltered = true;
+    }
+
+    // Filter berdasarkan rentang nomor porsi haji
+    if ($request->has('no_porsi_haji_1') && $request->has('no_porsi_haji_2')) {
+      $noPorsi1 = $request->no_porsi_haji_1;
+      $noPorsi2 = $request->no_porsi_haji_2;
+
+      if (!empty($noPorsi1) && !empty($noPorsi2)) {
+        $query->whereBetween('no_porsi', [$noPorsi1, $noPorsi2]);
+        $isFiltered = true;
+      }
+    }
+
+    // Jika filter aktif, tampilkan semua data tanpa pagination
+    if ($isFiltered) {
+      $gabung_haji = $query->get();
+    } else {
+      $gabung_haji = $query->latest()->paginate(5);
+    }
+
+    if ($request->ajax()) {
+      return response()->json([
+        'html' => trim(view('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])->render()),
+        'paginate' => !$isFiltered, // Jika tidak difilter, pagination tetap muncul
+      ]);
+    }
+
+    return view('gabung-haji.index', ['gabung_haji' => $gabung_haji]);
   }
 
   /**
@@ -72,7 +116,7 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => 'required|integer|unique:m_customers,no_id',
+      'no_id'          => 'required|digits:16|unique:m_customers,no_id',
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -92,7 +136,7 @@ class TGabungHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       'no_spph' => 'nullable|integer',
-      'no_porsi' => 'nullable|integer',
+      'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|string',
@@ -186,6 +230,9 @@ class TGabungHajiController extends Controller
 
   public function update(Request $request, $id)
   {
+    $gabung_haji = TGabungHaji::findOrFail($id);
+    $customer = Customer::findOrFail($gabung_haji->customer_id);
+
     $validated = $request->validate([
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
@@ -194,7 +241,11 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => 'nullable|string',
+      'no_id' => [
+        'nullable',
+        'string',
+        Rule::unique('m_customers', 'no_id')->ignore($customer->id) // **No ID unique**
+      ],
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -214,20 +265,18 @@ class TGabungHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
       'no_spph' => 'nullable|integer',
-      'no_porsi' => 'nullable|integer',
+      'no_porsi' => [
+        'nullable',
+        'integer',
+        Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id) // **No Porsi unique**
+      ],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|string',
       'catatan' => 'nullable|string',
     ]);
 
-    DB::transaction(function () use ($validated, $id) {
-      // Ambil data t_gabung_hajis berdasarkan ID
-      $gabung_haji = TGabungHaji::findOrFail($id);
-
-      // Ambil customer_id dari data haji
-      $customer = Customer::findOrFail($gabung_haji->customer_id);
-
+    DB::transaction(function () use ($validated, $customer, $gabung_haji) {
       // Update data customer
       $customer->update([
         'nama' => strtoupper($validated['nama']),
@@ -270,6 +319,7 @@ class TGabungHajiController extends Controller
 
     return redirect('/gabung-haji')->with('success', 'Data berhasil diperbarui!');
   }
+
 
   /**
    * Remove the specified resource from storage.
@@ -343,6 +393,9 @@ class TGabungHajiController extends Controller
 
   public function storeRepeatData(Request $request, $id)
   {
+    $gabung_haji = TGabungHaji::findOrFail($id);
+    $customer = Customer::findOrFail($gabung_haji->customer_id);
+
     $validated = $request->validate([
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
@@ -351,7 +404,11 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => 'nullable|string',
+      'no_id' => [
+        'nullable',
+        'string',
+        Rule::unique('m_customers', 'no_id')->ignore($customer->id) // **No ID unique**
+      ],
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -371,21 +428,19 @@ class TGabungHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
       'no_spph' => 'nullable|integer',
-      'no_porsi' => 'nullable|integer',
+      'no_porsi' => [
+        'nullable',
+        'integer',
+        Rule::unique('t_gabung_hajis', 'no_porsi') // **No Porsi unique**
+      ],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|string',
       'catatan' => 'nullable|string',
     ]);
 
-    DB::transaction(function () use ($validated, $id) {
-      // Ambil data t_gabung_hajis berdasarkan ID
-      $gabung_haji = TGabungHaji::findOrFail($id);
-
-      // Ambil customer_id dari data haji
-      $customer = Customer::findOrFail($gabung_haji->customer_id);
-
-      // Update data customer
+    DB::transaction(function () use ($validated, $customer) {
+      // **Update data customer (Tetap Update, Tidak Diubah)**
       $customer->update([
         'nama' => strtoupper($validated['nama']),
         'panggilan' => strtoupper($validated['panggilan']),
@@ -414,9 +469,9 @@ class TGabungHajiController extends Controller
         'kelurahan_domisili' => $validated['kelurahan_domisili'],
       ]);
 
-      // Buat data baru di t_gabung_hajis
+      // **Create data baru di t_gabung_hajis**
       TGabungHaji::create([
-        'customer_id' => $customer->id, // Ambil ID dari customer yang sudah diupdate
+        'customer_id' => $customer->id, // Tetap menggunakan customer yang sudah ada
         'no_spph' => $validated['no_spph'],
         'no_porsi' => $validated['no_porsi'],
         'nama_bank' => $validated['nama_bank'],
@@ -426,8 +481,10 @@ class TGabungHajiController extends Controller
       ]);
     });
 
-    return redirect('/gabung-haji')->with('success', 'Data berhasil diperbarui dan ditambahkan!');
+    return redirect('/gabung-haji')->with('success', 'Data berhasil ditambahkan!');
   }
+
+
 
   public function ambilSemuaData($id)
   {
@@ -465,7 +522,7 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => 'required|integer|unique:m_customers,no_id',
+      'no_id'          => 'required|digits:16|unique:m_customers,no_id',
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -485,7 +542,7 @@ class TGabungHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       'no_spph' => 'nullable|integer',
-      'no_porsi' => 'nullable|integer',
+      'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|string',

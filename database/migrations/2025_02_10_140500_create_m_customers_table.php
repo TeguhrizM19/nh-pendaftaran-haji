@@ -14,31 +14,38 @@ return new class extends Migration
   {
     Schema::create('m_customers', function (Blueprint $table) {
       $table->id();
-      $table->string('nama')->nullable();
+      $table->string('nama');
       $table->string('panggilan')->nullable();
-      $table->string('no_hp_1')->nullable();
+      $table->string('no_hp_1');
       $table->string('no_hp_2')->nullable();
-      $table->integer('tempat_lahir')->nullable(); // diambil dari relasi tabel m_kota
-      $table->date('tgl_lahir')->nullable();
-      $table->string('jenis_id')->nullable();
-      $table->bigInteger('no_id')->nullable();
-      $table->string('jenis_kelamin')->nullable();
-      $table->string('status_nikah')->nullable();
-      $table->string('warga')->nullable();
-      $table->string('pekerjaan')->nullable();
-      $table->string('pendidikan')->nullable();
+      $table->integer('tempat_lahir'); // diambil dari relasi tabel m_kota
+      $table->date('tgl_lahir');
+      $table->string('jenis_id');
+      $table->bigInteger('no_id');
+      $table->string('jenis_kelamin');
+      $table->string('status_nikah');
+      $table->string('warga');
+      $table->string('pekerjaan');
+      $table->string('pendidikan');
       // Alamat KTP
-      $table->string('alamat_ktp')->nullable();
-      $table->integer('provinsi_ktp')->nullable();
-      $table->integer('kota_ktp')->nullable();
-      $table->integer('kecamatan_ktp')->nullable();
-      $table->integer('kelurahan_ktp')->nullable();
+      $table->string('alamat_ktp');
+      $table->integer('provinsi_ktp');
+      $table->integer('kota_ktp');
+      $table->integer('kecamatan_ktp');
+      $table->integer('kelurahan_ktp');
       // Alamat Domisili
-      $table->string('alamat_domisili')->nullable();
-      $table->integer('provinsi_domisili')->nullable();
-      $table->integer('kota_domisili')->nullable();
-      $table->integer('kecamatan_domisili')->nullable();
-      $table->integer('kelurahan_domisili')->nullable();
+      $table->string('alamat_domisili');
+      $table->integer('provinsi_domisili');
+      $table->integer('kota_domisili');
+      $table->integer('kecamatan_domisili');
+      $table->integer('kelurahan_domisili');
+      // Upload File
+      $table->string('ktp')->nullable();
+      $table->string('kk')->nullable();
+      $table->string('surat')->nullable();
+      $table->string('spph')->nullable();
+      $table->string('bpih')->nullable();
+      $table->string('photo')->nullable();
       $table->string('create_user', 100)->nullable();
       $table->date('create_date')->nullable();
       $table->timestamps();

@@ -3,8 +3,8 @@
     <x-page-title>Edit Data Pendaftar Haji</x-page-title>
   </div>
 
-  <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="/pendaftaran-haji/{{ $daftar_haji->id }}" method="POST">
+  <div class="rounded-lg  shadow-black mt-4 p-4">
+    <form action="/pendaftaran-haji/{{ $daftar_haji->id }}" method="POST" enctype="multipart/form-data">
       @csrf
       @method('PUT')
 
@@ -16,7 +16,7 @@
               <!-- Kolom Nama (Lebih Lebar) -->
               <div class="w-full">
                 <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
-                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
             </div>
           </div>
@@ -24,11 +24,17 @@
           <div>
             <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
             <input type="number" name="no_porsi_haji" value="{{ old('no_porsi_haji', $daftar_haji->no_porsi_haji) }}" placeholder="Nomor Porsi Haji"
-              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+            @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+            @error('no_porsi_haji')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div class="shadow-md">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+            <div class="">
               <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Cabang Daftar
               </label>
@@ -39,7 +45,7 @@
               </select>
             </div>
 
-            <div class="shadow-md">
+            <div class="">
               <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
               <select name="wilayah_daftar" id="wilayah_daftar" class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 @if(isset($daftar_haji->wilayah_daftar))
@@ -53,13 +59,13 @@
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
               <input type="text" name="bank" value="{{ old('bank', $daftar_haji->bank) }}" placeholder="Bank/Jumlah Setoran" 
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
-            <div class="shadow-md">
+            <div class="">
               <label for="sumber_info" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Sumber Informasi</label>
               <select name="sumber_info_id" id="sumber_info" 
-                class="w-full text-gray-900 bg-white border shadow-md border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Sumber Informasi</option>
                 @foreach($sumberInfo as $sumber)
                   <option value="{{ $sumber->id }}" 
@@ -71,47 +77,70 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-1 gap-2 mt-4">
+          <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
             {{-- <div>
               <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Barangkat</label>
               <input type="number" name="estimasi" min="1900" max="2099" step="1" placeholder="YYYY" 
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div> --}}
 
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
               <input type="number" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" 
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
 
-          <div class="flex gap-6 mt-3">
-            <!-- Kolom Paket Pendaftaran -->
-            <div class="w-1/2">
-              <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
-              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
-                @foreach (['Reguler Tunai', 'Reguler Talangan', 'Khusus/Plus'] as $paket)
-                  <li class="w-full border-b border-gray-200 last:border-b-0">
-                    <div class="flex items-center ps-3">
-                      <input type="radio" value="{{ $paket }}" name="paket_haji"
-                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                        {{ $daftar_haji->paket_haji == $paket ? 'checked' : '' }}>
-                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                        {{ $paket }}
-                      </label>
-                    </div>
-                  </li>
-                @endforeach
-              </ul>
-            </div>
-          </div>          
+          <div class="mt-1">
+            <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
+            <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
+              <div class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Reguler Tunai -->
+                <li class="border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input type="radio" value="Reguler Tunai" name="paket_haji"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $daftar_haji->paket_haji == 'Reguler Tunai' ? 'checked' : '' }}>
+                    <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Reguler Tunai
+                    </label>
+                  </div>
+                </li>
+          
+                <!-- Khusus/Plus (di Desktop, ada di samping Reguler Tunai) -->
+                <li class="border-b border-gray-200 md:border-b-0">
+                  <div class="flex items-center ps-3">
+                    <input type="radio" value="Khusus/Plus" name="paket_haji"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $daftar_haji->paket_haji == 'Khusus/Plus' ? 'checked' : '' }}>
+                    <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Khusus/Plus
+                    </label>
+                  </div>
+                </li>
+              </div>
+          
+              <!-- Reguler Talangan (di Desktop ada di bawah Reguler Tunai, di HP tetap urut) -->
+              <li class="w-full">
+                <div class="flex items-center ps-3">
+                  <input type="radio" value="Reguler Talangan" name="paket_haji"
+                    class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                    {{ $daftar_haji->paket_haji == 'Reguler Talangan' ? 'checked' : '' }}>
+                  <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                    Reguler Talangan
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>                  
 
           <div>
             <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
               Catatan
             </label>
             <textarea id="message" rows="4" name="catatan"
-            class="mb-4 shadow-md block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            class="mb-4 block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
             placeholder="Write your thoughts here...">{{ old('catatan', $daftar_haji->catatan) }}</textarea>
           </div>
         </div>
@@ -122,18 +151,18 @@
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 1</label>
               <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" 
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 2</label>
               <input type="text" name="no_hp_2" value="{{ old('no_hp_2', $customer->no_hp_2) }}" placeholder="No HP 2"
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <!-- Tempat Lahir -->
-            <div class="shadow-md shadow-slate-400">
+            <div class=" shadow-slate-400">
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
@@ -149,7 +178,7 @@
             <div>
               <label for="tgl_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tanggal Lahir</label>
               <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" 
-              class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-md shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
+              class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
         
@@ -160,7 +189,7 @@
               <div>
                 <label for="jenis_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Jenis ID</label>
                 <select id="jenis_id" name="jenis_id" 
-                  class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                  class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih</option>
                   <option value="KTP" {{ $customer->jenis_id == 'KTP' ? 'selected' : '' }}>KTP</option>
                   <option value="SIM" {{ $customer->jenis_id == 'SIM' ? 'selected' : '' }}>SIM</option>
@@ -173,14 +202,20 @@
                 No Identitas
               </label>
               <input type="text" id="no_id" name="no_id" value="{{ old('no_id', $customer->no_id) }}" placeholder="Masukkan No Identitas"
-              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset 
+                ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+                @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+              @error('no_id')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
 
             <!-- Dropdown Warga -->
             <div>
               <label for="warga" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Warga</label>
               <select id="warga" name="warga"  
-                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                   <option value="WNI" {{ $customer->warga == 'WNI' ? 'selected' : '' }}>WNI</option>
                   <option value="WNA" {{ $customer->warga == 'WNA' ? 'selected' : '' }}>WNA</option>
@@ -192,7 +227,7 @@
             <!-- Dropdown Jenis Kelamin -->
             <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Jenis Kelamin</h3>
-              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="laki-laki" type="radio" value="Laki-Laki" name="jenis_kelamin" 
@@ -218,7 +253,7 @@
             
             <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Status</h3>
-              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
@@ -257,12 +292,12 @@
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
               <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $customer->pekerjaan) }}" placeholder="Pekerjaan" 
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
               <label for="pendidikan" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Pendidikan</label>
               <select id="pendidikan" name="pendidikan" 
-                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="Tidak Sekolah" {{ old('pendidikan', $customer->pendidikan) == "Tidak Sekolah" ? 'selected' : '' }}>Tidak Sekolah</option>
                 <option value="TK" {{ old('pendidikan', $customer->pendidikan) == "TK" ? 'selected' : '' }}>TK</option>
@@ -279,7 +314,7 @@
           <!-- Kolom Dokumen -->
           <div class="w-full">
             <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>  
-            <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+            <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
               @foreach ($dokumen as $dok)
                 <li class="w-full border-b border-gray-200 last:border-b-0">
                   <div class="flex items-center ps-3">
@@ -294,6 +329,121 @@
               @endforeach
             </ul>
           </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+            <!-- KTP -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="ktp" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->ktp))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->ktp) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->ktp }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- KK -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="kk" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->kk))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->kk) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->kk }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- Surat Nikah/Akte lahir/Ijazah -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="surat" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->surat))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->surat) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->surat }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- SPPH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="spph" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->spph))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->spph) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->spph }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- BPIH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="bpih" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->bpih))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->bpih) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->bpih }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- Pas Photo -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="photo" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->photo))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->photo) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->photo }}
+                  </a>
+                </p>
+              @endif
+            </div>
+          </div>
         </div>
         
         {{-- Kolom 3 --}}
@@ -302,13 +452,13 @@
           <div>
             <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
             <textarea id="alamat_ktp" rows="2" name="alamat_ktp" 
-              class="block p-2.5 w-full text-sm text-black bg-white shadow-md rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+              class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
               placeholder="Alamat KTP...">{{ old('alamat_ktp', $customer->alamat_ktp) }}</textarea>
           </div>
 
           <!-- Provinsi KTP -->
-          <div class="shadow-md">
-            <div class="shadow-md shadow-slate-400 mt-4">
+          <div class="">
+            <div class=" shadow-slate-400 mt-4">
               <label for="provinsi_ktp" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Provinsi KTP
               </label>
@@ -322,11 +472,11 @@
           </div>
 
           <!-- Kota KTP -->
-          <div class="shadow-md">
+          <div class="">
             <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Kota</label>
             <select name="kota_ktp" id="kota_ktp" 
             data-selected="{{ $customer->kota_ktp ?? '' }}" required
-              class="w-full text-gray-900 shadow-md bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ $customer->kota_ktp ?? '' }}" selected>
                 {{ $kota_ktp->kota ?? 'Pilih Kota' }}
               </option>
@@ -334,11 +484,11 @@
           </div>
 
           <!-- Kecamatan KTP -->
-          <div class="shadow-md">
+          <div class="">
             <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
             <select name="kecamatan_ktp" id="kecamatan_ktp" 
               data-selected="{{ $customer->kecamatan_ktp ?? '' }}" required
-              class="w-full text-gray-900 shadow-md bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
                 {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
               </option>
@@ -347,7 +497,7 @@
 
           <!-- Kelurahan & Kode Pos KTP -->
           <div class="flex gap-4 mt-4">
-            <div class="w-full shadow-md">
+            <div class="w-full">
               <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Kelurahan</label>
               <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -362,12 +512,12 @@
           <div>
             <label for="alamat_domisili" class="block mt-4 mb-2 text-sm font-medium text-[#099AA7]">Alamat Domisili</label>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
-              class="mb-4 block p-2.5 w-full shadow-md text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              class="mb-4 block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Alamat Domisili...">{{ old('alamat_domisili', $customer->alamat_domisili) }}</textarea>
           </div>
       
           <!-- Provinsi -->
-          <div class="shadow-md">
+          <div class="">
             <label for="provinsi_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
             <select name="provinsi_domisili" id="provinsi_domisili" required
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -378,7 +528,7 @@
           </div>
 
           <!-- Kota -->
-          <div class="shadow-md">
+          <div class="">
             <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Kota
             </label>
@@ -392,7 +542,7 @@
           </div>
 
           <!-- Kecamatan -->
-          <div class="shadow-md">
+          <div class="">
             <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
             <select name="kecamatan_domisili" id="kecamatan_domisili" 
             data-selected="{{ $customer->kecamatan_domisili ?? '' }}" required
@@ -406,7 +556,7 @@
           <!-- Kelurahan -->
           <div class="flex gap-4 mt-4"> 
             <!-- Kelurahan -->
-            <div class="w-full shadow-md">
+            <div class="w-full">
               <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
               <select name="kelurahan_domisili" id="kelurahan_domisili" 
               data-selected="{{ $customer->kelurahan_domisili ?? '' }}" required
@@ -418,7 +568,7 @@
             </div>
           
             <!-- Kode Pos -->
-            {{-- <div class="w-1/4 shadow-md">
+            {{-- <div class="w-1/4">
                 <label for="kode_pos_domisili" class="block text-sm font-medium leading-6 text-[#099AA7]">Kode Pos</label>
                 <input type="text" id="kode_pos_domisili" name="kode_pos_domisili"
                     value="{{ old('kode_pos_domisili', $kode_pos_domisili) }}"
@@ -427,7 +577,6 @@
             </div> --}}
           </div>
         </div>
-      
       </div>
 
       <!-- Container tombol dipisah dari form grid -->
@@ -442,7 +591,6 @@
       </div>  
     </form>
   </div>
-
 
   {{-- Select2 --}}
 <script>
@@ -891,113 +1039,69 @@
     });
   });
 
+  // Kompres File
+  document.addEventListener("DOMContentLoaded", function () {
+    // Pilih semua input file dalam form
+    const fileInputs = document.querySelectorAll('input[type="file"]');
 
+    fileInputs.forEach(input => {
+        input.addEventListener("change", function (event) {
+            compressImage(event.target);
+        });
+    });
 
+    function compressImage(inputElement) {
+        const file = inputElement.files[0];
+        if (!file) return;
 
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
 
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
 
+                let width = img.width;
+                let height = img.height;
 
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
 
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
 
+                canvas.toBlob((blob) => {
+                    const compressedFile = new File([blob], file.name, {
+                        type: "image/jpeg",
+                        lastModified: Date.now(),
+                    });
 
+                    // Buat DataTransfer untuk menggantikan file lama
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(compressedFile);
+                    inputElement.files = dataTransfer.files;
 
-
-
-
-
-
-  // // JS untuk Domisili
-  // // Provinsi
-  // $(document).ready(function () {
-  //   $('#provinsi_domisili').select2({
-  //     placeholder: "Pilih Provinsi", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-
-  // // Kota
-  // $(document).ready(function () {
-  //   $('#kota_domisili').select2({
-  //     placeholder: "Pilih Kota", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-  // // Ketika provinsi dipilih, ambil kota yang sesuai
-  // $('#provinsi_domisili').on('change', function () {
-  //   let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
-  //   $('#kota_domisili').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
-
-  //   if (provinsiID) {
-  //     $.ajax({
-  //       url: `/get-kota/${provinsiID}`, // Panggil route Laravel
-  //       type: "GET",
-  //       dataType: "json",
-  //       success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kota_domisili').append(`<option value="${value.id}">${value.kota}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
-  // // Kecamatan
-  // $(document).ready(function () {
-  //   $('#kecamatan_domisili').select2({
-  //     placeholder: "Pilih Kecamatan", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-  // // Ketika kota dipilih, ambil kecamatan yang sesuai
-  // $('#kota_domisili').on('change', function () {
-  //   let kotaID = $(this).val();
-  //   $('#kecamatan_domisili').empty().append('<option value="">Pilih Kecamatan</option>');
-
-  //   if (kotaID) {
-  //     $.ajax({
-  //       url: `/get-kecamatan/${kotaID}`,
-  //       type: "GET",
-  //       dataType: "json",
-  //       success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kecamatan_domisili').append(`<option value="${value.id}">${value.kecamatan}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
-  // // Kelurahan
-  // $(document).ready(function () {
-  //   $('#kelurahan_domisili').select2({
-  //     placeholder: "Pilih Kelurahan", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-
-  // // Ketika kecamatan dipilih, ambil kelurahan yang sesuai
-  // $('#kecamatan_domisili').on('change', function () {
-  //   let kecamatanID = $(this).val();
-  //   $('#kelurahan_domisili').empty().append('<option value="">Pilih Kelurahan</option>');
-
-  //   if (kecamatanID) {
-  //     $.ajax({
-  //       url: `/get-kelurahan/${kecamatanID}`,
-  //       type: "GET",
-  //       dataType: "json",
-  //     success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kelurahan_domisili').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
+                    console.log("✅ File dikompresi:", inputElement.files[0]);
+                }, "image/jpeg", 0.7);
+            };
+        };
+    }
+  });
 
 </script>
 </x-layout>

@@ -34,14 +34,21 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">No Porsi</label>
-              <input type="number" name="no_porsi" value="{{ old('no_porsi', $gabung_haji->no_porsi) }}" placeholder="No SPPH"
-              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nomor spph</label>
+              <label class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">Nomor spph</label>
               <input type="number" name="no_spph" value="{{ old('no_spph', $gabung_haji->no_spph) }}" placeholder="Nomor SPPH"
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi</label>
+              <input type="number" name="no_porsi" value="{{ old('no_porsi', $gabung_haji->no_porsi) }}" placeholder="Nomor Porsi"
+              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+              ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+              
+              @error('no_porsi_haji')
+              <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
           </div>
 
@@ -147,6 +154,7 @@
             </div> --}}
           
           </div>
+
           <div>
             <label for="message" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Catatan
@@ -201,7 +209,7 @@
             <!-- Dropdown Jenis ID -->
             <div>
               <div>
-                <label for="jenis_id" class="block text-sm font-medium leading-6 text-[#099AA7]">Jenis ID</label>
+                <label for="jenis_id" class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">Jenis ID</label>
                 <select id="jenis_id" name="jenis_id" 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih</option>
@@ -212,16 +220,22 @@
             </div>
             <!-- Input No Identitas (Lebih Lebar) -->
             <div>
-              <label for="no_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
+              <label for="no_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 No Identitas
               </label>
               <input type="text" id="no_id" name="no_id" value="{{ old('no_id', $customer->no_id) }}" placeholder="Masukkan No Identitas"
-              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset 
+                ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+                @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+              @error('no_id')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
 
             <!-- Dropdown Warga -->
             <div>
-              <label for="warga" class="block text-sm font-medium leading-6 text-[#099AA7]">Warga</label>
+              <label for="warga" class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">Warga</label>
               <select id="warga" name="warga" 
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-md shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>

@@ -34,7 +34,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
             <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nama Panggilan</label>
+              <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">Nama Panggilan</label>
               <input type="text" name="panggilan" placeholder="Nama Panggilan" value="{{ old('panggilan') }}" required
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
             </div>
@@ -42,14 +42,23 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">No SPPH</label>
+              <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">No SPPH</label>
               <input type="number" name="no_spph" placeholder="No SPPH" value="{{ old('no_spph') }}" required
               class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
             </div>
+
             <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi</label>
-              <input type="number" name="no_porsi" placeholder="Nomor Porsi Haji" value="{{ old('no_porsi') }}" required
-              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              <label for="no_porsi" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Nomor Porsi
+              </label>
+              <input type="number" id="no_porsi" name="no_porsi" value="{{ old('no_porsi') }}" placeholder="Masukkan Nomor Porsi Haji"
+              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+              ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+              
+              @error('no_porsi_haji')
+              <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
           </div>
 

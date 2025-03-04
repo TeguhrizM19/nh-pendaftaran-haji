@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="{{ route('pendaftaran-haji-storeRepeatData', $daftar_haji->id) }}" method="POST">
+    <form action="{{ route('pendaftaran-haji-storeRepeatData', $daftar_haji->id) }}" method="POST" enctype="multipart/form-data">
       @csrf
       <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
@@ -23,11 +23,17 @@
 
           <div>
             <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
-            <input type="number" name="no_porsi_haji" value="{{ old('no_porsi_haji', $daftar_haji->no_porsi_haji) }}" placeholder="Nomor Porsi Haji"
-              class="mb-3 block w-full rounded-md shadow-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            <input type="number" id="no_porsi_haji" name="no_porsi_haji" placeholder="Masukkan Nomor Porsi Haji" required
+            class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+            @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+            @error('no_porsi_haji')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
             <div class="shadow-md">
               <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Cabang Daftar
@@ -173,7 +179,13 @@
                 No Identitas
               </label>
               <input type="text" id="no_id" name="no_id" value="{{ old('no_id', $customer->no_id) }}" placeholder="Masukkan No Identitas"
-              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-md shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset 
+                ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+                @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+              @error('no_id')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
             </div>
 
             <!-- Dropdown Warga -->
@@ -293,6 +305,122 @@
                 </li>
               @endforeach
             </ul>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+            <!-- KTP -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="ktp" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->ktp))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->ktp) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->ktp }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- KK -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="kk" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->kk))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->kk) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->kk }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- Surat Nikah/Akte lahir/Ijazah -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="surat" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->surat))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->surat) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->surat }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- SPPH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="spph" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->spph))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->spph) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->spph }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- BPIH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="bpih" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->bpih))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->bpih) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->bpih }}
+                  </a>
+                </p>
+              @endif
+            </div>
+
+            <!-- Pas Photo -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+              
+              <!-- Input untuk upload file baru -->
+              <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                id="photo" type="file">
+            
+              <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+              @if (!empty($customer->photo))
+                <p class="mt-2 text-sm">
+                  File saat ini: 
+                  <a href="{{ asset('uploads/dokumen_haji/' . $customer->photo) }}" class="text-blue-600 underline" target="_blank">
+                    {{ $customer->photo }}
+                  </a>
+                </p>
+              @endif
+            </div>
           </div>
         </div>
         
@@ -891,113 +1019,69 @@
     });
   });
 
+  // Kompres File
+  document.addEventListener("DOMContentLoaded", function () {
+    // Pilih semua input file dalam form
+    const fileInputs = document.querySelectorAll('input[type="file"]');
 
+    fileInputs.forEach(input => {
+        input.addEventListener("change", function (event) {
+            compressImage(event.target);
+        });
+    });
 
+    function compressImage(inputElement) {
+        const file = inputElement.files[0];
+        if (!file) return;
 
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
 
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
 
+                let width = img.width;
+                let height = img.height;
 
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
 
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
 
+                canvas.toBlob((blob) => {
+                    const compressedFile = new File([blob], file.name, {
+                        type: "image/jpeg",
+                        lastModified: Date.now(),
+                    });
 
+                    // Buat DataTransfer untuk menggantikan file lama
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(compressedFile);
+                    inputElement.files = dataTransfer.files;
 
-
-
-
-
-
-  // // JS untuk Domisili
-  // // Provinsi
-  // $(document).ready(function () {
-  //   $('#provinsi_domisili').select2({
-  //     placeholder: "Pilih Provinsi", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-
-  // // Kota
-  // $(document).ready(function () {
-  //   $('#kota_domisili').select2({
-  //     placeholder: "Pilih Kota", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-  // // Ketika provinsi dipilih, ambil kota yang sesuai
-  // $('#provinsi_domisili').on('change', function () {
-  //   let provinsiID = $(this).val(); // Ambil ID provinsi yang dipilih
-  //   $('#kota_domisili').empty().append('<option value="">Pilih Kota</option>'); // Kosongkan dropdown kota
-
-  //   if (provinsiID) {
-  //     $.ajax({
-  //       url: `/get-kota/${provinsiID}`, // Panggil route Laravel
-  //       type: "GET",
-  //       dataType: "json",
-  //       success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kota_domisili').append(`<option value="${value.id}">${value.kota}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
-  // // Kecamatan
-  // $(document).ready(function () {
-  //   $('#kecamatan_domisili').select2({
-  //     placeholder: "Pilih Kecamatan", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-  // // Ketika kota dipilih, ambil kecamatan yang sesuai
-  // $('#kota_domisili').on('change', function () {
-  //   let kotaID = $(this).val();
-  //   $('#kecamatan_domisili').empty().append('<option value="">Pilih Kecamatan</option>');
-
-  //   if (kotaID) {
-  //     $.ajax({
-  //       url: `/get-kecamatan/${kotaID}`,
-  //       type: "GET",
-  //       dataType: "json",
-  //       success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kecamatan_domisili').append(`<option value="${value.id}">${value.kecamatan}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
-  // // Kelurahan
-  // $(document).ready(function () {
-  //   $('#kelurahan_domisili').select2({
-  //     placeholder: "Pilih Kelurahan", // Placeholder
-  //     allowClear: true, // Bisa menghapus pilihan
-  //     width: '100%' // Sesuaikan dengan Tailwind
-  //   });
-  // });
-
-  // // Ketika kecamatan dipilih, ambil kelurahan yang sesuai
-  // $('#kecamatan_domisili').on('change', function () {
-  //   let kecamatanID = $(this).val();
-  //   $('#kelurahan_domisili').empty().append('<option value="">Pilih Kelurahan</option>');
-
-  //   if (kecamatanID) {
-  //     $.ajax({
-  //       url: `/get-kelurahan/${kecamatanID}`,
-  //       type: "GET",
-  //       dataType: "json",
-  //     success: function (data) {
-  //         $.each(data, function (key, value) {
-  //           $('#kelurahan_domisili').append(`<option value="${value.id}">${value.kelurahan}</option>`);
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
+                    console.log("✅ File dikompresi:", inputElement.files[0]);
+                }, "image/jpeg", 0.7);
+            };
+        };
+    }
+  });
 
 </script>
 </x-layout>
