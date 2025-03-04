@@ -43,12 +43,12 @@
               <label for="no_porsi" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Nomor Porsi
               </label>
-              <input type="number" id="no_porsi" name="no_porsi" value="{{ old('no_porsi') }}" placeholder="Masukkan Nomor Porsi Haji"
+              <input type="number" id="no_porsi" name="no_porsi" value="{{ old('no_porsi') }}" placeholder="Masukkan Nomor Porsi"
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
               ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
-              @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+              @error('no_porsi') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
-              @error('no_porsi_haji')
+              @error('no_porsi')
               <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
               @enderror
             </div>
