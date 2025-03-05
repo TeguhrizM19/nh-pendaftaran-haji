@@ -14,6 +14,8 @@ return new class extends Migration
     Schema::create('t_gabung_hajis', function (Blueprint $table) {
       $table->id();
       $table->foreignId('customer_id')->constrained('m_customers')->onDelete('cascade');
+      $table->foreignId('daftar_haji_id')->nullable()->constrained('t_daftar_hajis')->onDelete('cascade');
+      $table->foreignId('keberangkatan_id')->nullable()->constrained('group_keberangkatan')->onDelete('cascade');
       $table->bigInteger('no_spph')->nullable();
       $table->bigInteger('no_porsi')->nullable();
       $table->string('nama_bank')->nullable();

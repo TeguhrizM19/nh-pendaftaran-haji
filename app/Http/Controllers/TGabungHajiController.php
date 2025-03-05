@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kota;
-use App\Models\MCabang;
 use App\Models\Customer;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
@@ -11,6 +10,7 @@ use App\Models\Kelurahan;
 use App\Models\TGabungHaji;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
 
 class TGabungHajiController extends Controller
@@ -21,7 +21,7 @@ class TGabungHajiController extends Controller
 
   public function index(Request $request)
   {
-    $query = TGabungHaji::with('customer');
+    $query = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan']);
 
     // Cek apakah ada filter yang aktif
     $isFiltered = false;
@@ -35,6 +35,9 @@ class TGabungHajiController extends Controller
           $q->where('nama', 'like', "%{$search}%")
             ->orWhere('jenis_kelamin', 'like', "%{$search}%")
             ->orWhere('no_hp_1', 'like', "%{$search}%");
+        })
+        ->orWhereHas('daftarHaji', function ($q) use ($search) {
+          $q->where('no_porsi_haji', 'like', "%{$search}%");
         });
 
       $isFiltered = true;
@@ -46,7 +49,10 @@ class TGabungHajiController extends Controller
       $noPorsi2 = $request->no_porsi_haji_2;
 
       if (!empty($noPorsi1) && !empty($noPorsi2)) {
-        $query->whereBetween('no_porsi', [$noPorsi1, $noPorsi2]);
+        $query->whereBetween('no_porsi', [$noPorsi1, $noPorsi2])
+          ->orWhereHas('daftarHaji', function ($q) use ($noPorsi1, $noPorsi2) {
+            $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
+          });
         $isFiltered = true;
       }
     }
@@ -58,6 +64,9 @@ class TGabungHajiController extends Controller
       $gabung_haji = $query->latest()->paginate(5);
     }
 
+    // Ambil data keberangkatan
+    $keberangkatan = GroupKeberangkatan::latest()->get();
+
     if ($request->ajax()) {
       return response()->json([
         'html' => trim(view('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])->render()),
@@ -65,8 +74,13 @@ class TGabungHajiController extends Controller
       ]);
     }
 
-    return view('gabung-haji.index', ['gabung_haji' => $gabung_haji]);
+    return view('gabung-haji.index', [
+      'gabung_haji' => $gabung_haji,
+      'keberangkatan' => $keberangkatan,
+    ]);
   }
+
+
 
   /**
    * Show the form for creating a new resource.

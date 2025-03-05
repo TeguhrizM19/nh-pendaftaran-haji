@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\TDaftarHaji;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TGabungHaji extends Model
 {
@@ -15,6 +16,16 @@ class TGabungHaji extends Model
   public function customer()
   {
     return $this->belongsTo(Customer::class, 'customer_id');
+  }
+
+  public function daftarHaji()
+  {
+    return $this->belongsTo(TDaftarHaji::class, 'daftar_haji_id');
+  }
+
+  public function keberangkatan()
+  {
+    return $this->belongsTo(GroupKeberangkatan::class, 'keberangkatan_id');
   }
 
   public function tempatLahir()

@@ -20,11 +20,24 @@
 
   <div class="mt-4 flex justify-between items-center">
     <a href="/gabung-haji/create"
-        class="min-w-[120px] text-center rounded-md bg-[#099AA7] px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">
-        Tambah Gabung Haji
+      class="min-w-[120px] text-center rounded-md bg-[#099AA7] px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">
+      Tambah Gabung Haji
     </a>
 
     <div class="flex gap-4">
+      {{-- Filter Tahun Keberangkatan --}}
+      <div>
+        <select name="keberangkatan" id="keberangkatan" required 
+          class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
+          <option value="">Pilih Tahun</option>
+          @foreach ($keberangkatan as $berangkat)
+            <option value="{{ $berangkat->id }}">
+              {{ $berangkat->keberangkatan }}
+            </option>
+          @endforeach
+        </select>
+      </div>
+
       {{-- Filter No Porsi Haji --}}
       <div class="flex gap-1">
         <div class="relative">
@@ -39,6 +52,7 @@
           </svg>          
         </button>   
       </div>
+
       {{-- Search --}}
       <form method="GET" action="{{ route('gabung-haji.index') }}" class="w-[220px]">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
@@ -72,6 +86,7 @@
         @include('gabung-haji.partial-table')   
       </tbody>
     </table>
+    
     {{-- Cek apakah data dipaginate --}}
     <div id="pagination-container" class="mt-4" style="{{ request()->hasAny(['search', 'no_porsi_haji_1', 'no_porsi_haji_2']) ? 'display: none;' : '' }}">
       <div id="pagination-links" class="mt-4">
@@ -80,6 +95,18 @@
     </div>
   </div>
 
+  <style>
+    .select2-container .select2-selection--single {
+    height: 45px !important; /* Atur tinggi */
+    display: flex;
+    align-items: center; /* Pusatkan teks */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      line-height: 45px !important; /* Sesuaikan dengan tinggi */
+    }
+  </style>
+  
   <script>
     // Sweet Alert Konfirmasi Delete
     document.addEventListener("DOMContentLoaded", function () {
@@ -105,98 +132,107 @@
       });
     });
 
-  // Search
-  document.addEventListener("DOMContentLoaded", function () { 
-    const searchInput = document.getElementById("search-input");
-    const tableBody = document.getElementById("table-body");
+    // Search
+    document.addEventListener("DOMContentLoaded", function () { 
+      const searchInput = document.getElementById("search-input");
+      const tableBody = document.getElementById("table-body");
 
-    searchInput.addEventListener("input", function () {
-      let searchTerm = searchInput.value.trim();
-      let url = searchTerm ? `/gabung-haji?search=${searchTerm}` : "/gabung-haji";
+      searchInput.addEventListener("input", function () {
+        let searchTerm = searchInput.value.trim();
+        let url = searchTerm ? `/gabung-haji?search=${searchTerm}` : "/gabung-haji";
 
-      fetch(url, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest"
-        }
-      })
-      .then(response => response.json()) // Ubah ke JSON
-      .then(data => {
-        if (data.html) {
-          tableBody.innerHTML = data.html.trim(); // Bersihkan whitespace
-        }
-      })
-      .catch(error => console.error("Error fetching data:", error));
+        fetch(url, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        })
+        .then(response => response.json()) // Ubah ke JSON
+        .then(data => {
+          if (data.html) {
+            tableBody.innerHTML = data.html.trim(); // Bersihkan whitespace
+          }
+        })
+        .catch(error => console.error("Error fetching data:", error));
+      });
     });
-  });
 
-  // Filter rentang no porsi haji
-  document.addEventListener("DOMContentLoaded", function () {
-    const searchButton = document.getElementById("search-btn");
-    const tableBody = document.getElementById("table-body");
-    const paginationContainer = document.getElementById("pagination-container");
-    const noPorsi1 = document.getElementById("no_porsi_haji_1");
-    const noPorsi2 = document.getElementById("no_porsi_haji_2");
+    // Filter rentang no porsi haji
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchButton = document.getElementById("search-btn");
+      const tableBody = document.getElementById("table-body");
+      const paginationContainer = document.getElementById("pagination-container");
+      const noPorsi1 = document.getElementById("no_porsi_haji_1");
+      const noPorsi2 = document.getElementById("no_porsi_haji_2");
 
-    // Fungsi untuk me-reset tabel ke kondisi awal
-    function resetTable() {
-      fetch(`/gabung-haji`, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest"
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (tableBody) {
-          tableBody.innerHTML = data.html;
-        }
-
-        // Tampilkan pagination kembali
-        if (paginationContainer) {
-          paginationContainer.style.display = data.paginate ? "block" : "none";
-        }
-      })
-      .catch(error => console.error("Error fetching data:", error));
-    }
-
-    // Event listener untuk tombol pencarian
-    searchButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      console.log("Tombol pencarian ditekan!");
-
-      let noPorsi1Value = noPorsi1.value.trim();
-      let noPorsi2Value = noPorsi2.value.trim();
-
-      console.log("No Porsi Haji 1:", noPorsi1Value);
-      console.log("No Porsi Haji 2:", noPorsi2Value);
-
-      fetch(`/gabung-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest"
-        }
-      })
+      // Fungsi untuk me-reset tabel ke kondisi awal
+      function resetTable() {
+        fetch(`/gabung-haji`, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        })
         .then(response => response.json())
         .then(data => {
           if (tableBody) {
             tableBody.innerHTML = data.html;
           }
 
-          // Sembunyikan pagination jika filter aktif
+          // Tampilkan pagination kembali
           if (paginationContainer) {
             paginationContainer.style.display = data.paginate ? "block" : "none";
           }
         })
         .catch(error => console.error("Error fetching data:", error));
-      });
+      }
 
-    // Event listener saat tombol "x" ditekan pada input search
-    [noPorsi1, noPorsi2].forEach(input => {
-      input.addEventListener("input", function () {
-        if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
-          resetTable();
-        }
+      // Event listener untuk tombol pencarian
+      searchButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        console.log("Tombol pencarian ditekan!");
+
+        let noPorsi1Value = noPorsi1.value.trim();
+        let noPorsi2Value = noPorsi2.value.trim();
+
+        console.log("No Porsi Haji 1:", noPorsi1Value);
+        console.log("No Porsi Haji 2:", noPorsi2Value);
+
+        fetch(`/gabung-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (tableBody) {
+              tableBody.innerHTML = data.html;
+            }
+
+            // Sembunyikan pagination jika filter aktif
+            if (paginationContainer) {
+              paginationContainer.style.display = data.paginate ? "block" : "none";
+            }
+          })
+          .catch(error => console.error("Error fetching data:", error));
+        });
+
+      // Event listener saat tombol "x" ditekan pada input search
+      [noPorsi1, noPorsi2].forEach(input => {
+        input.addEventListener("input", function () {
+          if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
+            resetTable();
+          }
+        });
       });
     });
-  });
+
+    $(document).ready(function () {
+      $('#keberangkatan').select2({
+        placeholder: "Pilih Keberangkatan", 
+        allowClear: true,
+        width: '100%',
+        dropdownCssClass: 'custom-select2' // Tambahkan class kustom
+      });
+    });
   </script>
   
 </x-layout>

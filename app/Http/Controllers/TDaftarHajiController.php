@@ -11,6 +11,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\MSumberInfo;
 use App\Models\TDaftarHaji;
+use App\Models\TGabungHaji;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -235,7 +236,7 @@ class TDaftarHajiController extends Controller
       ]);
 
       // Simpan data pendaftaran haji ke t_daftar_hajis
-      TDaftarHaji::create([
+      $daftarHaji = TDaftarHaji::create([
         'customer_id'   => $customer->id,
         'no_porsi_haji' => $validated['no_porsi_haji'],
         'cabang_id'     => $validated['cabang_id'],
@@ -246,6 +247,11 @@ class TDaftarHajiController extends Controller
         'bank'          => $validated['bank'],
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
+      ]);
+
+      TGabungHaji::create([
+        'customer_id'   => $customer->id,
+        'daftar_haji_id' => $daftarHaji->id
       ]);
     });
 
@@ -415,7 +421,7 @@ class TDaftarHajiController extends Controller
       return redirect('/pendaftaran-haji')->with('success', 'Data berhasil diperbarui beserta dokumen.');
     } catch (\Exception $e) {
       DB::rollback();
-      Log::error("Update Error: " . $e->getMessage());
+      // Log::error("Update Error: " . $e->getMessage());
       return back()->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data!']);
     }
   }
@@ -651,7 +657,7 @@ class TDaftarHajiController extends Controller
       $customer->save();
 
       // **Buat data baru di t_daftar_hajis**
-      TDaftarHaji::create([
+      $daftarHaji = TDaftarHaji::create([
         'customer_id'    => $customer->id,
         'no_porsi_haji'  => $validated['no_porsi_haji'],
         'cabang_id'      => $validated['cabang_id'],
@@ -664,11 +670,16 @@ class TDaftarHajiController extends Controller
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
+      TGabungHaji::create([
+        'customer_id'   => $customer->id,
+        'daftar_haji_id' => $daftarHaji->id
+      ]);
+
       DB::commit();
       return redirect('/pendaftaran-haji')->with('success', 'Data berhasil ditambahkan.');
     } catch (\Exception $e) {
       DB::rollback();
-      Log::error("Store Error: " . $e->getMessage());
+      // Log::error("Store Error: " . $e->getMessage());
       return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data!']);
     }
   }
@@ -837,7 +848,7 @@ class TDaftarHajiController extends Controller
       ]);
 
       // Simpan data pendaftaran haji ke t_daftar_hajis
-      TDaftarHaji::create([
+      $daftarHaji = TDaftarHaji::create([
         'customer_id'   => $customer->id,
         'no_porsi_haji' => $validated['no_porsi_haji'],
         'cabang_id'     => $validated['cabang_id'],
@@ -848,6 +859,11 @@ class TDaftarHajiController extends Controller
         'bank'          => $validated['bank'],
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
+      ]);
+
+      TGabungHaji::create([
+        'customer_id'   => $customer->id,
+        'daftar_haji_id' => $daftarHaji->id
       ]);
     });
 
