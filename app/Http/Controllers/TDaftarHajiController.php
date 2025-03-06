@@ -57,7 +57,7 @@ class TDaftarHajiController extends Controller
     if ($isFiltered) {
       $daftar_haji = $query->get(); // Mengambil semua data tanpa paginate
     } else {
-      $daftar_haji = $query->latest()->paginate(5);
+      $daftar_haji = $query->latest()->paginate(2);
     }
 
     if ($request->ajax()) {

@@ -13,6 +13,16 @@ class GroupKeberangkatan extends Model
 
   public function gabungHaji()
   {
-    return $this->belongsTo(TGabungHaji::class, 'gabung_haji_id');
+    return $this->hasMany(TGabungHaji::class, 'keberangkatan_id');
+  }
+
+  public function customer()
+  {
+    return $this->belongsTo(Customer::class, 'customer_id');
+  }
+
+  public function daftarHaji()
+  {
+    return $this->belongsTo(TDaftarHaji::class, 'daftar_haji_id');
   }
 }

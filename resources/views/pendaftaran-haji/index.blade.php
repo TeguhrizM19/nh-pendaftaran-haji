@@ -121,9 +121,10 @@
   });
 
   // Search
-  document.addEventListener("DOMContentLoaded", function () { 
+  document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
     const tableBody = document.getElementById("table-body");
+    const paginationContainer = document.getElementById("pagination-container");
 
     searchInput.addEventListener("input", function () {
       let searchTerm = searchInput.value.trim();
@@ -134,10 +135,17 @@
           "X-Requested-With": "XMLHttpRequest"
         }
       })
-      .then(response => response.json()) // Ubah ke JSON
+      .then(response => response.json())
       .then(data => {
         if (data.html) {
-          tableBody.innerHTML = data.html.trim(); // Bersihkan whitespace
+          tableBody.innerHTML = data.html.trim();
+
+          // Sembunyikan pagination jika pencarian dilakukan
+          if (data.paginate) {
+            paginationContainer.style.display = "block";
+          } else {
+            paginationContainer.style.display = "none";
+          }
         }
       })
       .catch(error => console.error("Error fetching data:", error));
@@ -212,5 +220,5 @@
       });
     });
   });
-  </script>
+</script>
 </x-layout>

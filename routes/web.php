@@ -55,6 +55,16 @@ Route::post('/ambil-semua-data-gabung/{id}/store', [TGabungHajiController::class
 
 // Route Keberangkatan
 Route::resource('/keberangkatan', GroupKeberangkatanController::class);
+Route::get('/peserta-keberangkatan', [GroupKeberangkatanController::class, 'indexKeberangkatan']);
+Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
+    ->name('simpan.peserta.keberangkatan');
+Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
+    ->name('hapus.peserta.keberangkatan');
+
+Route::get('/create-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
+    ->name('create.keberangkatan');
+Route::get('/detail-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'detailKeberangkatan'])
+    ->name('detail.keberangkatan');
 Route::post('/update-keberangkatan', [GroupKeberangkatanController::class, 'updateKeberangkatan'])->name('update.keberangkatan');
 
 // Route Customer Master

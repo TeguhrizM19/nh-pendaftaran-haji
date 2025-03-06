@@ -18,9 +18,12 @@
   </script>
   @endif
 
-  <div class="mt-4">
+  <div class="mt-4 flex gap-2">
     <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">Tambah Keberangkatan
     </button>
+    <a href="/peserta-keberangkatan" class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >
+      Tambah Peserta Keberangkatan
+    </a>
   </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
@@ -42,15 +45,15 @@
             {{ $berangkat->keberangkatan }}
           </td>
           <td class="px-6 py-4 font-medium text-black whitespace-nowrap text-center">
-            <!-- Tombol modal tambah peserta -->
-            <button data-modal-target="modal-peserta-{{ $berangkat->id }}" data-modal-toggle="modal-peserta-{{ $berangkat->id }}" class="font-medium text-blue-600 hover:underline" type="button">
+            <a href="{{ route('create.keberangkatan', ['keberangkatan_id' => $berangkat->id]) }}" 
+              class="font-medium text-blue-600 hover:underline">
               Tambah Peserta
-            </button>
+           </a>           
             <span>|</span>
-            <!-- Tombol modal detail keberangkatan -->
-            <button data-modal-target="modal-detail-{{ $berangkat->id }}" data-modal-toggle="modal-detail-{{ $berangkat->id }}" class="font-medium text-blue-600 hover:underline" type="button">
-              Detail
-            </button>
+            <a href="{{ route('detail.keberangkatan', ['keberangkatan_id' => $berangkat->id]) }}" 
+              class="font-medium text-blue-600 hover:underline">
+              Detai Keberangkatan
+            </a>
           </td>
         </tr>
         @empty
@@ -63,10 +66,6 @@
       </tbody>
     </table>
   </div>
-
-  @include('keberangkatan.modal-peserta', ['gabungHaji' => $gabungHaji])
-
-  @include('keberangkatan.modal-detail', ['gabungHaji' => $gabungHaji])
 
   <!-- Modal Tambah Tahun Keberangkatan -->
   <div id="modal-keberangkatan" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

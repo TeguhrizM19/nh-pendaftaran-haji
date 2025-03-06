@@ -57,6 +57,12 @@ class TGabungHajiController extends Controller
       }
     }
 
+    // Filter berdasarkan keberangkatan
+    if ($request->has('keberangkatan') && !empty($request->keberangkatan)) {
+      $query->where('keberangkatan_id', $request->keberangkatan);
+      $isFiltered = true;
+    }
+
     // Jika filter aktif, tampilkan semua data tanpa pagination
     if ($isFiltered) {
       $gabung_haji = $query->get();
@@ -79,8 +85,6 @@ class TGabungHajiController extends Controller
       'keberangkatan' => $keberangkatan,
     ]);
   }
-
-
 
   /**
    * Show the form for creating a new resource.
