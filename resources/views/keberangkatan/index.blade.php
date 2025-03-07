@@ -19,7 +19,7 @@
   @endif
 
   <div class="mt-4 flex gap-2">
-    <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">Tambah Keberangkatan
+    <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan"         class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">Tambah Keberangkatan
     </button>
     <a href="/peserta-keberangkatan" class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >
       Tambah Peserta Keberangkatan

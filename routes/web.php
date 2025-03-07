@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\GroupKeberangkatan;
 use App\Http\Controllers\GroupKeberangkatanController;
 use App\Http\Controllers\PencarianSelect2Controller;
 use App\Http\Controllers\TDaftarHajiController;
@@ -61,11 +59,8 @@ Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::clas
 Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
     ->name('hapus.peserta.keberangkatan');
 
-Route::get('/create-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
-    ->name('create.keberangkatan');
-Route::get('/detail-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'detailKeberangkatan'])
-    ->name('detail.keberangkatan');
-Route::post('/update-keberangkatan', [GroupKeberangkatanController::class, 'updateKeberangkatan'])->name('update.keberangkatan');
-
-// Route Customer Master
-// Route::resource('/customer', CustomerController::class);
+// Route::get('/create-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
+//     ->name('create.keberangkatan');
+// Route::get('/detail-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'detailKeberangkatan'])
+//     ->name('detail.keberangkatan');
+// Route::post('/update-keberangkatan', [GroupKeberangkatanController::class, 'updateKeberangkatan'])->name('update.keberangkatan');

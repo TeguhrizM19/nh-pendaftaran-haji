@@ -15,28 +15,57 @@
     }
   </style>
 
+  {{-- Pesan Data Berhasil Disimpan --}}
+  @if(session('success'))
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      Swal.fire({
+        title: "Berhasil!",
+        text: "{!! session('success') !!}",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#099AA7"
+      });
+    });
+  </script>
+  @endif
+
   <div class="mt-4 flex justify-between items-center">
-    <form id="form-peserta">
-      <div class="flex gap-2">
-        <div>
-          <select name="keberangkatan_id" id="tahun-keberangkatan" required 
-            class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
-            <option value="">Pilih Tahun</option>
-            @foreach ($keberangkatan as $berangkat)
-              <option value="{{ $berangkat->id }}">
-                {{ $berangkat->keberangkatan }}
-              </option>
-            @endforeach
-          </select>
-        </div>
-        <button type="submit" id="btn-simpan" class="min-w-[120px] text-center rounded-md bg-[#099AA7] text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80">
+    <form id="form-simpan" class="flex gap-2 items-center">
+      <div>
+        <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center" type="button">
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+          </svg>          
+        </button>
+      </div>
+      <div>
+        <select name="keberangkatan_id" id="tahun-keberangkatan" required 
+          class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
+          <option value="">Pilih Tahun</option>
+          @foreach ($keberangkatan as $berangkat)
+            <option value="{{ $berangkat->id }}">
+              {{ $berangkat->keberangkatan }}
+            </option>
+          @endforeach
+        </select>
+      </div>
+    
+      <!-- Tombol Simpan & Hapus dalam satu div -->
+      <div class="flex gap-1">
+        <button type="submit" class="px-4 py-2 rounded-md bg-[#099AA7] text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80">
           Simpan
         </button>
-        <button type="button" id="btn-hapus" class="min-w-[120px] text-center rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500">
+        
+        <button type="submit" form="form-hapus" class="px-4 py-2 rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500">
           Hapus
         </button>
       </div>
-    </form>      
+    </form>
+    
+    <!-- Form Hapus -->
+    <form id="form-hapus"></form>
+    
 
     <div class="flex gap-4">
       {{-- Filter Tahun Keberangkatan --}}
@@ -87,6 +116,7 @@
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
           <th scope="col" class="px-6 py-3">Pilih</th>
+          <th scope="col" class="px-6 py-3">Keberangkatan</th>
           <th scope="col" class="px-6 py-3">No</th>
           <th scope="col" class="px-6 py-3">No SPPH</th>
           <th scope="col" class="px-6 py-3">No PORSI</th>
@@ -104,6 +134,37 @@
     <div id="pagination-container" class="mt-4" style="{{ request()->hasAny(['search', 'no_porsi_haji_1', 'no_porsi_haji_2']) ? 'display: none;' : '' }}">
       <div id="pagination-links" class="mt-4">
         {{ $gabung_haji->links('pagination::tailwind') }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah Tahun Keberangkatan -->
+  <div id="modal-keberangkatan" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow-sm">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+          <h3 class="text-xl font-semibold text-gray-900">
+            Tahun Keberangkatan
+          </h3>
+          <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="modal-keberangkatan">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 md:p-5">
+          <form action="/keberangkatan" method="POST" class="space-y-4">
+            @csrf
+            <div>
+              <input type="text" name="keberangkatan" id="keberangkatan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Masukkan Tahun Keberangkatan" required />
+            </div>
+            <button type="submit" class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -241,6 +302,7 @@
       });
     });
 
+    // Menambahkan peserta baru dg memilih tahun keberangkatan dulu
     $(document).ready(function () {
       $('#tahun-keberangkatan').select2({
         placeholder: "Pilih Keberangkatan",

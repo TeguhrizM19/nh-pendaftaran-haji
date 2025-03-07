@@ -4,6 +4,9 @@
       {{ $loop->iteration }}
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
+    </th>
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->no_spph }}
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">

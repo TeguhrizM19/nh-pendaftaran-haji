@@ -85,6 +85,7 @@
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
           <th scope="col" class="px-6 py-3">No</th>
+          <th scope="col" class="px-6 py-3">Keberangkatan</th>
           <th scope="col" class="px-6 py-3">No SPPH</th>
           <th scope="col" class="px-6 py-3">No PORSI</th>
           <th scope="col" class="px-6 py-3">Nama</th>

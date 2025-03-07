@@ -7,6 +7,9 @@
         {{ $gabung->keberangkatan_id ? 'checked' : '' }}>
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
+    </td>
+    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $loop->iteration }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
@@ -39,91 +42,181 @@
 
 <script>
   $(document).ready(function () {
-    $('#btn-simpan').on('click', function (e) {
-        e.preventDefault();
-        simpanPesertaKeberangkatan();
+    let pesertaTerhapus = new Set(); // Simpan daftar peserta yang akan dihapus
+
+    // Handle perubahan checkbox
+    $(document).on('change', '.peserta-checkbox', function () {
+      let pesertaId = $(this).val();
+
+      if (!$(this).is(':checked')) {
+        pesertaTerhapus.add(pesertaId);
+      } else {
+        pesertaTerhapus.delete(pesertaId);
+      }
     });
 
-    $('#btn-hapus').on('click', function (e) {
-        e.preventDefault();
-        hapusPesertaKeberangkatan();
+    // Pastikan tidak ada event ganda
+    $('#form-simpan').off('submit').on('submit', function (e) {
+      e.preventDefault();
+      simpanPesertaKeberangkatan();
+    });
+
+    $('#form-hapus').off('submit').on('submit', function (e) {
+      e.preventDefault();
+      hapusPesertaKeberangkatan();
     });
 
     function simpanPesertaKeberangkatan() {
-        let keberangkatanId = $('#tahun-keberangkatan').val();
-        let pesertaIds = [];
+      let keberangkatanId = $('#tahun-keberangkatan').val();
+      let pesertaIds = [];
 
-        $('.peserta-checkbox:checked').each(function () {
-            pesertaIds.push($(this).val());
+      $('.peserta-checkbox:checked').each(function () {
+        pesertaIds.push($(this).val());
+      });
+
+      if (keberangkatanId === '') {
+        Swal.fire({
+          title: "Peringatan!",
+          text: "Pilih tahun keberangkatan terlebih dahulu!",
+          icon: "warning",
+          confirmButtonColor: "#099AA7",
+          confirmButtonText: "OK"
         });
+        return;
+      }
 
-        if (keberangkatanId === '') {
-            alert('Pilih tahun keberangkatan terlebih dahulu!');
-            return;
-        }
-
-        if (pesertaIds.length === 0) {
-            alert('Pilih minimal satu peserta!');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('simpan.peserta.keberangkatan') }}",
-            type: "POST",
-            data: {
-                keberangkatan_id: keberangkatanId,
-                peserta_ids: pesertaIds,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                Swal.fire("Berhasil!", response.message, "success").then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr) {
-                Swal.fire("Gagal!", "Terjadi kesalahan, silakan coba lagi!", "error");
-            }
+      if (pesertaIds.length === 0) {
+        Swal.fire({
+          title: "Peringatan!",
+          text: "Pilih minimal satu peserta!",
+          icon: "warning",
+          confirmButtonColor: "#099AA7",
+          confirmButtonText: "OK"
         });
+        return;
+      }
+
+      $.ajax({
+        url: "{{ route('simpan.peserta.keberangkatan') }}",
+        type: "POST",
+        data: {
+          keberangkatan_id: keberangkatanId,
+          peserta_ids: pesertaIds,
+          _token: "{{ csrf_token() }}"
+        },
+        success: function (response) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: response.message,
+            icon: "success",
+            confirmButtonColor: "#099AA7",
+            confirmButtonText: "OK"
+          }).then(() => {
+            location.reload();
+          });
+        },
+        error: function () {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan, silakan coba lagi!",
+            icon: "error",
+            confirmButtonColor: "#099AA7",
+            confirmButtonText: "OK"
+          });
+        }
+      });
     }
 
     function hapusPesertaKeberangkatan() {
-        let keberangkatanId = $('#tahun-keberangkatan').val();
-        let pesertaIds = [];
-
-        $('.peserta-checkbox:checked').each(function () {
-            pesertaIds.push($(this).val());
+      if (pesertaTerhapus.size === 0) {
+        Swal.fire({
+          title: "Peringatan!",
+          text: "Pilih peserta yang akan dihapus dengan menghilangkan centangnya!",
+          icon: "warning",
+          confirmButtonColor: "#099AA7",
+          confirmButtonText: "OK"
         });
+        return;
+      }
 
-        if (keberangkatanId === '') {
-            alert('Pilih tahun keberangkatan terlebih dahulu!');
-            return;
+      $.ajax({
+        url: "{{ route('hapus.peserta.keberangkatan') }}",
+        type: "POST",
+        data: {
+          peserta_ids: Array.from(pesertaTerhapus),
+          _token: "{{ csrf_token() }}"
+        },
+        success: function (response) {
+          Swal.fire({
+            title: "Berhasil!",
+            text: response.message,
+            icon: "success",
+            confirmButtonColor: "#099AA7",
+            confirmButtonText: "OK"
+          }).then(() => {
+            location.reload();
+          });
+        },
+        error: function () {
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan, silakan coba lagi!",
+            icon: "error",
+            confirmButtonColor: "#099AA7",
+            confirmButtonText: "OK"
+          });
         }
-
-        if (pesertaIds.length === 0) {
-            alert('Pilih minimal satu peserta untuk dihapus!');
-            return;
-        }
-
-        $.ajax({
-            url: "{{ route('hapus.peserta.keberangkatan') }}",
-            type: "POST",
-            data: {
-                keberangkatan_id: keberangkatanId,
-                peserta_ids: pesertaIds,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                Swal.fire("Berhasil!", response.message, "success").then(() => {
-                    location.reload();
-                });
-            },
-            error: function (xhr) {
-                Swal.fire("Gagal!", "Terjadi kesalahan, silakan coba lagi!", "error");
-            }
-        });
+      });
     }
-});
 
-  
+    // Filter Tahun Keberangkatan
+    $('#filter-keberangkatan').select2({
+      placeholder: "Pilih Keberangkatan",
+      allowClear: true,
+      width: '100%',
+      dropdownCssClass: 'custom-select2'
+    });
+
+    $('#filter-keberangkatan').on('change', function () {
+      let tahunKeberangkatan = $(this).val();
+      $.ajax({
+        url: "/peserta-keberangkatan",
+        type: "GET",
+        data: { keberangkatan: tahunKeberangkatan },
+        success: function (response) {
+          $('#table-body').html(response.html);
+
+          // Memastikan daftar hapus tetap ada setelah filter diterapkan
+          pesertaTerhapus.forEach(id => {
+            let checkbox = $(`.peserta-checkbox[value="${id}"]`);
+            if (checkbox.length > 0) {
+              checkbox.prop('checked', false);
+            }
+          });
+
+          // Hindari event handler ganda setelah AJAX
+          $('#form-simpan').off('submit').on('submit', function (e) {
+            e.preventDefault();
+            simpanPesertaKeberangkatan();
+          });
+
+          $('#form-hapus').off('submit').on('submit', function (e) {
+            e.preventDefault();
+            hapusPesertaKeberangkatan();
+          });
+
+          // Sembunyikan pagination jika filter aktif
+          if (response.paginate) {
+            $('#pagination-container').show();
+          } else {
+            $('#pagination-container').hide();
+          }
+        }
+      });
+    });
+  });
 </script>
-  
+
+
+
+

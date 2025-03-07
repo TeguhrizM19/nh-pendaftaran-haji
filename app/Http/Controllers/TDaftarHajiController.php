@@ -166,37 +166,52 @@ class TDaftarHajiController extends Controller
       // Proses upload file secara langsung ke masing-masing kolom
       if ($request->file('ktp')) {
         $newName = time() . '_ktp.' . $request->ktp->extension();
-        $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
+
+        $request->ktp->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['ktp'] = $newName;
       }
 
       if ($request->file('kk')) {
         $newName = time() . '_kk.' . $request->kk->extension();
-        $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
+
+        $request->kk->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['kk'] = $newName;
       }
 
       if ($request->file('surat')) {
         $newName = time() . '_surat.' . $request->surat->extension();
-        $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
+
+        $request->surat->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['surat'] = $newName;
       }
 
       if ($request->file('spph')) {
         $newName = time() . '_spph.' . $request->spph->extension();
-        $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
+        $request->spph->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['spph'] = $newName;
       }
 
       if ($request->file('bpih')) {
         $newName = time() . '_bpih.' . $request->bpih->extension();
-        $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
+        $request->bpih->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['bpih'] = $newName;
       }
 
       if ($request->file('photo')) {
         $newName = time() . '_photo.' . $request->photo->extension();
-        $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
+        $request->photo->move('../public_html/folder-image-truenas', $newName);
+
+        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['photo'] = $newName;
       }
 
