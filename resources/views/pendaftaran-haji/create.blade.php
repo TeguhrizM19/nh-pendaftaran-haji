@@ -14,7 +14,7 @@
             <div class="flex flex-col-reverse sm:flex-row sm:items-end gap-2 w-full">
               <!-- Input Nama Customer -->
               <div class="w-full sm:w-96">
-                <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
+                <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Lengkap Customer</label>
                 <input type="text" name="nama" placeholder="Nama" value="{{ old('nama') }}" required
                   class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 
                   ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 

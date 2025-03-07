@@ -7,10 +7,10 @@
         {{ $gabung->keberangkatan_id ? 'checked' : '' }}>
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
+      {{ $loop->iteration }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $loop->iteration }}
+      {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->no_spph }}
