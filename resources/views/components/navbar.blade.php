@@ -21,7 +21,7 @@
             <img class="w-[50px] bg-white p-2 rounded-lg group-hover:bg-gray-300"
                 src="{{ asset('images/nhlogo.png') }}" alt="Logo">
 
-            <span class="group-hover:text-gray-300">Pendaftaran Haji</span>
+            <span class="group-hover:text-gray-300">APP KBIH</span>
         </a>
     </div>
 

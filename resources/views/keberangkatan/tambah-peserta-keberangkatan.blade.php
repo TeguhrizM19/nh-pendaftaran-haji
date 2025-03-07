@@ -31,16 +31,16 @@
   @endif
 
   <div class="mt-4 flex flex-wrap md:flex-nowrap justify-between items-center gap-4"> 
+    <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" 
+      class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">
+      <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+      </svg>
+    </button>
+    
     <form id="form-simpan" class="flex flex-wrap md:flex-nowrap gap-2 items-center w-full md:w-auto">
-      <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" 
-        class="block text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">
-        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-        </svg>
-      </button>
-  
       <!-- Dropdown Pilih Keberangkatan (Sebelah Simpan) -->
-      <select style="width: 150px;" name="keberangkatan_id" id="tahun-keberangkatan" required 
+      <select style="width: 150px;" name="keberangkatan_id" id="tahun-keberangkatan" 
         class="text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
         <option value="">Pilih Tahun</option>
         @foreach ($keberangkatan as $berangkat)
@@ -52,6 +52,7 @@
         <button type="submit" class="px-4 py-2 rounded-md bg-[#099AA7] text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80">
           Simpan
         </button>
+
         <button type="submit" form="form-hapus" class="px-4 py-2 rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500">
           Hapus
         </button>
@@ -62,8 +63,8 @@
   
     <div class="flex flex-wrap md:flex-nowrap gap-4 w-full md:w-auto">
       <!-- Dropdown Pilih Keberangkatan (Sebelah Filter) -->
-      <select name="keberangkatan" id="filter-keberangkatan" required 
-        class="text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+      <select name="keberangkatan" id="filter-keberangkatan" 
+        class="text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
         <option value="">Pilih Tahun</option>
         @foreach ($keberangkatan as $berangkat)
           <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
@@ -259,6 +260,16 @@
       });
     });
 
+    // Menambahkan peserta baru dg memilih tahun keberangkatan dulu
+    $(document).ready(function () {
+      $('#tahun-keberangkatan').select2({
+        placeholder: "Pilih Keberangkatan",
+        allowClear: true,
+        width: '100%',
+        dropdownCssClass: 'custom-select2'
+      });
+    });
+
     // Filter Tahun Keberangkatan
     $(document).ready(function () {
       $('#filter-keberangkatan').select2({
@@ -287,16 +298,6 @@
             }
           }
         });
-      });
-    });
-
-    // Menambahkan peserta baru dg memilih tahun keberangkatan dulu
-    $(document).ready(function () {
-      $('#tahun-keberangkatan').select2({
-        placeholder: "Pilih Keberangkatan",
-        allowClear: true,
-        width: '100%',
-        dropdownCssClass: 'custom-select2'
       });
     });
 

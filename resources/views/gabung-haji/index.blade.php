@@ -27,7 +27,7 @@
   @endif
 
   <div>
-    <x-page-title>Data Gabung Haji</x-page-title>
+    <x-page-title>Data Gabung KBIH</x-page-title>
   </div>
 
   <div class="mt-4 flex flex-wrap md:flex-row justify-between items-center gap-2">

@@ -264,7 +264,7 @@
       <tr>
         <td style="width: 40%; text-align: center;">Pendaftar</td>
         <td style="width: 80%;"></td> <!-- Spasi di tengah -->
-        <td style="width: 40%; text-align: center;">Petugas KBHI</td>
+        <td style="width: 40%; text-align: center;">Petugas KBIH</td>
       </tr>
       <tr>
         <td style="height: 60px;"></td>
