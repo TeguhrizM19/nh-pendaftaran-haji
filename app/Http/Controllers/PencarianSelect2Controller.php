@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GroupKeberangkatan;
 use App\Models\Kota;
 use App\Models\MCabang;
 use App\Models\Provinsi;
@@ -44,6 +45,30 @@ class PencarianSelect2Controller extends Controller
 
     $data = Kota::select('id', 'kota')
       ->where('kota', 'like', "%{$search}%")
+      ->limit(10) // Batasi hasil agar tidak terlalu berat
+      ->get();
+
+    return response()->json($data);
+  }
+
+  public function searchDepag(Request $request)
+  {
+    $search = $request->q;
+
+    $data = Kota::select('id', 'kota')
+      ->where('kota', 'like', "%{$search}%")
+      ->limit(10) // Batasi hasil agar tidak terlalu berat
+      ->get();
+
+    return response()->json($data);
+  }
+
+  public function searchKeberangkatan(Request $request)
+  {
+    $search = $request->q;
+
+    $data = GroupKeberangkatan::select('id', 'keberangkatan')
+      ->where('keberangkatan', 'like', "%{$search}%")
       ->limit(10) // Batasi hasil agar tidak terlalu berat
       ->get();
 
@@ -126,20 +151,4 @@ class PencarianSelect2Controller extends Controller
 
     return response()->json($noPorsi);
   }
-
-  // public function filterNoPorsi(Request $request)
-  // {
-  //   $start = (int) $request->start;
-  //   $end = (int) $request->end;
-
-  //   \Log::info("Filter No Porsi Haji dari $start sampai $end"); // Debugging
-
-  //   $data = TDaftarHaji::whereBetween('no_porsi_haji', [$start, $end])
-  //     ->orderBy('no_porsi_haji', 'asc')
-  //     ->get();
-
-  //   \Log::info("Data yang ditemukan:", $data->toArray()); // Debugging
-
-  //   return view('partials.table-porsi', compact('data'));
-  // }
 }

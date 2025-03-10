@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kota;
 use App\Models\MCabang;
 use App\Models\Customer;
+use App\Models\GroupKeberangkatan;
 use App\Models\MDokHaji;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
@@ -57,7 +58,7 @@ class TDaftarHajiController extends Controller
     if ($isFiltered) {
       $daftar_haji = $query->get(); // Mengambil semua data tanpa paginate
     } else {
-      $daftar_haji = $query->latest()->paginate(2);
+      $daftar_haji = $query->latest()->paginate(5);
     }
 
     if ($request->ajax()) {
@@ -85,6 +86,7 @@ class TDaftarHajiController extends Controller
       'sumberInfo' => MSumberInfo::all(),
       'dokumen' => MDokHaji::all(),
       'provinsi' => Provinsi::all(),
+      'keberangkatan' => GroupKeberangkatan::all(),
 
       // KTP
       'selectedProvinsi' => old('provinsi_ktp'),
@@ -112,6 +114,11 @@ class TDaftarHajiController extends Controller
 
   public function store(Request $request)
   {
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
       // Validasi untuk m_customers
       'nama'           => 'required|string|max:255',
@@ -145,8 +152,9 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|string',
+      'bpjs'           => 'required|digits:13|unique:t_daftar_hajis,bpjs',
       'bank'           => 'required|string',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -166,52 +174,61 @@ class TDaftarHajiController extends Controller
       // Proses upload file secara langsung ke masing-masing kolom
       if ($request->file('ktp')) {
         $newName = time() . '_ktp.' . $request->ktp->extension();
+        // server
+        // $request->ktp->move('../public_html/folder-image-truenas', $newName);
 
-        $request->ktp->move('../public_html/folder-image-truenas', $newName);
-
-        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['ktp'] = $newName;
       }
 
       if ($request->file('kk')) {
         $newName = time() . '_kk.' . $request->kk->extension();
+        // server
+        // $request->kk->move('../public_html/folder-image-truenas', $newName);
 
-        $request->kk->move('../public_html/folder-image-truenas', $newName);
-
-        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['kk'] = $newName;
       }
 
       if ($request->file('surat')) {
         $newName = time() . '_surat.' . $request->surat->extension();
+        // server
+        // $request->surat->move('../public_html/folder-image-truenas', $newName);
 
-        $request->surat->move('../public_html/folder-image-truenas', $newName);
-
-        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['surat'] = $newName;
       }
 
       if ($request->file('spph')) {
         $newName = time() . '_spph.' . $request->spph->extension();
-        $request->spph->move('../public_html/folder-image-truenas', $newName);
+        // server
+        // $request->spph->move('../public_html/folder-image-truenas', $newName);
 
-        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['spph'] = $newName;
       }
 
       if ($request->file('bpih')) {
         $newName = time() . '_bpih.' . $request->bpih->extension();
-        $request->bpih->move('../public_html/folder-image-truenas', $newName);
+        // server
+        // $request->bpih->move('../public_html/folder-image-truenas', $newName);
 
-        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['bpih'] = $newName;
       }
 
       if ($request->file('photo')) {
         $newName = time() . '_photo.' . $request->photo->extension();
-        $request->photo->move('../public_html/folder-image-truenas', $newName);
+        // server
+        // $request->photo->move('../public_html/folder-image-truenas', $newName);
 
-        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
+        // local
+        $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['photo'] = $newName;
       }
 
@@ -260,13 +277,15 @@ class TDaftarHajiController extends Controller
         'paket_haji'    => $validated['paket_haji'],
         'bpjs'          => $validated['bpjs'],
         'bank'          => $validated['bank'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
       TGabungHaji::create([
         'customer_id'   => $customer->id,
-        'daftar_haji_id' => $daftarHaji->id
+        'daftar_haji_id' => $daftarHaji->id,
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
       ]);
     });
 
@@ -291,6 +310,7 @@ class TDaftarHajiController extends Controller
       'cabang',
       'wilayahDaftar',
       'sumberInfo',
+      'keberangkatan',
       'customer'
     ])->findOrFail($id);
 
@@ -305,6 +325,7 @@ class TDaftarHajiController extends Controller
       'customer' => $customer,
       'sumberInfo' => MSumberInfo::all(),
       'cabang' => MCabang::find($daftar_haji->cabang_id),
+      'keberangkatan' => GroupKeberangkatan::find($daftar_haji->keberangkatan_id),
       'wilayahDaftar' => Kota::find($daftar_haji->wilayah_daftar),
       'dokumen' => MDokHaji::all(),
       'selected_documents' => $selected_documents,
@@ -327,8 +348,15 @@ class TDaftarHajiController extends Controller
   {
     $daftar_haji = TDaftarHaji::findOrFail($id);
     $customer = Customer::findOrFail($daftar_haji->customer_id);
+    $gabung_haji = TGabungHaji::where('daftar_haji_id', $daftar_haji->id)->first();
+
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
 
     $validated = $request->validate([
+      // m_customers
       'nama'           => 'required|string|max:255',
       'no_hp_1'        => 'required|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
@@ -341,30 +369,40 @@ class TDaftarHajiController extends Controller
       'warga'          => 'required|string',
       'pekerjaan'      => 'required|string',
       'pendidikan'     => 'required|string',
+      // Alamat KTP
       'alamat_ktp'     => 'required|string',
       'provinsi_ktp'   => 'required|exists:m_provinsis,id',
       'kota_ktp'       => 'required|exists:m_kotas,id',
       'kecamatan_ktp'  => 'required|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'required|exists:m_kelurahans,id',
+      // Alamat Domisili
       'alamat_domisili' => 'required|string',
       'provinsi_domisili' => 'required|exists:m_provinsis,id',
       'kota_domisili'  => 'required|exists:m_kotas,id',
       'kecamatan_domisili' => 'required|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'required|exists:m_kelurahans,id',
+
+      // t_daftar_hajis
       'no_porsi_haji'  => ['required', 'numeric', 'digits:10', Rule::unique('t_daftar_hajis', 'no_porsi_haji')->ignore($daftar_haji->id)],
       'cabang_id'      => 'required|exists:m_cabangs,id',
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|string',
-      'bank'           => 'required|string',
-      'catatan'        => 'nullable|string',
+      'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
+      'bank'   => 'required|string',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'catatan' => 'nullable|string',
+      // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'kk'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'surat'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'spph'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'bpih'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
+      // Validasi checkbox dokumen
+      'dokumen'    => 'nullable|array',
+      'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
     DB::beginTransaction();
@@ -429,8 +467,22 @@ class TDaftarHajiController extends Controller
         'paket_haji' => $validated['paket_haji'],
         'bpjs' => $validated['bpjs'],
         'bank' => $validated['bank'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan' => $validated['catatan'],
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
+
+      // **Update atau Buat TGabungHaji**
+      if ($gabung_haji) {
+        $gabung_haji->update([
+          'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        ]);
+      } else {
+        TGabungHaji::create([
+          'daftar_haji_id' => $daftar_haji->id,
+          'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        ]);
+      }
 
       DB::commit();
       return redirect('/pendaftaran-haji')->with('success', 'Data berhasil diperbarui beserta dokumen.');
@@ -538,6 +590,7 @@ class TDaftarHajiController extends Controller
       'cabang',
       'wilayahDaftar',
       'sumberInfo',
+      'keberangkatan',
       'customer'
     ])->findOrFail($id);
 
@@ -553,6 +606,8 @@ class TDaftarHajiController extends Controller
       'sumberInfo' => MSumberInfo::all(),
       'cabang' => MCabang::find($daftar_haji->cabang_id),
       'wilayahDaftar' => Kota::find($daftar_haji->wilayah_daftar),
+      'keberangkatan' => GroupKeberangkatan::all(),
+      // 'keberangkatan' => GroupKeberangkatan::find($daftar_haji->keberangkatan_id),
       'dokumen' => MDokHaji::all(),
       'selected_documents' => $selected_documents,
       // Alamat KTP
@@ -575,7 +630,13 @@ class TDaftarHajiController extends Controller
     $daftar_haji = TDaftarHaji::findOrFail($id);
     $customer = Customer::findOrFail($daftar_haji->customer_id);
 
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
+      // m_cusromers
       'nama'           => 'required|string|max:255',
       'no_hp_1'        => 'required|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
@@ -588,31 +649,36 @@ class TDaftarHajiController extends Controller
       'warga'          => 'required|string',
       'pekerjaan'      => 'required|string',
       'pendidikan'     => 'required|string',
+      // Alamat KTP
       'alamat_ktp'     => 'required|string',
       'provinsi_ktp'   => 'required|exists:m_provinsis,id',
       'kota_ktp'       => 'required|exists:m_kotas,id',
       'kecamatan_ktp'  => 'required|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'required|exists:m_kelurahans,id',
+      // Alamat Domisili
       'alamat_domisili' => 'required|string',
       'provinsi_domisili' => 'required|exists:m_provinsis,id',
       'kota_domisili'  => 'required|exists:m_kotas,id',
       'kecamatan_domisili' => 'required|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'required|exists:m_kelurahans,id',
-      'no_porsi_haji'  => ['required', 'numeric', 'digits:10', Rule::unique('t_daftar_hajis', 'no_porsi_haji')],
+
+      // t_daftar_hajis
+      'no_porsi_haji'  => 'required|digits:10|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'required|exists:m_cabangs,id',
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|string',
+      'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
       'bank'           => 'required|string',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan'        => 'nullable|string',
+      // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'kk'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'surat'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'spph'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'bpih'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
       'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-
       // Validasi checkbox dokumen
       'dokumen'    => 'nullable|array',
       'dokumen.*'  => 'exists:m_dok_hajis,id',
@@ -681,12 +747,14 @@ class TDaftarHajiController extends Controller
         'paket_haji'     => $validated['paket_haji'],
         'bpjs'           => $validated['bpjs'],
         'bank'           => $validated['bank'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan'        => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
       TGabungHaji::create([
         'customer_id'   => $customer->id,
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'daftar_haji_id' => $daftarHaji->id
       ]);
 
@@ -705,6 +773,7 @@ class TDaftarHajiController extends Controller
       'cabang',
       'wilayahDaftar',
       'sumberInfo',
+      'keberangkatan',
       'customer'
     ])->findOrFail($id);
 
@@ -720,6 +789,7 @@ class TDaftarHajiController extends Controller
       'sumberInfo' => MSumberInfo::all(),
       'cabang' => MCabang::find($daftar_haji->cabang_id),
       'wilayahDaftar' => Kota::find($daftar_haji->wilayah_daftar),
+      'keberangkatan' => GroupKeberangkatan::all(),
       'dokumen' => MDokHaji::all(),
       'selected_documents' => $selected_documents,
       // Alamat KTP
@@ -739,6 +809,11 @@ class TDaftarHajiController extends Controller
 
   public function storeAmbilSemuaData(Request $request)
   {
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
       // Validasi untuk m_customers
       'nama'           => 'required|string|max:255',
@@ -772,8 +847,9 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|string',
+      'bpjs'           => 'required|digits:13|unique:t_daftar_hajis,bpjs',
       'bank'           => 'required|string',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -872,13 +948,15 @@ class TDaftarHajiController extends Controller
         'paket_haji'    => $validated['paket_haji'],
         'bpjs'          => $validated['bpjs'],
         'bank'          => $validated['bank'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
       TGabungHaji::create([
         'customer_id'   => $customer->id,
-        'daftar_haji_id' => $daftarHaji->id
+        'daftar_haji_id' => $daftarHaji->id,
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
       ]);
     });
 

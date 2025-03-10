@@ -3,22 +3,26 @@
   tabindex="-1" aria-labelledby="drawer-navigation-label">
 
    {{-- Judul & icon --}}
-  <div class="flex items-center">
-    <a href="https://erp.itnh.systems"
-      class="flex gap-x-2 p-2 justify-center items-center focus:ring-2 focus:ring-gray-300 rounded-lg font-bold text-white group">
-      <img class="w-[50px] bg-white p-2 rounded-lg group-hover:bg-gray-300" src="{{ asset('images/nhlogo.png') }}"
-        alt="Logo">
-      <span class="group-hover:text-gray-300">Pendaftaran Haji</span>
-    </a>
+  <div class="flex items-center justify-between">
+    <div>
+      <a href="https://erp.itnh.systems"
+        class="flex gap-x-2 p-2 justify-center items-center focus:ring-2 focus:ring-gray-300 rounded-lg font-bold text-white group">
+        <img class="w-[50px] bg-white p-2 rounded-lg group-hover:bg-gray-300" src="{{ asset('images/nhlogo.png') }}"
+          alt="Logo">
+        <span class="group-hover:text-gray-300">APP KBIH</span>
+      </a>
+    </div>
 
-    <button
-      class="text-white hover:text-gray-300 focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm focus:outline-none "
-      type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-        fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h10" />
-      </svg>
-    </button>
+    <div>
+      <button
+        class="text-white hover:text-gray-300 focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm focus:outline-none "
+        type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation">
+        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h10" />
+        </svg>
+      </button>
+    </div>
   </div>
 
    {{-- @php

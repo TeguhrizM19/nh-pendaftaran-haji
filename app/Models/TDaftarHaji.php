@@ -10,6 +10,7 @@ use App\Models\Provinsi;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\MSumberInfo;
+use App\Models\GroupKeberangkatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -48,6 +49,11 @@ class TDaftarHaji extends Model
   public function tempatLahir()
   {
     return $this->belongsTo(Kota::class, 'tempat_lahir');
+  }
+
+  public function keberangkatan()
+  {
+    return $this->belongsTo(GroupKeberangkatan::class, 'keberangkatan_id');
   }
 
   // Awal Relasi Wilayah Indonesia

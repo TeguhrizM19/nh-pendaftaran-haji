@@ -20,7 +20,9 @@ return new class extends Migration
       $table->bigInteger('no_porsi')->nullable();
       $table->string('nama_bank')->nullable();
       $table->integer('kota_bank')->nullable();
-      $table->string('depag')->nullable();
+      $table->integer('depag')->nullable();
+      $table->text('dokumen')->nullable();
+      $table->string('pelunasan')->nullable();
       $table->text('catatan')->nullable();
       $table->string('create_user', 100)->nullable();
       $table->date('create_date')->nullable();

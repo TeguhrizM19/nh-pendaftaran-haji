@@ -27,6 +27,8 @@ Route::get('/search-kota/{provinsi_id}', [PencarianSelect2Controller::class, 'se
 Route::get('/search-kecamatan/{kota_id}', [PencarianSelect2Controller::class, 'searchKecamatan']);
 Route::get('/search-kelurahan/{kecamatan_id}', [PencarianSelect2Controller::class, 'searchKelurahan']);
 Route::get('/kota-bank/search', [PencarianSelect2Controller::class, 'searchKotaBank'])->name('kota-bank.search');
+Route::get('/depag/search', [PencarianSelect2Controller::class, 'searchDepag'])->name('depag.search');
+Route::get('/keberangkatan/search', [PencarianSelect2Controller::class, 'searchKeberangkatan'])->name('keberangkatan.search');
 
 Route::get('/get-no-porsi', [PencarianSelect2Controller::class, 'searchNoPorsi']);
 Route::get('/filter-no-porsi', [PencarianSelect2Controller::class, 'filterNoPorsi']);

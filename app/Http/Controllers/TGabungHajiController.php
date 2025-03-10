@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kota;
 use App\Models\Customer;
+use App\Models\MDokHaji;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -97,7 +98,10 @@ class TGabungHajiController extends Controller
     return view('gabung-haji.create', [
       'kotaBank' => $kota,
       'tempatLahir' => $kota,
+      'depag' => $kota,
+      'dokumen' => MDokHaji::all(),
       'provinsi' => Provinsi::all(),
+      'keberangkatan' => GroupKeberangkatan::all(),
 
       // KTP
       'selectedProvinsi' => old('provinsi_ktp'),
@@ -105,6 +109,7 @@ class TGabungHajiController extends Controller
       'selectedKecamatan' => old('kecamatan_ktp'),
       'selectedKelurahan' => old('kelurahan_ktp'),
       'selectedKotaBank' => old('kota_bank'),
+      'selectedDepag' => old('depag'),
       'namaKota' => Kota::find(old('kota_ktp'))?->kota,
       'namaKecamatan' => Kecamatan::find(old('kecamatan_ktp'))?->kecamatan,
       'namaKelurahan' => Kelurahan::find(old('kelurahan_ktp'))?->kelurahan,
@@ -126,7 +131,13 @@ class TGabungHajiController extends Controller
 
   public function store(Request $request)
   {
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
+      // m_customers
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
       'no_hp_1' => 'nullable|string|max:15',
@@ -152,13 +163,18 @@ class TGabungHajiController extends Controller
       'kota_domisili' => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
-
-      'no_spph' => 'nullable|integer',
+      // t_gabung_hajis
+      'no_spph'  => 'required|digits:9|unique:t_gabung_hajis,no_spph',
       'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
-      'depag' => 'nullable|string',
+      'depag' => 'nullable|integer',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan' => 'nullable|string',
+
+      // Validasi checkbox dokumen
+      'dokumen'    => 'nullable|array',
+      'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
     DB::transaction(function () use ($validated) {
@@ -197,6 +213,8 @@ class TGabungHajiController extends Controller
         'nama_bank' => $validated['nama_bank'],
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
         'catatan' => $validated['catatan'],
       ]);
     });
@@ -219,14 +237,21 @@ class TGabungHajiController extends Controller
   public function edit($id)
   {
     // Sama seperti function ambilSemuaData: Load semua relasi dalam satu query
-    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank'])->find($id);
+    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank', 'depag', 'keberangkatan'])->find($id);
 
     $customer = $gabung_haji->customer;
+
+    // Decode dokumen dari JSON ke array, pastikan tidak null
+    $selected_documents = json_decode($gabung_haji->dokumen, true) ?? [];
 
     return view('gabung-haji.edit', [
       'gabung_haji' => $gabung_haji,
       'customer' => $customer,
       'kotaBank' => Kota::find($gabung_haji->kota_bank),
+      'depag' => Kota::find($gabung_haji->depag),
+      'keberangkatan' => GroupKeberangkatan::find($gabung_haji->keberangkatan_id),
+      'dokumen' => MDokHaji::all(),
+      'selected_documents' => $selected_documents,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
       'provinsi_ktp' => Provinsi::find($customer->provinsi_ktp),
@@ -251,6 +276,11 @@ class TGabungHajiController extends Controller
     $gabung_haji = TGabungHaji::findOrFail($id);
     $customer = Customer::findOrFail($gabung_haji->customer_id);
 
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
@@ -259,11 +289,7 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => [
-        'nullable',
-        'string',
-        Rule::unique('m_customers', 'no_id')->ignore($customer->id) // **No ID unique**
-      ],
+      'no_id' => ['required', 'numeric', 'digits:16', Rule::unique('m_customers', 'no_id')->ignore($customer->id)],
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -282,16 +308,17 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
-      'no_spph' => 'nullable|integer',
-      'no_porsi' => [
-        'nullable',
-        'integer',
-        Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id) // **No Porsi unique**
-      ],
+      'no_spph' => ['required', 'numeric', 'digits:9', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
+      'no_porsi' => ['required', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
-      'depag' => 'nullable|string',
+      'depag' => 'nullable|integer',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan' => 'nullable|string',
+
+      // Validasi checkbox dokumen
+      'dokumen'    => 'nullable|array',
+      'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
     DB::transaction(function () use ($validated, $customer, $gabung_haji) {
@@ -331,7 +358,9 @@ class TGabungHajiController extends Controller
         'nama_bank' => $validated['nama_bank'],
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan' => $validated['catatan'],
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 
@@ -386,14 +415,21 @@ class TGabungHajiController extends Controller
   public function repeatDataGabung($id)
   {
     // Sama seperti function ambilSemuaData: Load semua relasi dalam satu query
-    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank'])->find($id);
+    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank', 'depag'])->find($id);
 
     $customer = $gabung_haji->customer;
+
+    // Decode dokumen dari JSON ke array, pastikan tidak null
+    $selected_documents = json_decode($gabung_haji->dokumen, true) ?? [];
 
     return view('gabung-haji.repeat-data', [
       'gabung_haji' => $gabung_haji,
       'customer' => $customer,
       'kotaBank' => Kota::find($gabung_haji->kota_bank),
+      'depag' => Kota::find($gabung_haji->depag),
+      'keberangkatan' => GroupKeberangkatan::all(),
+      'dokumen' => MDokHaji::all(),
+      'selected_documents' => $selected_documents,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
       'provinsi_ktp' => Provinsi::find($customer->provinsi_ktp),
@@ -414,6 +450,11 @@ class TGabungHajiController extends Controller
     $gabung_haji = TGabungHaji::findOrFail($id);
     $customer = Customer::findOrFail($gabung_haji->customer_id);
 
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
@@ -422,11 +463,7 @@ class TGabungHajiController extends Controller
       'tempat_lahir' => 'nullable|integer|exists:m_kotas,id',
       'tgl_lahir' => 'nullable|date',
       'jenis_id' => 'nullable|string',
-      'no_id' => [
-        'nullable',
-        'string',
-        Rule::unique('m_customers', 'no_id')->ignore($customer->id) // **No ID unique**
-      ],
+      'no_id' => ['required', 'numeric', 'digits:16', Rule::unique('m_customers', 'no_id')->ignore($customer->id)],
       'jenis_kelamin' => 'nullable|string',
       'status_nikah' => 'nullable|string',
       'warga' => 'nullable|string',
@@ -445,16 +482,17 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
-      'no_spph' => 'nullable|integer',
-      'no_porsi' => [
-        'nullable',
-        'integer',
-        Rule::unique('t_gabung_hajis', 'no_porsi') // **No Porsi unique**
-      ],
+      'no_spph' => ['required', 'numeric', 'digits:9', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
+      'no_porsi' => ['required', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
-      'depag' => 'nullable|string',
+      'depag' => 'nullable|integer',
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'catatan' => 'nullable|string',
+
+      // Validasi checkbox dokumen
+      'dokumen'    => 'nullable|array',
+      'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
     DB::transaction(function () use ($validated, $customer) {
@@ -495,26 +533,33 @@ class TGabungHajiController extends Controller
         'nama_bank' => $validated['nama_bank'],
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'catatan' => $validated['catatan'],
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 
     return redirect('/gabung-haji')->with('success', 'Data berhasil ditambahkan!');
   }
 
-
-
   public function ambilSemuaData($id)
   {
     // Sama seperti function ambilSemuaData: Load semua relasi dalam satu query
-    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank'])->find($id);
+    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank', 'depag'])->find($id);
 
     $customer = $gabung_haji->customer;
+
+    // Decode dokumen dari JSON ke array, pastikan tidak null
+    $selected_documents = json_decode($gabung_haji->dokumen, true) ?? [];
 
     return view('gabung-haji.ambil-semua-data', [
       'gabung_haji' => $gabung_haji,
       'customer' => $customer,
       'kotaBank' => Kota::find($gabung_haji->kota_bank),
+      'depag' => Kota::find($gabung_haji->depag),
+      'keberangkatan' => GroupKeberangkatan::all(),
+      'dokumen' => MDokHaji::all(),
+      'selected_documents' => $selected_documents,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
       'provinsi_ktp' => Provinsi::find($customer->provinsi_ktp),
@@ -532,6 +577,11 @@ class TGabungHajiController extends Controller
 
   public function storeAmbilSemuaData(Request $request)
   {
+    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
+    $request->merge([
+      'keberangkatan_id' => $request->keberangkatan_id ?: null,
+    ]);
+
     $validated = $request->validate([
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
@@ -559,12 +609,17 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
-      'no_spph' => 'nullable|integer',
+      'no_spph'  => 'required|digits:9|unique:t_gabung_hajis,no_spph',
       'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
-      'depag' => 'nullable|string',
+      'depag' => 'nullable|integer',
+      'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
       'catatan' => 'nullable|string',
+
+      // Validasi checkbox dokumen
+      'dokumen'    => 'nullable|array',
+      'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
     DB::transaction(function () use ($validated) {
@@ -603,6 +658,8 @@ class TGabungHajiController extends Controller
         'nama_bank' => $validated['nama_bank'],
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
         'catatan' => $validated['catatan'],
       ]);
     });

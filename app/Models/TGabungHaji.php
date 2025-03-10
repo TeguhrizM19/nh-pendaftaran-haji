@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\MDokHaji;
 use App\Models\TDaftarHaji;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,6 +34,16 @@ class TGabungHaji extends Model
     return $this->belongsTo(Kota::class, 'tempat_lahir', 'id');
   }
 
+  public function depag()
+  {
+    return $this->belongsTo(Kota::class, 'depag', 'id');
+  }
+
+  public function dokumen()
+  {
+    return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_documents', 'gabung_haji_id', 'dokumen_id');
+  }
+
   // Relasi ke Provinsi
   public function provinsi()
   {
@@ -49,7 +60,6 @@ class TGabungHaji extends Model
   {
     return $this->belongsTo(Kota::class, 'kota_id');
   }
-
 
   // Relasi ke Kecamatan
   public function kecamatan()

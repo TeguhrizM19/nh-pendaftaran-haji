@@ -77,17 +77,27 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
-            {{-- <div>
-              <label class="block text-sm font-medium leading-6 text-[#099AA7]">Estimasi Barangkat</label>
-              <input type="number" name="estimasi" min="1900" max="2099" step="1" placeholder="YYYY" 
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
-            </div> --}}
-
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" 
-              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              <input type="number" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+              
+              @error('bpjs')
+              <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
+              <select name="keberangkatan_id" id="keberangkatan" class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                @if($keberangkatan)
+                  <option value="{{ $keberangkatan->id }}" selected>
+                    {{ $keberangkatan->keberangkatan }}
+                  </option>
+                @endif
+              </select>
+              
             </div>
           </div>
 
@@ -329,6 +339,7 @@
               @endforeach
             </ul>
           </div>
+          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
             <!-- KTP -->
             <div>
@@ -636,6 +647,31 @@
           return {
             results: $.map(data, function (item) {
               return { id: item.id, text: item.kota };
+            })
+          };
+        },
+        cache: true
+      }
+    });
+  });
+
+  // Keberangkatan
+  $(document).ready(function () { 
+    $('#keberangkatan').select2({
+      placeholder: "Pilih Tahun Kerangkatan",
+      allowClear: true,
+      width: '100%',
+      ajax: {
+        url: "{{ route('keberangkatan.search') }}", // Route API untuk pencarian cabang
+        dataType: 'json',
+        delay: 250, // Mengurangi beban server dengan menunda request
+        data: function (params) {
+          return { q: params.term || '' }; // Langsung mencari meskipun input kosong
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return { id: item.id, text: item.keberangkatan };
             })
           };
         },

@@ -23,8 +23,8 @@ return new class extends Migration
       $table->bigInteger('bpjs')->nullable();
       $table->text('dokumen')->nullable();
       $table->string('bank')->nullable();
+      $table->string('pelunasan')->nullable();
       $table->text('catatan')->nullable();
-      // $table->integer('estimasi')->nullable();
       $table->string('create_user', 100)->nullable();
       $table->date('create_date')->nullable();
       $table->timestamps();
