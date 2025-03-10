@@ -151,7 +151,7 @@
               <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
-                    <input id="pelunasan_haji" type="radio" value="Lunas" name="pelunasan" required
+                    <input id="pelunasan_haji" type="radio" value="Lunas" name="pelunasan"
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
                       {{ $daftar_haji->pelunasan == 'Lunas' ? 'checked' : '' }}>
                     <label for="pelunasan_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
@@ -243,7 +243,7 @@
               <select name="tempat_lahir" id="tempat_lahir" 
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->tempat_lahir }}" selected>
-                  {{ $customer->tempatLahir->kota ?? 'Pilih Tempat Lahir' }}
+                  {{ $customer->tempatLahir->kota_lahir ?? 'Pilih Tempat Lahir' }}
                 </option>
               </select>
             </div>

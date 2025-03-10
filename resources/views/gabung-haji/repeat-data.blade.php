@@ -283,7 +283,7 @@
               <select name="tempat_lahir"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm">
                 <option value="{{ $customer->tempat_lahir }}" selected>
-                  {{ $customer->tempatLahir->kota ?? 'Pilih Tempat Lahir' }}
+                  {{ $customer->tempatLahir->kota_lahir ?? 'Pilih Tempat Lahir' }}
                 </option>
               </select>
             </div>

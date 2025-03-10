@@ -472,7 +472,7 @@ class TDaftarHajiController extends Controller
         'bpjs' => $validated['bpjs'],
         'bank' => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
+        'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -755,7 +755,7 @@ class TDaftarHajiController extends Controller
         'bpjs'           => $validated['bpjs'],
         'bank'           => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan'       => $validated['pelunasan'], // Pelunasan Haji
+        'pelunasan'       => $validated['pelunasan'] ?? null, // Pelunasan Haji
         'catatan'        => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -959,7 +959,7 @@ class TDaftarHajiController extends Controller
         'bpjs'          => $validated['bpjs'],
         'bank'          => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan'       => $validated['pelunasan'],
+        'pelunasan'       => $validated['pelunasan'] ?? null,
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);

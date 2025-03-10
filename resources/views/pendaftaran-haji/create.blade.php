@@ -262,7 +262,7 @@
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempatLahir as $kt)
                   <option value="{{ $kt->id }}" {{ old('tempat_lahir') == $kt->id ? 'selected' : '' }}>
-                    {{ $kt->kota }}
+                    {{ $kt->kota_lahir }}
                   </option>
                 @empty
                   <option value="">Tempat Lahir masih kosong</option>
