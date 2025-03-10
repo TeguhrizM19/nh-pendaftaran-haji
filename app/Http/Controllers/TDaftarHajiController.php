@@ -152,9 +152,10 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|digits:13|unique:t_daftar_hajis,bpjs',
+      'bpjs'           => 'required|digits:13',
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      // 'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -278,6 +279,7 @@ class TDaftarHajiController extends Controller
         'bpjs'          => $validated['bpjs'],
         'bank'          => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        // 'pelunasan'       => $validated['pelunasan'], // Pelunasan Haji
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -388,9 +390,11 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
+      'bpjs'           => 'required|digits:13',
+      // 'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
       'bank'   => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -468,6 +472,7 @@ class TDaftarHajiController extends Controller
         'bpjs' => $validated['bpjs'],
         'bank' => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -668,9 +673,11 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
+      'bpjs'           => 'required|digits:13',
+      // 'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -748,6 +755,7 @@ class TDaftarHajiController extends Controller
         'bpjs'           => $validated['bpjs'],
         'bank'           => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'pelunasan'       => $validated['pelunasan'], // Pelunasan Haji
         'catatan'        => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -847,9 +855,11 @@ class TDaftarHajiController extends Controller
       'sumber_info_id' => 'required|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'required|exists:m_kotas,id',
       'paket_haji'     => 'required|string',
-      'bpjs'           => 'required|digits:13|unique:t_daftar_hajis,bpjs',
+      'bpjs'           => 'required|digits:13',
+      // 'bpjs'           => 'required|digits:13|unique:t_daftar_hajis,bpjs',
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -949,6 +959,7 @@ class TDaftarHajiController extends Controller
         'bpjs'          => $validated['bpjs'],
         'bank'          => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'pelunasan'       => $validated['pelunasan'],
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);

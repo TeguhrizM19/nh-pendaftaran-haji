@@ -170,6 +170,7 @@ class TGabungHajiController extends Controller
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -214,8 +215,9 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
         'catatan' => $validated['catatan'],
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 
@@ -314,6 +316,7 @@ class TGabungHajiController extends Controller
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -359,6 +362,7 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'pelunasan' => $validated['pelunasan'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -488,6 +492,7 @@ class TGabungHajiController extends Controller
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      // 'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -534,6 +539,7 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        // 'pelunasan' => $validated['pelunasan'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -583,6 +589,7 @@ class TGabungHajiController extends Controller
     ]);
 
     $validated = $request->validate([
+      // m_customers
       'nama' => 'nullable|string|max:255',
       'panggilan' => 'nullable|string|max:50',
       'no_hp_1' => 'nullable|string|max:15',
@@ -608,13 +615,14 @@ class TGabungHajiController extends Controller
       'kota_domisili' => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
-
+      // t_gabung_hajis
       'no_spph'  => 'required|digits:9|unique:t_gabung_hajis,no_spph',
       'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
-      'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+      'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -659,8 +667,9 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
         'catatan' => $validated['catatan'],
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 

@@ -15,13 +15,14 @@ class KotaSeeder extends Seeder
   {
     DB::table('m_kotas')->delete(); // Hapus semua data tanpa menghapus struktur tabel
 
-    $data = DB::table('m_kota')->where('id_kota', '!=', 0)->get();
+    $data = DB::table('m_kota')->where('id', '!=', 0)->get();
 
     foreach ($data as $item) {
       DB::table('m_kotas')->insert([
-        'id' => $item->id_kota,
-        'provinsi_id' => $item->id_prov, // Asumsikan ada kolom ini
+        'id' => $item->id,
+        'provinsi_id' => $item->provinsi_id, // Asumsikan ada kolom ini
         'kota' => $item->kota,
+        'kota_lahir' => $item->kota_lahir,
       ]);
     }
   }

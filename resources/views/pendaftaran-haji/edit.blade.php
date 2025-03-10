@@ -79,8 +79,8 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              <label for="bpjs" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
+              <input type="number" id="bpjs" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
               @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
               @error('bpjs')
@@ -97,11 +97,10 @@
                   </option>
                 @endif
               </select>
-              
             </div>
           </div>
 
-          <div class="mt-1">
+          <div class="mt-3">
             <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
             <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
               <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
@@ -143,7 +142,72 @@
                 </div>
               </li>
             </ul>
-          </div>                  
+          </div>    
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <!-- Dropdown Pelunasan haji -->
+            <div class="w-full">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Pelunasan haji</h3>
+              <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="pelunasan_haji" type="radio" value="Lunas" name="pelunasan" required
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $daftar_haji->pelunasan == 'Lunas' ? 'checked' : '' }}>
+                    <label for="pelunasan_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Lunas
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center ps-3">
+                    <input id="belum_lunas" type="radio" value="Belum Lunas" name="pelunasan"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $daftar_haji->pelunasan == 'Belum Lunas' ? 'checked' : '' }}>
+                    <label for="belum_lunas" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Belum Lunas
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            {{-- <div class="w-full">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Status</h3>
+              <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $customer->status_nikah == 'Menikah' ? 'checked' : '' }}>
+                    <label for="menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Menikah
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="belum-menikah" type="radio" value="Belum Menikah" name="status_nikah"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $customer->status_nikah == 'Belum Menikah' ? 'checked' : '' }}>
+                    <label for="belum-menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Belum Menikah
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center ps-3">
+                    <input id="janda-duda" type="radio" value="Janda/Duda" name="status_nikah"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $customer->status_nikah == 'Janda/Duda' ? 'checked' : '' }}>
+                    <label for="janda-duda" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Janda/Duda
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div> --}}
+          </div>
 
           <div>
             <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
