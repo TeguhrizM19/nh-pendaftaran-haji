@@ -159,12 +159,12 @@
       <tr>
         <td class="label">Bank / Jumlah Setoran</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->kotaBank->kota_lahir }}</td>
+        <td>{{ $gabung->kotaBank->kota_lahir ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Depag</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->depag }}</td>
+        <td>{{ $gabung->depag ?? '-' }}</td>
       </tr>
       {{-- <tr>
         <td class="label">Wilayah Daftar</td>
@@ -227,12 +227,12 @@
       <tr>
         <td class="label">No Telepon</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->customer->no_hp_1 }}</td>
+        <td>{{ $gabung->customer->no_hp_1 ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Profesi</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->customer->pekerjaan }}</td>
+        <td>{{ $gabung->customer->pekerjaan ?? '-' }}</td>
       </tr>
     </table>
 

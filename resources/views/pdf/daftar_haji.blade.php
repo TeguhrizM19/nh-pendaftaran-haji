@@ -149,27 +149,27 @@
       <tr>
         <td class="label">Nomor Porsi Haji</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->no_porsi_haji }}</td>
+        <td>{{ $daftar->no_porsi_haji ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Paket Pendaftaran</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->paket_haji }}</td>
+        <td>{{ $daftar->paket_haji ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Bank / Jumlah Setoran</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->bank }}</td>
+        <td>{{ $daftar->bank ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Wilayah Daftar</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->wilayahDaftar->kota_lahir }}</td>
+        <td>{{ $daftar->wilayahDaftar->kota_lahir ?? '-' }}</td>
       </tr>
       <tr>
         <td class="label">Sumber Informasi</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->sumberInfo->info }}</td>
+        <td>{{ $daftar->sumberInfo->info ?? '-' }}</td>
       </tr>
     </table>
 
