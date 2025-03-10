@@ -83,7 +83,7 @@
                   <option value="">Pilih Kota Bank</option>
                   @foreach ($kotaBank as $kb)
                     <option value="{{ $kb->id }}" {{ old('kota_bank', $selectedKotaBank ?? '') == $kb->id ? 'selected' : '' }}>
-                      {{ $kb->kota }}
+                      {{ $kb->kota_lahir }}
                     </option>
                   @endforeach
                 </select>

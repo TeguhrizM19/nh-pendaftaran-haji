@@ -65,7 +65,7 @@
                 <option value="">Pilih</option>
                 @forelse ($wilayahKota as $wilayah)
                   <option value="{{ $wilayah->id }}" {{ old('wilayah_daftar') == $wilayah->id ? 'selected' : '' }}>
-                      {{ $wilayah->kota }}
+                      {{ $wilayah->kota_lahir }}
                   </option>
                 @empty
                   <option value="">Wilayah Masih Kosong</option>

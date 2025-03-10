@@ -159,7 +159,7 @@
       <tr>
         <td class="label">Bank / Jumlah Setoran</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->kotaBank->kota }}</td>
+        <td>{{ $gabung->kotaBank->kota_lahir }}</td>
       </tr>
       <tr>
         <td class="label">Depag</td>

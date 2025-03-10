@@ -75,7 +75,7 @@
                 <select name="kota_bank" id="kota_bank" 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   @if(isset($gabung_haji->kota_bank))
-                    <option value="{{ $gabung_haji->kota_bank }}" selected>{{ $kotaBank->kota ?? 'Pilih Wilayah Daftar' }}</option>
+                    <option value="{{ $gabung_haji->kota_bank }}" selected>{{ $kotaBank->kota_lahir ?? 'Pilih Wilayah Daftar' }}</option>
                   @endif
                 </select>
               </div>

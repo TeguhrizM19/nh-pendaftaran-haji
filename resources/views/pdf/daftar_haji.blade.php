@@ -164,7 +164,7 @@
       <tr>
         <td class="label">Wilayah Daftar</td>
         <td class="separator">:</td>
-        <td>{{ $daftar->wilayahDaftar->kota }}</td>
+        <td>{{ $daftar->wilayahDaftar->kota_lahir }}</td>
       </tr>
       <tr>
         <td class="label">Sumber Informasi</td>
@@ -189,7 +189,7 @@
         <td class="label">Tempat & Tanggal Lahir</td>
         <td class="separator">:</td>
         <td>
-          {{ $daftar->customer->tempatLahir->kota ?? '-' }} / 
+          {{ $daftar->customer->tempatLahir->kota_lahir ?? '-' }} / 
           {{ \Carbon\Carbon::parse($daftar->customer->tgl_lahir)->translatedFormat('d-F-Y') }}
         </td>
       </tr>   
