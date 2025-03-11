@@ -1,14 +1,29 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\GroupKeberangkatanController;
 use App\Http\Controllers\PencarianSelect2Controller;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('dashboard');
+Route::middleware(['guest'])->group(function () {
+  Route::get('/', [SessionController::class, 'index'])->name('login');
+  Route::post('/', [SessionController::class, 'login']);
+});
+
+Route::middleware(['auth'])->group(function () {
+  Route::get('/dashboard', [DashboardController::class, 'index']);
+  Route::post('/logout', [SessionController::class, 'logout']);
+  Route::get('/logout', function () {
+    return redirect('/');
+  });
+
+  // Route User
+  Route::resource('/user', UserController::class);
 });
 
 // Route Pendaftaran Haji
@@ -54,12 +69,16 @@ Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambi
 Route::post('/ambil-semua-data-gabung/{id}/store', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
 
 // Route Keberangkatan
-Route::resource('/keberangkatan', GroupKeberangkatanController::class);
-Route::get('/peserta-keberangkatan', [GroupKeberangkatanController::class, 'indexKeberangkatan']);
-Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
+Route::middleware(['auth', 'userAkses:super_admin,admin'])->group(function () {
+  Route::resource('/keberangkatan', GroupKeberangkatanController::class);
+  Route::get('/peserta-keberangkatan', [GroupKeberangkatanController::class, 'indexKeberangkatan']);
+  Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
     ->name('simpan.peserta.keberangkatan');
-Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
+  Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
     ->name('hapus.peserta.keberangkatan');
+});
+
+
 
 // Route::get('/create-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
 //     ->name('create.keberangkatan');

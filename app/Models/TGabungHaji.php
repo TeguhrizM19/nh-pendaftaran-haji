@@ -36,7 +36,13 @@ class TGabungHaji extends Model
 
   public function depag()
   {
-    return $this->belongsTo(Kota::class, 'depag', 'id');
+    return $this->belongsTo(Kota::class, 'depag', 'id')->select(['id', 'kota']);
+  }
+
+
+  public function kotaBank()
+  {
+    return $this->belongsTo(Kota::class, 'kota_bank', 'id');
   }
 
   public function dokumen()
@@ -48,11 +54,6 @@ class TGabungHaji extends Model
   public function provinsi()
   {
     return $this->belongsTo(Provinsi::class, 'provinsi_id');
-  }
-
-  public function kotaBank()
-  {
-    return $this->belongsTo(Kota::class, 'kota_bank', 'id');
   }
 
   // Relasi ke Kota

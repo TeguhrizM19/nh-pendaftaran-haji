@@ -27,13 +27,13 @@
 
     <div class="flex items-center md:order-2 gap-2 rtl:space-x-reverse">
 
-      {{-- @guest --}}
+      @guest
         <a href="https://erp.itnh.systems"
           class="block py-2 px-3 text-white hover:text-gray-300 font-semibold rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0">Login
         </a>
-      {{-- @endguest --}}
+      @endguest
 
-      {{-- @auth --}}
+      @auth
         <button type="button"
           class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 "
           id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
@@ -48,11 +48,11 @@
           <div class="px-4 py-3">
             <span
               class="block text-sm font-bold text-gray-900 truncate uppercase">
-              {{-- {{ Auth::user()->name }} --}}
+              {{ Auth::user()->name }}
             </span>
             <span
               class="block text-sm font-semibold text-gray-500 truncate uppercase">
-              {{-- {{ Auth::user()->role }} --}}
+              {{ Auth::user()->level }}
             </span>
           </div>
 
@@ -66,7 +66,7 @@
             </li>
           </ul>
         </div>
-      {{-- @endauth --}}
+      @endauth
 
       {{-- @auth --}}
         <button data-collapse-toggle="navbar-user" type="button"

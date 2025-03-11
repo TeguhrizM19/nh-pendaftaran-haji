@@ -81,6 +81,8 @@
           <th scope="col" class="px-6 py-3">Paket Pendaftaran</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>
+          <th scope="col" class="px-6 py-3">Pelunasan Haji</th>
+          <th scope="col" class="px-6 py-3">Pelunasan Manasik</th>
           <th scope="col" class="px-6 py-3">Cetak</th>
           <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>

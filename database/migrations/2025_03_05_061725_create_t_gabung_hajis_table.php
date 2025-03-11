@@ -23,6 +23,7 @@ return new class extends Migration
       $table->integer('depag')->nullable();
       $table->text('dokumen')->nullable();
       $table->string('pelunasan')->nullable();
+      $table->string('pelunasan_manasik', 25)->nullable();
       $table->text('catatan')->nullable();
       $table->string('create_user', 100)->nullable();
       $table->date('create_date')->nullable();

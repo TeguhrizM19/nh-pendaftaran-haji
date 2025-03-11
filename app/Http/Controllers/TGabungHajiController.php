@@ -30,48 +30,58 @@ class TGabungHajiController extends Controller
     // Filter berdasarkan search umum
     if ($request->has('search')) {
       $search = $request->search;
-      $query->where('no_porsi', 'like', "%{$search}%")
-        ->orWhere('no_spph', 'like', "%{$search}%")
-        ->orWhereHas('customer', function ($q) use ($search) {
-          $q->where('nama', 'like', "%{$search}%")
-            ->orWhere('jenis_kelamin', 'like', "%{$search}%")
-            ->orWhere('no_hp_1', 'like', "%{$search}%");
-        })
-        ->orWhereHas('daftarHaji', function ($q) use ($search) {
-          $q->where('no_porsi_haji', 'like', "%{$search}%");
-        });
+      $query->where(function ($q) use ($search) {
+        $q->where('no_porsi', 'like', "%{$search}%")
+          ->orWhere('no_spph', 'like', "%{$search}%")
+          ->orWhereHas('customer', function ($q) use ($search) {
+            $q->where('nama', 'like', "%{$search}%")
+              ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+              ->orWhere('no_hp_1', 'like', "%{$search}%");
+          })
+          ->orWhereHas('daftarHaji', function ($q) use ($search) {
+            $q->where('no_porsi_haji', 'like', "%{$search}%");
+          });
+      });
 
       $isFiltered = true;
     }
 
     // Filter berdasarkan rentang nomor porsi haji
-    if ($request->has('no_porsi_haji_1') && $request->has('no_porsi_haji_2')) {
+    if ($request->filled('no_porsi_haji_1') && $request->filled('no_porsi_haji_2')) {
       $noPorsi1 = $request->no_porsi_haji_1;
       $noPorsi2 = $request->no_porsi_haji_2;
 
-      if (!empty($noPorsi1) && !empty($noPorsi2)) {
-        $query->whereBetween('no_porsi', [$noPorsi1, $noPorsi2])
-          ->orWhereHas('daftarHaji', function ($q) use ($noPorsi1, $noPorsi2) {
-            $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
-          });
-        $isFiltered = true;
-      }
+      $query->whereBetween('no_porsi', [$noPorsi1, $noPorsi2])
+        ->orWhereHas('daftarHaji', function ($q) use ($noPorsi1, $noPorsi2) {
+          $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
+        });
+
+      $isFiltered = true;
     }
 
     // Filter berdasarkan keberangkatan
-    if ($request->has('keberangkatan') && !empty($request->keberangkatan)) {
+    if ($request->filled('keberangkatan')) {
       $query->where('keberangkatan_id', $request->keberangkatan);
       $isFiltered = true;
     }
 
-    // Jika filter aktif, tampilkan semua data tanpa pagination
-    if ($isFiltered) {
-      $gabung_haji = $query->get();
-    } else {
-      $gabung_haji = $query->latest()->paginate(5);
+    // **Filter berdasarkan pelunasan (dari t_gabung_hajis & t_daftar_hajis)**
+    if ($request->filled('pelunasan')) {
+      $pelunasan = $request->pelunasan;
+      $query->where(function ($q) use ($pelunasan) {
+        $q->where('pelunasan', $pelunasan) // Dari t_gabung_hajis
+          ->orWhereHas('daftarHaji', function ($q) use ($pelunasan) {
+            $q->where('pelunasan', $pelunasan); // Dari t_daftar_hajis
+          });
+      });
+
+      $isFiltered = true;
     }
 
-    // Ambil data keberangkatan
+    // Jika filter aktif, tampilkan semua data tanpa pagination
+    $gabung_haji = $isFiltered ? $query->latest()->get() : $query->latest()->paginate(5);
+
+    // Ambil data keberangkatan yang sudah ada sebelumnya
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
@@ -84,8 +94,10 @@ class TGabungHajiController extends Controller
     return view('gabung-haji.index', [
       'gabung_haji' => $gabung_haji,
       'keberangkatan' => $keberangkatan,
+      'isFiltered' => $isFiltered
     ]);
   }
+
 
   /**
    * Show the form for creating a new resource.
@@ -164,13 +176,14 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // t_gabung_hajis
-      'no_spph'  => 'required|digits:9|unique:t_gabung_hajis,no_spph',
+      'no_spph'  => 'required|unique:t_gabung_hajis,no_spph',
       'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -216,6 +229,7 @@ class TGabungHajiController extends Controller
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -310,13 +324,14 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
-      'no_spph' => ['required', 'numeric', 'digits:9', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
+      'no_spph' => ['required', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
       'no_porsi' => ['required', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -363,6 +378,7 @@ class TGabungHajiController extends Controller
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'],
+        'pelunasan_manasik' => $validated['pelunasan_manasik'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -486,13 +502,14 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // Data t_gabung_hajis
-      'no_spph' => ['required', 'numeric', 'digits:9', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
+      'no_spph' => ['required', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
       'no_porsi' => ['required', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
-      // 'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -539,7 +556,8 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        // 'pelunasan' => $validated['pelunasan'],
+        'pelunasan' => $validated['pelunasan'],
+        'pelunasan_manasik' => $validated['pelunasan_manasik'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -616,13 +634,14 @@ class TGabungHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // t_gabung_hajis
-      'no_spph'  => 'required|digits:9|unique:t_gabung_hajis,no_spph',
+      'no_spph'  => 'required|unique:t_gabung_hajis,no_spph',
       'no_porsi'  => 'required|digits:10|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
 
       // Validasi checkbox dokumen
@@ -668,6 +687,7 @@ class TGabungHajiController extends Controller
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'],
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);

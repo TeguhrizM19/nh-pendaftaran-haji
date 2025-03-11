@@ -41,9 +41,11 @@ class PdfController extends Controller
 
     return $pdf->stream('pendaftaran-haji.pdf'); // Bisa juga pakai ->download()
   }
+
   public function cetakGabung($id)
   {
     $gabung = TGabungHaji::with([
+      'depag',
       'customer.provinsiKtp',
       'customer.kotaKtp',
       'customer.kecamatanKtp',
@@ -55,6 +57,8 @@ class PdfController extends Controller
       // 'wilayahDaftar',
       // 'sumberInfo'
     ])->findOrFail($id);
+    // dd($gabung->kotaBank);
+
 
     // ====================== Dokumen ======================
     // $dokumenIds = is_array($daftar->dokumen) ? $daftar->dokumen : json_decode($daftar->dokumen, true) ?? [];

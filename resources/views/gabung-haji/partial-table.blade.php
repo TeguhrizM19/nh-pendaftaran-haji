@@ -27,6 +27,24 @@
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->customer->no_hp_1 }}
     </th>
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      @if (!empty($gabung->pelunasan))
+          {{ $gabung->pelunasan }}
+      @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan))
+          {{ $gabung->daftarHaji->pelunasan }}
+      @else
+          -
+      @endif
+    </th>
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      @if (!empty($gabung->pelunasan_manasik))
+          {{ $gabung->pelunasan_manasik }}
+      @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan_manasik))
+          {{ $gabung->daftarHaji->pelunasan_manasik }}
+      @else
+          -
+      @endif
+    </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
       <a href="{{ isset($gabung->daftarHaji) ? route('daftar_haji.cetak', $gabung->daftarHaji->id) : route('gabung_haji.cetak', $gabung->id) }}" 
         target="_blank" 

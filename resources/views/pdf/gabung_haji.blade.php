@@ -164,7 +164,10 @@
       <tr>
         <td class="label">Depag</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->depag ?? '-' }}</td>
+        {{-- <td>{{ isset($gabung['depag']) ? $gabung['depag']['kota'] : '-' }}</td> --}}
+        <td>{{ $gabung->depag }}
+        </td>
+
       </tr>
       {{-- <tr>
         <td class="label">Wilayah Daftar</td>

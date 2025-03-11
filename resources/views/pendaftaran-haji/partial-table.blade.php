@@ -18,6 +18,12 @@
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->customer->no_hp_1 }}
     </td>
+    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      {{ $daftar->pelunasan }}
+    </td>
+    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      {{ $daftar->pelunasan_manasik }}
+    </td>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       <a href="{{ route('daftar_haji.cetak', $daftar->id) }}" target="_blank" class="text-blue-600 hover:underline">
         <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

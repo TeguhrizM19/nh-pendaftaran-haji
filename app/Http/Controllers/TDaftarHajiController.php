@@ -156,6 +156,7 @@ class TDaftarHajiController extends Controller
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       // 'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      // 'pelunasan_manasik' => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -280,6 +281,7 @@ class TDaftarHajiController extends Controller
         'bank'          => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         // 'pelunasan'       => $validated['pelunasan'], // Pelunasan Haji
+        // 'pelunasan_manasik' => $validated['pelunasan_manasik'], // Pelunasan Haji
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -395,6 +397,7 @@ class TDaftarHajiController extends Controller
       'bank'   => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string', // Pelunasan Haji
       'catatan' => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -473,6 +476,7 @@ class TDaftarHajiController extends Controller
         'bank' => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null, // Pelunasan Haji
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -678,6 +682,7 @@ class TDaftarHajiController extends Controller
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -756,6 +761,7 @@ class TDaftarHajiController extends Controller
         'bank'           => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan'       => $validated['pelunasan'] ?? null, // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null, // Pelunasan Haji
         'catatan'        => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -860,6 +866,7 @@ class TDaftarHajiController extends Controller
       'bank'           => 'required|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string', // Pelunasan Haji
+      'pelunasan_manasik' => 'nullable|string', // Pelunasan Haji
       'catatan'        => 'nullable|string',
 
       // Validasi file upload
@@ -960,6 +967,7 @@ class TDaftarHajiController extends Controller
         'bank'          => $validated['bank'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan'       => $validated['pelunasan'] ?? null,
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan'       => $validated['catatan'],
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);

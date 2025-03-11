@@ -128,7 +128,7 @@
                 <li class="w-full">
                   <div class="flex items-center ps-3">
                     <input id="belum_lunas_haji" type="radio" value="Belum Lunas" name="pelunasan" 
-                      {{ old('pelunasan') == 'Belum Lunas' ? 'checked' : '' }}
+                      {{ old('pelunasan', 'Belum Lunas') == 'Belum Lunas' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="belum_lunas_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Belum Lunas
@@ -138,42 +138,32 @@
               </ul>
             </div>
           
-            <!-- Pelunasan.... -->
-            {{-- <div class="w-full">
-              <h3 class="mb-3 font-semibold text-[#099AA7]">Status</h3>
+            <!-- Pelunasan Manasik -->
+            <div class="w-full">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">Pelunasan Manasik</h3>
               <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
-                    <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
-                      {{ old('status_nikah') == 'Menikah' ? 'checked' : '' }} required
+                    <input id="lunas_manasik" type="radio" value="Lunas" name="pelunasan_manasik" 
+                      {{ old('pelunasan_manasik') == 'Lunas' ? 'checked' : '' }} required
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Menikah
-                    </label>
-                  </div>
-                </li>
-                <li class="w-full border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="belum-menikah" type="radio" value="Belum Menikah" name="status_nikah" 
-                      {{ old('status_nikah') == 'Belum Menikah' ? 'checked' : '' }}
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="belum-menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Belum Menikah
+                    <label for="lunas_manasik" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Lunas
                     </label>
                   </div>
                 </li>
                 <li class="w-full">
                   <div class="flex items-center ps-3">
-                    <input id="janda-duda" type="radio" value="Janda/Duda" name="status_nikah" 
-                      {{ old('status_nikah') == 'Janda/Duda' ? 'checked' : '' }}
+                    <input id="belum_lunas_manasik" type="radio" value="Belum Lunas" name="pelunasan_manasik" 
+                      {{ old('pelunasan_manasik', 'Belum Lunas') == 'Belum Lunas' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="janda-duda" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Janda/Duda
+                    <label for="belum_lunas_manasik" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Belum Lunas
                     </label>
                   </div>
                 </li>
               </ul>
-            </div> --}}
+            </div>
           </div>
 
           <!-- Kolom Dokumen -->

@@ -61,6 +61,7 @@
           <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Gabung KBIH</span>
         </a>
       </li>
+      @if (Auth::user()->level == 'super_admin' || Auth::user()->level == 'admin')
       <li>
         <a href="/peserta-keberangkatan"
           class="flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->is('peserta-keberangkatan') ? 'bg-white text-[#099AA7]' : 'text-white' }}">
@@ -70,41 +71,47 @@
           <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Keberangkatan</span>
         </a>
       </li>
+      @endif
 
       {{-- Master --}}
-      {{-- <li>
+      <li>
         <button
-            class="w-full flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->segment(1) == 'suplier' || request()->segment(1) == 'gudang' || request()->segment(1) == 'item' || request()->segment(1) == 'satuan' || request()->segment(1) == 'jenis' || request()->segment(1) == 'tipe-pembayaran' || request()->segment(1) == 'cabang' ? 'bg-white text-[#099AA7]' : 'text-white' }}"
-            aria-controls="dropdown-masters" data-collapse-toggle="dropdown-masters">
-            <div class="w-full flex justify-between items-center">
-                <div class="flex items-center">
-                    <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-[#099AA7]"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z"
-                            clip-rule="evenodd" />
-                    </svg>
+          class="w-full flex items-center p-2 rounded-lg hover:bg-gray-100 group text-white"
+          aria-controls="dropdown-masters" data-collapse-toggle="dropdown-masters">
+          <div class="w-full flex justify-between items-center">
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-[#099AA7]"
+                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                  d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z"
+                  clip-rule="evenodd" />
+              </svg>
 
-                    <span class="flex-1 ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Masters</span>
-                </div>
-
-                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-[#099AA7]"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="m19 9-7 7-7-7" />
-                </svg>
+              <span class="flex-1 ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Masters</span>
             </div>
+
+            <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-[#099AA7]"
+              aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="m19 9-7 7-7-7" />
+            </svg>
+          </div>
         </button>
 
         <ul id="dropdown-masters" class="hidden h-[160px] overflow-auto custom-scrollbar py-2 space-y-2">
-            <li>
-            <a href="/customer"
-              class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-white hover:text-[#099AA7] {{ request()->segment(1) == 'customer' ? 'bg-white text-[#099AA7]' : 'text-white' }}">Customer</a>
-            </li>
+          <li>
+            <a href="/user"
+              class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-white hover:text-[#099AA7] {{ request()->is('user') ? 'bg-white text-[#099AA7]' : 'text-white' }}">
+              <svg class="w-6 h-6 mr-3 transition duration-75 group-hover:text-[#099AA7]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+              </svg>
+              User
+            </a>
+          </li>
         </ul>
-      </li> --}}
+      </li>
     </ul>
   </div>
 </div>
