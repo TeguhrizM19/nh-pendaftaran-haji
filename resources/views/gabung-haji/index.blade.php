@@ -26,6 +26,25 @@
   </script>
   @endif
 
+  <style>
+    table {
+    table-layout: fixed; /* Paksa tabel mengikuti ukuran tetap */
+    width: 100%;
+}
+
+th, td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
+    max-width: 150px; /* Batasi lebar kolom */
+    word-break: break-word; /* Paksa teks turun ke bawah */
+    display: block; /* Pastikan tidak berdempetan */
+}
+  </style>
+
   <div>
     <x-page-title>Data Gabung KBIH</x-page-title>
   </div>
@@ -90,20 +109,20 @@
   </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-    <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">
+    <table class="table-auto w-full text-sm text-left rtl:text-right text-black bg-white border-collapse">
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
         <tr>
-          <th scope="col" class="px-6 py-3">No</th>
-          <th scope="col" class="px-6 py-3">Keberangkatan</th>
-          <th scope="col" class="px-6 py-3">No SPPH</th>
-          <th scope="col" class="px-6 py-3">No PORSI</th>
-          <th scope="col" class="px-6 py-3">Nama</th>
-          <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
-          <th scope="col" class="px-6 py-3">No Telpone</th>
-          <th scope="col" class="px-6 py-3">Pelunasan Haji</th>
-          <th scope="col" class="px-6 py-3">Pelunasan Manasik</th>
-          <th scope="col" class="px-6 py-3">Cetak</th>
-          <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+          <th scope="col" class="px-2 py-3 text-center">No</th>
+          <th scope="col" class="px-2 py-3">Keberangkatan</th>
+          <th scope="col" class="px-2 py-3">No SPPH</th>
+          <th scope="col" class="px-2 py-3">No PORSI</th>
+          <th scope="col" class="px-4 py-3 w-[150px] break-all whitespace-normal">Nama</th>
+          <th scope="col" class="px-2 py-3">Jenis Kelamin</th>
+          <th scope="col" class="px-2 py-3">No Telepon</th>
+          <th scope="col" class="px-2 py-3">Pelunasan Haji</th>
+          <th scope="col" class="px-2 py-3 w-36">Pelunasan Manasik</th>
+          <th scope="col" class="px-2 py-3">Cetak</th>
+          <th scope="col" class="px-2 py-3 text-center">Aksi</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -118,7 +137,7 @@
             {{ $gabung_haji->links('pagination::tailwind') }}
         </div>
     </div>
-@endif
+    @endif
   </div>
   
   <script>
@@ -146,176 +165,245 @@
       });
     });
 
-    // Search
-    document.addEventListener("DOMContentLoaded", function () {
-      const searchInput = document.getElementById("search-input");
-      const tableBody = document.getElementById("table-body");
-      const paginationContainer = document.getElementById("pagination-container");
-
-      searchInput.addEventListener("input", function () {
-        let searchTerm = searchInput.value.trim();
-        let url = searchTerm ? `/gabung-haji?search=${searchTerm}` : "/gabung-haji";
-
-        fetch(url, {
-          headers: {
-            "X-Requested-With": "XMLHttpRequest"
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.html) {
-            tableBody.innerHTML = data.html.trim();
-
-            // Sembunyikan pagination jika pencarian dilakukan
-            if (data.paginate) {
-              paginationContainer.style.display = "block";
-            } else {
-              paginationContainer.style.display = "none";
-            }
-          }
-        })
-        .catch(error => console.error("Error fetching data:", error));
-      });
-    });
-
-    // Filter rentang no porsi haji
-    document.addEventListener("DOMContentLoaded", function () {
-      const searchButton = document.getElementById("search-btn");
-      const tableBody = document.getElementById("table-body");
-      const paginationContainer = document.getElementById("pagination-container");
-      const noPorsi1 = document.getElementById("no_porsi_haji_1");
-      const noPorsi2 = document.getElementById("no_porsi_haji_2");
-
-      // Fungsi untuk me-reset tabel ke kondisi awal
-      function resetTable() {
-        fetch(`/gabung-haji`, {
-          headers: {
-            "X-Requested-With": "XMLHttpRequest"
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (tableBody) {
-            tableBody.innerHTML = data.html;
-          }
-
-          // Tampilkan pagination kembali
-          if (paginationContainer) {
-            paginationContainer.style.display = data.paginate ? "block" : "none";
-          }
-        })
-        .catch(error => console.error("Error fetching data:", error));
-      }
-
-      // Event listener untuk tombol pencarian
-      searchButton.addEventListener("click", function (event) {
-        event.preventDefault();
-        console.log("Tombol pencarian ditekan!");
-
-        let noPorsi1Value = noPorsi1.value.trim();
-        let noPorsi2Value = noPorsi2.value.trim();
-
-        console.log("No Porsi Haji 1:", noPorsi1Value);
-        console.log("No Porsi Haji 2:", noPorsi2Value);
-
-        fetch(`/gabung-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
-          headers: {
-            "X-Requested-With": "XMLHttpRequest"
-          }
-        })
-          .then(response => response.json())
-          .then(data => {
-            if (tableBody) {
-              tableBody.innerHTML = data.html;
-            }
-
-            // Sembunyikan pagination jika filter aktif
-            if (paginationContainer) {
-              paginationContainer.style.display = data.paginate ? "block" : "none";
-            }
-          })
-          .catch(error => console.error("Error fetching data:", error));
-        });
-
-      // Event listener saat tombol "x" ditekan pada input search
-      [noPorsi1, noPorsi2].forEach(input => {
-        input.addEventListener("input", function () {
-          if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
-            resetTable();
-          }
-        });
-      });
-    });
-
-    // Filter Tahun Keberangkatan
     $(document).ready(function () {
-      $('#keberangkatan').select2({
-        placeholder: "Pilih Keberangkatan",
-        allowClear: true,
-        width: '100%',
-        dropdownCssClass: 'custom-select2'
-      });
+  $('#keberangkatan').select2({
+    allowClear: true,
+    placeholder: "Pilih Tahun Keberangkatan",
+    width: '100%'
+  });
 
-      $('#keberangkatan').on('change', function () {
-        let tahunKeberangkatan = $(this).val();
-        $.ajax({
-          url: "{{ route('gabung-haji.index') }}",
-          type: "GET",
-          data: {
-            keberangkatan: tahunKeberangkatan
-          },
-          success: function (response) {
+  $('#pelunasan_haji').select2({
+    allowClear: true,
+    placeholder: "Pilih Status Pelunasan Haji",
+    width: '100%'
+  });
+
+  // Pastikan select2 clear juga menghapus nilai di form
+  $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+    $(this).val(null).trigger('change');
+    fetchFilteredData();
+  });
+
+  // Event listener untuk semua filter
+  $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2').on('change input', function () {
+    fetchFilteredData();
+  });
+
+  $('#search-btn').on('click', function (event) {
+    event.preventDefault();
+    fetchFilteredData();
+  });
+
+  function fetchFilteredData() {
+    let pelunasan = $('#pelunasan_haji').val();
+    let keberangkatan = $('#keberangkatan').val();
+    let noPorsi1 = $('#no_porsi_haji_1').val().trim();
+    let noPorsi2 = $('#no_porsi_haji_2').val().trim();
+    let search = $('#search-input').val().trim(); // Tambahkan pencarian
+
+    let params = {};
+    if (pelunasan) params.pelunasan = pelunasan;
+    if (keberangkatan) params.keberangkatan = keberangkatan;
+    if (noPorsi1) params.no_porsi_haji_1 = noPorsi1;
+    if (noPorsi2) params.no_porsi_haji_2 = noPorsi2;
+    if (search) params.search = search; // Kirimkan parameter search
+
+    $.ajax({
+        url: "{{ route('gabung-haji.index') }}",
+        type: "GET",
+        data: params,
+        beforeSend: function () {
+            $('#table-body').html('<p class="text-center">Loading...</p>');
+        },
+        success: function (response) {
             $('#table-body').html(response.html);
-
-            // Sembunyikan pagination jika filter aktif
-            if (response.paginate) {
-              $('#pagination-container').show();
-            } else {
-              $('#pagination-container').hide();
-            }
-          }
-        });
-      });
-    });
-
-    // Filter Pelunasan Haji
-    $(document).ready(function () {
-      $('#pelunasan_haji').select2({
-        placeholder: "Pilih Pelunasan Haji",
-        allowClear: true,
-        width: '100%'
-      });
-
-      $('#pelunasan_haji').on('change', function () {
-        fetchFilteredData();
-      });
-
-      function fetchFilteredData() {
-        let pelunasan = $('#pelunasan_haji').val();
-
-        $.ajax({
-          url: "{{ url('/gabung-haji') }}",
-          type: "GET",
-          data: { pelunasan: pelunasan },
-          // beforeSend: function () {
-          //     $('#table-body').html('<p class="text-center">Loading...</p>');
-          // },
-          success: function (response) {
-            $('#table-body').html(response.html);
-
-            // Sembunyikan atau tampilkan pagination
-            if (pelunasan) {
-              $('#pagination-container').hide();
-            } else {
-              $('#pagination-container').show();
-            }
-          },
-          error: function () {
+            $('#pagination-container').toggle(!!response.paginate);
+        },
+        error: function () {
             alert('Gagal mengambil data.');
-          }
-        });
-      }
+        }
     });
+}
+
+// Event listener untuk pencarian
+$('#search-input').on('keyup', function () {
+    fetchFilteredData();
+});
+
+});
+
+
+
+    // // Search
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   const searchInput = document.getElementById("search-input");
+    //   const tableBody = document.getElementById("table-body");
+    //   const paginationContainer = document.getElementById("pagination-container");
+
+    //   searchInput.addEventListener("input", function () {
+    //     let searchTerm = searchInput.value.trim();
+    //     let url = searchTerm ? `/gabung-haji?search=${searchTerm}` : "/gabung-haji";
+
+    //     fetch(url, {
+    //       headers: {
+    //         "X-Requested-With": "XMLHttpRequest"
+    //       }
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       if (data.html) {
+    //         tableBody.innerHTML = data.html.trim();
+
+    //         // Sembunyikan pagination jika pencarian dilakukan
+    //         if (data.paginate) {
+    //           paginationContainer.style.display = "block";
+    //         } else {
+    //           paginationContainer.style.display = "none";
+    //         }
+    //       }
+    //     })
+    //     .catch(error => console.error("Error fetching data:", error));
+    //   });
+    // });
+
+    // // Filter rentang no porsi haji
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   const searchButton = document.getElementById("search-btn");
+    //   const tableBody = document.getElementById("table-body");
+    //   const paginationContainer = document.getElementById("pagination-container");
+    //   const noPorsi1 = document.getElementById("no_porsi_haji_1");
+    //   const noPorsi2 = document.getElementById("no_porsi_haji_2");
+
+    //   // Fungsi untuk me-reset tabel ke kondisi awal
+    //   function resetTable() {
+    //     fetch(`/gabung-haji`, {
+    //       headers: {
+    //         "X-Requested-With": "XMLHttpRequest"
+    //       }
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       if (tableBody) {
+    //         tableBody.innerHTML = data.html;
+    //       }
+
+    //       // Tampilkan pagination kembali
+    //       if (paginationContainer) {
+    //         paginationContainer.style.display = data.paginate ? "block" : "none";
+    //       }
+    //     })
+    //     .catch(error => console.error("Error fetching data:", error));
+    //   }
+
+    //   // Event listener untuk tombol pencarian
+    //   searchButton.addEventListener("click", function (event) {
+    //     event.preventDefault();
+    //     console.log("Tombol pencarian ditekan!");
+
+    //     let noPorsi1Value = noPorsi1.value.trim();
+    //     let noPorsi2Value = noPorsi2.value.trim();
+
+    //     console.log("No Porsi Haji 1:", noPorsi1Value);
+    //     console.log("No Porsi Haji 2:", noPorsi2Value);
+
+    //     fetch(`/gabung-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
+    //       headers: {
+    //         "X-Requested-With": "XMLHttpRequest"
+    //       }
+    //     })
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         if (tableBody) {
+    //           tableBody.innerHTML = data.html;
+    //         }
+
+    //         // Sembunyikan pagination jika filter aktif
+    //         if (paginationContainer) {
+    //           paginationContainer.style.display = data.paginate ? "block" : "none";
+    //         }
+    //       })
+    //       .catch(error => console.error("Error fetching data:", error));
+    //     });
+
+    //   // Event listener saat tombol "x" ditekan pada input search
+    //   [noPorsi1, noPorsi2].forEach(input => {
+    //     input.addEventListener("input", function () {
+    //       if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
+    //         resetTable();
+    //       }
+    //     });
+    //   });
+    // });
+
+    // // Filter Tahun Keberangkatan
+    // $(document).ready(function () {
+    //   $('#keberangkatan').select2({
+    //     placeholder: "Pilih Keberangkatan",
+    //     allowClear: true,
+    //     width: '100%',
+    //     dropdownCssClass: 'custom-select2'
+    //   });
+
+    //   $('#keberangkatan').on('change', function () {
+    //     let tahunKeberangkatan = $(this).val();
+    //     $.ajax({
+    //       url: "{{ route('gabung-haji.index') }}",
+    //       type: "GET",
+    //       data: {
+    //         keberangkatan: tahunKeberangkatan
+    //       },
+    //       success: function (response) {
+    //         $('#table-body').html(response.html);
+
+    //         // Sembunyikan pagination jika filter aktif
+    //         if (response.paginate) {
+    //           $('#pagination-container').show();
+    //         } else {
+    //           $('#pagination-container').hide();
+    //         }
+    //       }
+    //     });
+    //   });
+    // });
+
+    // // Filter Pelunasan Haji
+    // $(document).ready(function () {
+    //   $('#pelunasan_haji').select2({
+    //     placeholder: "Pilih Pelunasan Haji",
+    //     allowClear: true,
+    //     width: '100%'
+    //   });
+
+    //   $('#pelunasan_haji').on('change', function () {
+    //     fetchFilteredData();
+    //   });
+
+    //   function fetchFilteredData() {
+    //     let pelunasan = $('#pelunasan_haji').val();
+
+    //     $.ajax({
+    //       url: "{{ url('/gabung-haji') }}",
+    //       type: "GET",
+    //       data: { pelunasan: pelunasan },
+    //       // beforeSend: function () {
+    //       //     $('#table-body').html('<p class="text-center">Loading...</p>');
+    //       // },
+    //       success: function (response) {
+    //         $('#table-body').html(response.html);
+
+    //         // Sembunyikan atau tampilkan pagination
+    //         if (pelunasan) {
+    //           $('#pagination-container').hide();
+    //         } else {
+    //           $('#pagination-container').show();
+    //         }
+    //       },
+    //       error: function () {
+    //         alert('Gagal mengambil data.');
+    //       }
+    //     });
+    //   }
+    // });
 
   </script>
   

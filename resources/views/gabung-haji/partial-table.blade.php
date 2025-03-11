@@ -18,7 +18,7 @@
           -
       @endif
     </th>
-    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+    <th class="px-4 py-3 font-medium text-black w-[150px] break-all whitespace-normal">
       {{ $gabung->customer->nama }}
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
