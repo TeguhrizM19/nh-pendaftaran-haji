@@ -26,7 +26,7 @@ return new class extends Migration
       $table->string('pelunasan_manasik', 25)->nullable();
       $table->text('catatan')->nullable();
       $table->string('create_user', 100)->nullable();
-      $table->date('create_date')->nullable();
+      // $table->date('create_date')->nullable();
       $table->timestamps();
     });
   }

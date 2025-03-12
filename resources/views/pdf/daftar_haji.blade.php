@@ -267,7 +267,7 @@
       </tr>
       <tr>
         <td style="text-align: center;">
-          {{ $gabung->created_user ?? 'Admin' }}
+          {{ $gabung->create_user ?? 'Admin' }}
         </td>
         <td></td>
         <td style="text-align: center;">{{ $daftar->customer->nama }}</td>

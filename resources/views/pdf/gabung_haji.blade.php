@@ -268,7 +268,7 @@
         <td style="text-align: center;">{{ $gabung->customer->nama }}</td>
         <td></td>
         <td style="text-align: center;">
-          {{ $gabung->created_user ?? 'Admin' }}
+          {{ $gabung->create_user ?? 'Admin' }}
         </td>
       </tr>
     </table>

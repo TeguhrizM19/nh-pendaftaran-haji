@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TGabungHajiController extends Controller
 {
@@ -197,7 +198,9 @@ class TGabungHajiController extends Controller
       'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
+
     DB::transaction(function () use ($validated) {
+      $user = Auth::user()->name; // Ambil nama user yang sedang login
       $customer = Customer::create([
         'nama' => strtoupper($validated['nama']),
         'panggilan' => strtoupper($validated['panggilan']),
@@ -224,6 +227,7 @@ class TGabungHajiController extends Controller
         'kota_domisili' => $validated['kota_domisili'],
         'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
         'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
+        'create_user' => $user, // Simpan nama user
       ]);
 
       TGabungHaji::create([
@@ -238,6 +242,7 @@ class TGabungHajiController extends Controller
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'create_user' => $user, // Simpan nama user
       ]);
     });
 
@@ -351,6 +356,7 @@ class TGabungHajiController extends Controller
     ]);
 
     DB::transaction(function () use ($validated, $customer, $gabung_haji) {
+      $user = Auth::user()->name;
       // Update data customer
       $customer->update([
         'nama' => strtoupper($validated['nama']),
@@ -378,6 +384,7 @@ class TGabungHajiController extends Controller
         'kota_domisili' => $validated['kota_domisili'],
         'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
         'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
+        'update_user' => $user, // Simpan nama user
       ]);
 
       // Update data t_gabung_hajis
@@ -392,6 +399,7 @@ class TGabungHajiController extends Controller
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'update_user' => $user, // Simpan nama user
       ]);
     });
 
@@ -529,6 +537,7 @@ class TGabungHajiController extends Controller
     ]);
 
     DB::transaction(function () use ($validated, $customer) {
+      $user = Auth::user()->name;
       // **Update data customer (Tetap Update, Tidak Diubah)**
       $customer->update([
         'nama' => strtoupper($validated['nama']),
@@ -556,6 +565,7 @@ class TGabungHajiController extends Controller
         'kota_domisili' => $validated['kota_domisili'],
         'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
         'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
+        'update_user' => $user
       ]);
 
       // **Create data baru di t_gabung_hajis**
@@ -571,6 +581,7 @@ class TGabungHajiController extends Controller
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'create_user' => $user
       ]);
     });
 
@@ -661,6 +672,7 @@ class TGabungHajiController extends Controller
     ]);
 
     DB::transaction(function () use ($validated) {
+      $user = Auth::user()->name;
       $customer = Customer::create([
         'nama' => strtoupper($validated['nama']),
         'panggilan' => strtoupper($validated['panggilan']),
@@ -687,6 +699,7 @@ class TGabungHajiController extends Controller
         'kota_domisili' => $validated['kota_domisili'],
         'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
         'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
+        'create_user' => $user
       ]);
 
       TGabungHaji::create([
@@ -701,6 +714,7 @@ class TGabungHajiController extends Controller
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'create_user' => $user
       ]);
     });
 

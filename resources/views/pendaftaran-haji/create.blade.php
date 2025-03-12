@@ -619,19 +619,27 @@
     </form>
   </div>
 
-  <!-- Modal Box -->
+    <!-- Modal Box -->
   <div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white w-full sm:w-[1000px] max-h-[90vh] p-6 rounded-lg shadow-lg relative overflow-y-auto">
+    <div class="bg-white w-full sm:w-[1000px] max-h-[90vh] p-6 rounded-lg shadow-lg relative flex flex-col">
       <!-- Tombol Close -->
-      <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
+      <button id="closeSearch" class="absolute top-4 right-4 bg-[#099AA7] rounded-full p-2 shadow-lg z-20">
+        <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M6 18 17.94 6M18 18 6.06 6"/>
+        </svg>
+      </button>
 
       <!-- Input Pencarian -->
-      <input type="text" id="searchInput"
-        class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
-        placeholder="Search Data..." autocomplete="off">
+      <div class="sticky top-0 bg-white z-10 pb-4">
+        <input type="text" id="searchInput"
+          class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
+          placeholder="Search Data..." autocomplete="off">
+      </div>
 
       <!-- Dropdown hasil pencarian -->
-      <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg max-h-[60vh] overflow-y-auto hidden">
+      <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg max-h-[60vh] overflow-y-auto hidden flex-1">
         <ul id="customerList" class="divide-y divide-gray-200">
           <!-- Hasil pencarian akan ditampilkan di sini -->
         </ul>
@@ -646,25 +654,142 @@
   document.getElementById("searchInput").focus();
   });
 
-  // Tutup modal pencarian
-  document.getElementById("closeSearch").addEventListener("click", function () {
-  document.getElementById("searchModal").classList.add("hidden");
+  // // Tutup modal pencarian
+  // document.getElementById("closeSearch").addEventListener("click", function () {
+  // document.getElementById("searchModal").classList.add("hidden");
+  // });
+
+  // // Event delegation untuk tombol Repeat
+  // document.getElementById("customerList").addEventListener("click", function (e) {
+  //   let listItem = e.target.closest("li");
+  //   if (!listItem) return;
+
+  //   let customerId = listItem.dataset.id;
+
+  //   console.log("ID yang dikirim:", customerId);
+
+  //   if (e.target.classList.contains("repeat-btn")) {
+  //     // Arahkan ke halaman dengan ID di URL (GET method)
+  //     window.location.href = `/repeat-data-customer/${customerId}`;
+  //   }
+  // });
+
+  // Pencarian real-time menggunakan AJAX
+  document.getElementById("searchInput").addEventListener("input", function () {
+    let query = this.value.trim();
+    let searchResults = document.getElementById("searchResults");
+    let customerList = document.getElementById("customerList");
+
+    if (query === "") {
+      searchResults.classList.add("hidden");
+      customerList.innerHTML = "";
+      return;
+    }
+
+    fetch(`/search-pendaftaran?query=${encodeURIComponent(query)}`)
+    .then(response => response.json())
+    .then(data => {
+      customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
+
+      if (data.length > 0) {
+        data.forEach(item => {
+          let li = document.createElement("li");
+          li.classList.add("flex", "justify-start", "items-center", "p-4", "hover:bg-blue-100", "cursor-pointer", "gap-4");
+
+          li.innerHTML = `
+            <div class="flex-1">
+              <span class="font-semibold">No. Porsi Haji: ${item.no_porsi_haji}</span>
+              <span class="block text-gray-600">Nama: ${item.customer ? item.customer.nama : 'Tidak Ada'}</span>
+            </div>
+            <div class="flex gap-2">
+              <a href="/repeat-data-pendaftaran/${item.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
+                🔄 Repeat Data
+              </a>
+              <a href="/ambil-semua-data-pendaftaran/${item.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
+                📥 Ambil Data
+              </a>
+            </div>
+          `;
+
+          customerList.appendChild(li);
+        });
+
+        searchResults.classList.remove("hidden");
+      } else {
+        customerList.innerHTML = `<li class="p-4 text-gray-500">Tidak ada hasil ditemukan</li>`;
+      }
+    })
+    .catch(error => console.error('Error:', error));
+
   });
 
-  // Event delegation untuk tombol Repeat
-  document.getElementById("customerList").addEventListener("click", function (e) {
-    let listItem = e.target.closest("li");
-    if (!listItem) return;
+  // Pencarian real-time menggunakan AJAX
+  document.getElementById("searchInput").addEventListener("input", function () {
+    let query = this.value.trim();
+    let searchResults = document.getElementById("searchResults");
+    let customerList = document.getElementById("customerList");
 
-    let customerId = listItem.dataset.id;
+    if (query === "") {
+      searchResults.classList.add("hidden");
+      customerList.innerHTML = "";
+      return;
+    }
 
-    console.log("ID yang dikirim:", customerId);
+    fetch(`/search-pendaftaran?query=${encodeURIComponent(query)}`)
+    .then(response => response.json())
+    .then(data => {
+      customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
 
-    if (e.target.classList.contains("repeat-btn")) {
-      // Arahkan ke halaman dengan ID di URL (GET method)
-      window.location.href = `/repeat-data-customer/${customerId}`;
+      if (data.length > 0) {
+        data.forEach(item => {
+          let li = document.createElement("li");
+          li.classList.add("flex", "justify-start", "items-center", "p-4", "hover:bg-blue-100", "cursor-pointer", "gap-4");
+
+          li.innerHTML = `
+            <div class="flex-1">
+              <span class="font-semibold">No. Porsi: ${item.no_porsi_haji}</span>
+              <span class="block text-gray-600">Nama: ${item.customer ? item.customer.nama : 'Tidak Ada'}</span>
+            </div>
+            <div class="flex gap-2">
+              <a href="/repeat-data-pendaftaran/${item.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
+                🔄 Repeat Data
+              </a>
+              <a href="/ambil-semua-data-pendaftaran/${item.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
+                📥 Ambil Data
+              </a>
+            </div>
+          `;
+
+          customerList.appendChild(li);
+        });
+
+        searchResults.classList.remove("hidden");
+      } else {
+        customerList.innerHTML = `<li class="p-4 text-gray-500">Tidak ada hasil ditemukan</li>`;
+      }
+    })
+    .catch(error => console.error('Error:', error));
+
+  });
+
+  // Menutup modal saat tombol close diklik
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("searchModal");
+    const closeBtn = document.getElementById("closeSearch");
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener("click", function () {
+        modal.classList.add("hidden"); // Menyembunyikan modal
+      });
     }
   });
+
+  // // Tutup dropdown search saat kehilangan fokus
+  // document.getElementById("searchInput").addEventListener("blur", function () {
+  //   setTimeout(() => {
+  //     document.getElementById("searchResults").classList.add("hidden");
+  //   }, 200);
+  // });
 
   // Checkbox Gunakan alamat KTP 
   document.getElementById('copy-checkbox').addEventListener('change', function () { 
@@ -725,63 +850,6 @@
       document.getElementById('alamat_domisili').readOnly = false;
       $('#provinsi_domisili, #kota_domisili, #kecamatan_domisili, #kelurahan_domisili').prop('disabled', false);
     }
-  });
-
-
-  // Pencarian real-time menggunakan AJAX
-  document.getElementById("searchInput").addEventListener("input", function () {
-    let query = this.value.trim();
-    let searchResults = document.getElementById("searchResults");
-    let customerList = document.getElementById("customerList");
-
-    if (query === "") {
-      searchResults.classList.add("hidden");
-      customerList.innerHTML = "";
-      return;
-    }
-
-    fetch(`/search-pendaftaran?query=${encodeURIComponent(query)}`)
-    .then(response => response.json())
-    .then(data => {
-      customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
-
-      if (data.length > 0) {
-        data.forEach(item => {
-          let li = document.createElement("li");
-          li.classList.add("flex", "justify-start", "items-center", "p-4", "hover:bg-blue-100", "cursor-pointer", "gap-4");
-
-          li.innerHTML = `
-            <div class="flex-1">
-              <span class="font-semibold">No. Porsi Haji: ${item.no_porsi_haji}</span>
-              <span class="block text-gray-600">Nama: ${item.customer ? item.customer.nama : 'Tidak Ada'}</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="/repeat-data-pendaftaran/${item.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
-                🔄 Repeat Data
-              </a>
-              <a href="/ambil-semua-data-pendaftaran/${item.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
-                📥 Ambil Data
-              </a>
-            </div>
-          `;
-
-          customerList.appendChild(li);
-        });
-
-        searchResults.classList.remove("hidden");
-      } else {
-        customerList.innerHTML = `<li class="p-4 text-gray-500">Tidak ada hasil ditemukan</li>`;
-      }
-    })
-    .catch(error => console.error('Error:', error));
-
-  });
-
-  // Tutup dropdown search saat kehilangan fokus
-  document.getElementById("searchInput").addEventListener("blur", function () {
-    setTimeout(() => {
-      document.getElementById("searchResults").classList.add("hidden");
-    }, 200);
   });
 
   // Select2

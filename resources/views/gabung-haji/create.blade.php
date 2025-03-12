@@ -546,35 +546,38 @@
   </div>
 
   <!-- Modal Box -->
-  <div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white w-[1000px] p-6 rounded-lg relative">
-      <!-- Tombol Close -->
-      <button id="closeSearch" class="absolute top-3 right-3 text-gray-500 text-xl">✖</button>
+<div id="searchModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white w-full sm:w-[1000px] max-h-[90vh] p-6 rounded-lg shadow-lg relative flex flex-col">
+    <!-- Tombol Close -->
+    <button id="closeSearch" class="absolute top-4 right-4 bg-[#099AA7] rounded-full p-2 shadow-lg z-20">
+      <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" 
+        width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M6 18 17.94 6M18 18 6.06 6"/>
+      </svg>
+    </button>
 
-      <!-- Input Pencarian -->
+    <!-- Input Pencarian -->
+    <div class="sticky top-0 bg-white z-10 pb-4">
       <input type="text" id="searchInput"
-      class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
-      placeholder="Search Data..." autocomplete="off">
+        class="w-full p-4 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#099AA7]"
+        placeholder="Search Data..." autocomplete="off">
+    </div>
 
-      <!-- Dropdown hasil pencarian -->
-      <div id="searchResults" class="mt-4 bg-white rounded-lg hidden">
-        <ul id="customerList">
-          <!-- Hasil pencarian akan ditampilkan di sini -->
-        </ul>
-      </div>
+    <!-- Dropdown hasil pencarian -->
+    <div id="searchResults" class="mt-4 bg-white shadow-lg rounded-lg max-h-[60vh] overflow-y-auto hidden flex-1">
+      <ul id="customerList" class="divide-y divide-gray-200">
+        <!-- Hasil pencarian akan ditampilkan di sini -->
+      </ul>
     </div>
   </div>
+</div>
 
 <script>
   // Tampilkan modal pencarian
   document.getElementById("openSearch").addEventListener("click", function () {
   document.getElementById("searchModal").classList.remove("hidden");
   document.getElementById("searchInput").focus();
-  });
-
-  // Tutup modal pencarian
-  document.getElementById("closeSearch").addEventListener("click", function () {
-  document.getElementById("searchModal").classList.add("hidden");
   });
 
   // Pencarian real-time menggunakan AJAX
@@ -626,11 +629,16 @@
 
   });
 
-  // Tutup dropdown saat kehilangan fokus
-  document.getElementById("searchInput").addEventListener("blur", function () {
-    setTimeout(() => {
-      document.getElementById("searchResults").classList.add("hidden");
-    }, 200);
+  // Menutup modal saat tombol close diklik
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("searchModal");
+    const closeBtn = document.getElementById("closeSearch");
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener("click", function () {
+        modal.classList.add("hidden"); // Menyembunyikan modal
+      });
+    }
   });
 
   // Event delegation untuk tombol Repeat
@@ -647,7 +655,6 @@
   });
 
 
-  // Checkbox Gunakan alamat KTP
   // Checkbox Gunakan alamat KTP 
   document.getElementById('copy-checkbox').addEventListener('change', function () { 
     const isChecked = this.checked;
