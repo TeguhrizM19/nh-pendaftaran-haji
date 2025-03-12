@@ -247,7 +247,7 @@
     <table style="width: 100%; text-align: center; border-collapse: collapse;">
       <tr>
         <td style="width: 50%; text-align: center;">
-          Surabaya, {{ \Carbon\Carbon::parse($gabung->created_at)->translatedFormat('d F Y') }}
+          Surabaya, {{ \Carbon\Carbon::parse($daftar->created_at)->translatedFormat('d F Y') }}
         </td>
       </tr>
       <tr>

@@ -64,17 +64,26 @@ class TGabungHajiController extends Controller
       $isFiltered = true;
     }
 
-    // Filter berdasarkan pelunasan (dari t_gabung_hajis & t_daftar_hajis)
     if ($request->filled('pelunasan')) {
       $pelunasan = $request->pelunasan;
-      $query->where(function ($q) use ($pelunasan) {
-        $q->where('pelunasan', $pelunasan)
-          ->orWhereHas('daftarHaji', function ($q) use ($pelunasan) {
-            $q->where('pelunasan', $pelunasan);
-          });
-      });
 
-      $isFiltered = true;
+      if ($pelunasan === 'Lunas') {
+        $query->where(function ($q) {
+          $q->where('pelunasan', 'Lunas')
+            ->orWhereHas('daftarHaji', function ($q) {
+              $q->where('pelunasan', 'Lunas');
+            });
+        });
+      } elseif ($pelunasan === 'Belum Lunas') {
+        $query->where(function ($q) {
+          $q->whereNull('pelunasan')
+            ->orWhere('pelunasan', '')
+            ->orWhere('pelunasan', '-')
+            ->orWhere('pelunasan', '!=', 'Lunas');
+        })->whereDoesntHave('daftarHaji', function ($q) {
+          $q->where('pelunasan', 'Lunas');
+        });
+      }
     }
 
     // Ambil data
@@ -379,8 +388,8 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'],
-        'pelunasan_manasik' => $validated['pelunasan_manasik'],
+        'pelunasan' => $validated['pelunasan'] ?? null,
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
@@ -558,8 +567,8 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'],
-        'pelunasan_manasik' => $validated['pelunasan_manasik'],
+        'pelunasan' => $validated['pelunasan'] ?? null,
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
         'catatan' => $validated['catatan'],
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);

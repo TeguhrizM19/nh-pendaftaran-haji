@@ -250,7 +250,7 @@
         <td style="width: 40%;"></td> <!-- Spasi di tengah -->
         <td style="width: 40%;"></td> <!-- Spasi di tengah -->
         <td style="width: 50%; text-align: left;">
-          Surabaya, {{ \Carbon\Carbon::parse($gabung->created_at)->format('d F Y') }}
+          Surabaya, {{ \Carbon\Carbon::parse($gabung->created_at)->translatedFormat('d F Y') }}
         </td>
       </tr>
       <tr>
