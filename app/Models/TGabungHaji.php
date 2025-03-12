@@ -39,7 +39,6 @@ class TGabungHaji extends Model
     return $this->belongsTo(Kota::class, 'depag', 'id')->select(['id', 'kota']);
   }
 
-
   public function kotaBank()
   {
     return $this->belongsTo(Kota::class, 'kota_bank', 'id');

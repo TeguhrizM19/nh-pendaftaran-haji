@@ -7,51 +7,51 @@
   <style>
     body { font-family: 'Times New Roman', Times, serif; font-size: 17px; }
     .header-table {
-        width: 100%;
-        border-collapse: collapse;
-        border: 2px solid black;
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid black;
     }
     .header-table td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: center;
-        font-weight: bold;
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+      font-weight: bold;
     }
     .header-logo {
-        width: 200px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: normal;
+      width: 200px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: normal;
     }
     .header-title {
-        font-size: 20px;
-        text-transform: uppercase;
+      font-size: 20px;
+      text-transform: uppercase;
     }
     .sub-header td {
-        font-size: 16px;
+      font-size: 16px;
     }
     .info-table {
-        width: 100%;
-        border-collapse: collapse;
+      width: 100%;
+      border-collapse: collapse;
     }
     .info-table td {
-        border: 1px solid black;
-        padding: 5px;
-        text-align: center;
-        font-size: 14px;
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+      font-size: 14px;
     }
     .bold {
-        font-weight: bold;
+      font-weight: bold;
     }
     .top-section td {
-        vertical-align: middle;
+      vertical-align: middle;
     }
     .right-section {
-        text-align: left;
-        font-weight: normal;
+      text-align: left;
+      font-weight: normal;
     }
     .right-section td {
-        padding: 5px 10px;
+      padding: 5px 10px;
     }
 
     .table-format {
@@ -119,7 +119,7 @@
     <table class="header-table">
       <tr class="top-section">
         <td rowspan="2" class="header-logo">
-          Nurul Hayat<br>#HajiBahagia
+          <img src="{{ public_path('images/logo_haji_umroh.jpg') }}" style="width: 160px;" alt="logo">
         </td>
         <td colspan="3" class="header-title">YAYASAN NURUL HAYAT SURABAYA</td>
       </tr>
@@ -157,28 +157,18 @@
         <td>{{ $gabung->no_porsi }}</td>
       </tr>
       <tr>
-        <td class="label">Bank / Jumlah Setoran</td>
+        <td class="label">Bank & Kota</td>
         <td class="separator">:</td>
-        <td>{{ $gabung->kotaBank->kota_lahir ?? '-' }}</td>
+        <td>
+          {{ $gabung->nama_bank ?? '-' }} &
+          {{ $gabung->kotaBank->kota ?? '-' }}
+        </td>
       </tr>
       <tr>
         <td class="label">Depag</td>
         <td class="separator">:</td>
-        {{-- <td>{{ isset($gabung['depag']) ? $gabung['depag']['kota'] : '-' }}</td> --}}
-        <td>{{ $gabung->depag }}
-        </td>
-
+        <td>{{ $depag->kota ?? '-' }}</td>
       </tr>
-      {{-- <tr>
-        <td class="label">Wilayah Daftar</td>
-        <td class="separator">:</td>
-        <td>{{ $gabung->wilayahDaftar->kota }}</td>
-      </tr> --}}
-      {{-- <tr>
-        <td class="label">Sumber Informasi</td>
-        <td class="separator">:</td>
-        <td>{{ $gabung->sumberInfo->info }}</td>
-      </tr> --}}
     </table>
 
     <h4>DATA PRIBADI :</h4> 
@@ -259,10 +249,12 @@
       <tr>
         <td style="width: 40%;"></td> <!-- Spasi di tengah -->
         <td style="width: 40%;"></td> <!-- Spasi di tengah -->
-        <td style="width: 50%; text-align: left;">Surabaya, ..................... 2025</td>
+        <td style="width: 50%; text-align: left;">
+          Surabaya, {{ \Carbon\Carbon::parse($gabung->created_at)->format('d F Y') }}
+        </td>
       </tr>
       <tr>
-        <td style="height: 20px;"></td>
+        <td style="height: 40px;"></td>
       </tr>
       <tr>
         <td style="width: 40%; text-align: center;">Pendaftar</td>
@@ -275,7 +267,9 @@
       <tr>
         <td style="text-align: center;">{{ $gabung->customer->nama }}</td>
         <td></td>
-        <td style="text-align: center;">Nama User Login</td>
+        <td style="text-align: center;">
+          {{ $gabung->created_user ?? 'Admin' }}
+        </td>
       </tr>
     </table>
   </div>

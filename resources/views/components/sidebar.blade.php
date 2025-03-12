@@ -61,7 +61,7 @@
           <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Gabung KBIH</span>
         </a>
       </li>
-      @if (Auth::user()->level == 'super_admin' || Auth::user()->level == 'admin')
+      {{-- @if (Auth::user()->level == 'super_admin' || Auth::user()->level == 'admin') --}}
       <li>
         <a href="/peserta-keberangkatan"
           class="flex items-center p-2 rounded-lg hover:bg-gray-100 group {{ request()->is('peserta-keberangkatan') ? 'bg-white text-[#099AA7]' : 'text-white' }}">
@@ -71,7 +71,7 @@
           <span class="ms-3 whitespace-nowrap group-hover:text-[#099AA7]">Keberangkatan</span>
         </a>
       </li>
-      @endif
+      {{-- @endif --}}
 
       {{-- Master --}}
       <li>

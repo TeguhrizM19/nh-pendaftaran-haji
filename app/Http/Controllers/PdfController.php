@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kota;
 use App\Models\MDokHaji;
-use App\Models\Provinsi;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\TDaftarHaji;
 use App\Models\TGabungHaji;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PdfController extends Controller
@@ -44,8 +41,9 @@ class PdfController extends Controller
 
   public function cetakGabung($id)
   {
+    \Carbon\Carbon::setLocale('id');
+
     $gabung = TGabungHaji::with([
-      'depag',
       'customer.provinsiKtp',
       'customer.kotaKtp',
       'customer.kecamatanKtp',
@@ -54,11 +52,7 @@ class PdfController extends Controller
       'customer.kotaDomisili',
       'customer.kecamatanDomisili',
       'customer.kelurahanDomisili',
-      // 'wilayahDaftar',
-      // 'sumberInfo'
     ])->findOrFail($id);
-    // dd($gabung->kotaBank);
-
 
     // ====================== Dokumen ======================
     // $dokumenIds = is_array($daftar->dokumen) ? $daftar->dokumen : json_decode($daftar->dokumen, true) ?? [];
@@ -67,6 +61,7 @@ class PdfController extends Controller
     // Kirim semua data ke view PDF
     $pdf = Pdf::loadView('pdf.gabung_haji', [
       'gabung' => $gabung,
+      'depag' => Kota::find($gabung->depag),
       // 'dokumen' => $dokumen,
     ]);
 

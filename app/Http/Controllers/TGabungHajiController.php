@@ -250,7 +250,12 @@ class TGabungHajiController extends Controller
   public function edit($id)
   {
     // Sama seperti function ambilSemuaData: Load semua relasi dalam satu query
-    $gabung_haji = TGabungHaji::with(['customer', 'kotaBank', 'depag', 'keberangkatan'])->find($id);
+    $gabung_haji = TGabungHaji::with([
+      'customer',
+      'kotaBank',
+      'depag',
+      'keberangkatan'
+    ])->find($id);
 
     $customer = $gabung_haji->customer;
 

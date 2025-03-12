@@ -119,7 +119,7 @@
     <table class="header-table">
       <tr class="top-section">
         <td rowspan="2" class="header-logo">
-          Nurul Hayat<br>#HajiBahagia
+          <img src="{{ public_path('images/logo_haji_umroh.jpg') }}" style="width: 160px;" alt="logo">
         </td>
         <td colspan="3" class="header-title">YAYASAN NURUL HAYAT SURABAYA</td>
       </tr>
@@ -242,11 +242,13 @@
       Tidak ada berkas
     @endif
 
-    <p>Dengan ini saya menyatakan mendaftarkan diri ikut program Haji KBHI Nurul Hayat dan selanjutnya akan mentaati syarat-syarat dan ketentuan yang berlaku. Demikian formulis ini saya isi dengan pernyataan yang sebenarnya.</p>
+    <p>Dengan ini saya menyatakan mendaftarkan diri ikut program Haji KBIH Nurul Hayat dan selanjutnya akan mentaati syarat-syarat dan ketentuan yang berlaku. Demikian formulis ini saya isi dengan pernyataan yang sebenarnya.</p>
   
     <table style="width: 100%; text-align: center; border-collapse: collapse;">
       <tr>
-        <td style="width: 50%; text-align: left;">Surabaya, ..................... 2025</td>
+        <td style="width: 50%; text-align: center;">
+          Surabaya, {{ \Carbon\Carbon::parse($gabung->created_at)->translatedFormat('d F Y') }}
+        </td>
       </tr>
       <tr>
         <td style="height: 20px;"></td>
@@ -254,9 +256,9 @@
         <td></td>
       </tr>
       <tr>
-        <td style="width: 40%; text-align: center;">Petugas</td>
+        <td style="width: 100%; text-align: center;">Petugas</td>
         <td style="width: 80%;"></td> <!-- Spasi di tengah -->
-        <td style="width: 40%; text-align: center;">Calon Jamaah Haji</td>
+        <td style="width: 100%; text-align: center;">Calon Jamaah Haji</td>
       </tr>
       <tr>
         <td style="height: 60px;"></td>
@@ -264,7 +266,9 @@
         <td></td>
       </tr>
       <tr>
-        <td style="text-align: center;">Nama User Login</td>
+        <td style="text-align: center;">
+          {{ $gabung->created_user ?? 'Admin' }}
+        </td>
         <td></td>
         <td style="text-align: center;">{{ $daftar->customer->nama }}</td>
       </tr>

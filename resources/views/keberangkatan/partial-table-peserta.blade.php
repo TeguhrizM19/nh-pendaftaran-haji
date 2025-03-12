@@ -24,7 +24,7 @@
         -
       @endif
     </td>
-    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+    <th class="px-4 py-3 font-medium text-black w-[150px] break-all whitespace-normal">
       {{ $gabung->customer->nama }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
@@ -33,6 +33,24 @@
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->customer->no_hp_1 }}
     </td>
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+        @if (!empty($gabung->pelunasan))
+            {{ $gabung->pelunasan }}
+        @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan))
+            {{ $gabung->daftarHaji->pelunasan }}
+        @else
+            -
+        @endif
+      </th>
+      <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+        @if (!empty($gabung->pelunasan_manasik))
+            {{ $gabung->pelunasan_manasik }}
+        @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan_manasik))
+            {{ $gabung->daftarHaji->pelunasan_manasik }}
+        @else
+            -
+        @endif
+      </th>
   </tr>
   @empty
   <tr>

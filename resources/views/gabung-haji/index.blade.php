@@ -165,72 +165,75 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
       });
     });
 
+    // Semua Filter
     $(document).ready(function () {
-  $('#keberangkatan').select2({
-    allowClear: true,
-    placeholder: "Pilih Tahun Keberangkatan",
-    width: '100%'
-  });
+      $('#keberangkatan').select2({
+        allowClear: true,
+        placeholder: "Pilih Tahun Keberangkatan",
+        width: '100%'
+      });
 
-  $('#pelunasan_haji').select2({
-    allowClear: true,
-    placeholder: "Pilih Status Pelunasan Haji",
-    width: '100%'
-  });
+      $('#pelunasan_haji').select2({
+        allowClear: true,
+        placeholder: "Pilih Status Pelunasan Haji",
+        width: '100%'
+      });
 
-  // Pastikan select2 clear juga menghapus nilai di form
-  $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
-    $(this).val(null).trigger('change');
-    fetchFilteredData();
-  });
+      // Pastikan select2 clear juga menghapus nilai di form
+      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+        $(this).val(null).trigger('change');
+        fetchFilteredData();
+      });
 
-  // Event listener untuk semua filter
-  $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2').on('change input', function () {
-    fetchFilteredData();
-  });
+      // Event listener untuk semua filter (termasuk input kosong)
+      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
+          fetchFilteredData();
+      });
 
-  $('#search-btn').on('click', function (event) {
-    event.preventDefault();
-    fetchFilteredData();
-  });
+      $('#search-btn').on('click', function (event) {
+        event.preventDefault();
+        fetchFilteredData();
+      });
 
-  function fetchFilteredData() {
-    let pelunasan = $('#pelunasan_haji').val();
-    let keberangkatan = $('#keberangkatan').val();
-    let noPorsi1 = $('#no_porsi_haji_1').val().trim();
-    let noPorsi2 = $('#no_porsi_haji_2').val().trim();
-    let search = $('#search-input').val().trim(); // Tambahkan pencarian
+      function fetchFilteredData() {
+        let pelunasan = $('#pelunasan_haji').val();
+        let keberangkatan = $('#keberangkatan').val();
+        let noPorsi1 = $('#no_porsi_haji_1').val().trim();
+        let noPorsi2 = $('#no_porsi_haji_2').val().trim();
+        let search = $('#search-input').val().trim(); // Tambahkan pencarian
 
-    let params = {};
-    if (pelunasan) params.pelunasan = pelunasan;
-    if (keberangkatan) params.keberangkatan = keberangkatan;
-    if (noPorsi1) params.no_porsi_haji_1 = noPorsi1;
-    if (noPorsi2) params.no_porsi_haji_2 = noPorsi2;
-    if (search) params.search = search; // Kirimkan parameter search
+        let params = {};
+        if (pelunasan) params.pelunasan = pelunasan;
+        if (keberangkatan) params.keberangkatan = keberangkatan;
+        if (noPorsi1) params.no_porsi_haji_1 = noPorsi1;
+        if (noPorsi2) params.no_porsi_haji_2 = noPorsi2;
+        if (search) params.search = search; // Kirimkan parameter search
 
-    $.ajax({
-        url: "{{ route('gabung-haji.index') }}",
-        type: "GET",
-        data: params,
-        beforeSend: function () {
+        $.ajax({
+          url: "{{ route('gabung-haji.index') }}",
+          type: "GET",
+          data: params,
+          beforeSend: function () {
             $('#table-body').html('<p class="text-center">Loading...</p>');
-        },
-        success: function (response) {
+          },
+          success: function (response) {
             $('#table-body').html(response.html);
             $('#pagination-container').toggle(!!response.paginate);
-        },
-        error: function () {
+          },
+          error: function () {
             alert('Gagal mengambil data.');
+          }
+        });
+      }
+
+      // Event listener untuk pencarian
+      $('#search-input').on('keyup input', function () {
+        if ($(this).val().trim() === '') {
+          fetchFilteredData();
         }
+      });
+
     });
-}
-
-// Event listener untuk pencarian
-$('#search-input').on('keyup', function () {
-    fetchFilteredData();
-});
-
-});
 
 
 

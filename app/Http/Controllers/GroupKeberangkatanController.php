@@ -11,15 +11,13 @@ class GroupKeberangkatanController extends Controller
 {
   public function index(Request $request)
   {
-    $query = GroupKeberangkatan::with(['gabungHaji.customer', 'gabungHaji.daftarHaji']);
-
-    // Cek apakah ada filter yang aktif
+    $query = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan']);
     $isFiltered = false;
 
     // Filter berdasarkan search umum
     if ($request->has('search')) {
       $search = $request->search;
-      $query->whereHas('gabungHaji', function ($q) use ($search) {
+      $query->where(function ($q) use ($search) {
         $q->where('no_porsi', 'like', "%{$search}%")
           ->orWhere('no_spph', 'like', "%{$search}%")
           ->orWhereHas('customer', function ($q) use ($search) {
@@ -31,51 +29,58 @@ class GroupKeberangkatanController extends Controller
             $q->where('no_porsi_haji', 'like', "%{$search}%");
           });
       });
-
       $isFiltered = true;
     }
 
     // Filter berdasarkan rentang nomor porsi haji
-    if ($request->has('no_porsi_haji_1') && $request->has('no_porsi_haji_2')) {
+    if ($request->filled('no_porsi_haji_1') && $request->filled('no_porsi_haji_2')) {
       $noPorsi1 = $request->no_porsi_haji_1;
       $noPorsi2 = $request->no_porsi_haji_2;
 
-      if (!empty($noPorsi1) && !empty($noPorsi2)) {
-        $query->whereHas('gabungHaji', function ($q) use ($noPorsi1, $noPorsi2) {
-          $q->whereBetween('no_porsi', [$noPorsi1, $noPorsi2])
-            ->orWhereHas('daftarHaji', function ($q) use ($noPorsi1, $noPorsi2) {
-              $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
-            });
-        });
+      $query->where(function ($q) use ($noPorsi1, $noPorsi2) {
+        $q->whereBetween('no_porsi', [$noPorsi1, $noPorsi2])
+          ->orWhereHas('daftarHaji', function ($q) use ($noPorsi1, $noPorsi2) {
+            $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
+          });
+      });
 
-        $isFiltered = true;
-      }
-    }
-
-    // Filter berdasarkan tahun keberangkatan
-    if ($request->has('keberangkatan') && !empty($request->keberangkatan)) {
-      $query->where('id', $request->keberangkatan);
       $isFiltered = true;
     }
 
-    // Jika ada filter aktif, ambil semua data tanpa pagination
-    if ($isFiltered) {
-      $keberangkatan = $query->get();
-    } else {
-      $keberangkatan = $query->latest()->paginate(5);
+    // Filter berdasarkan keberangkatan
+    if ($request->filled('keberangkatan')) {
+      $query->where('keberangkatan_id', $request->keberangkatan);
+      $isFiltered = true;
     }
+
+    // Filter berdasarkan pelunasan (dari t_gabung_hajis & t_daftar_hajis)
+    if ($request->filled('pelunasan')) {
+      $pelunasan = $request->pelunasan;
+      $query->where(function ($q) use ($pelunasan) {
+        $q->where('pelunasan', $pelunasan)
+          ->orWhereHas('daftarHaji', function ($q) use ($pelunasan) {
+            $q->where('pelunasan', $pelunasan);
+          });
+      });
+
+      $isFiltered = true;
+    }
+
+    // Ambil data
+    $gabung_haji = $isFiltered ? $query->latest()->get() : $query->latest()->paginate(10);
+    $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
       return response()->json([
-        'html' => trim(view('keberangkatan.partial-table-peserta', ['keberangkatan' => $keberangkatan])->render()),
+        'html' => trim(view('keberangkatan.partial-table-peserta', ['gabung_haji' => $gabung_haji])->render()),
         'paginate' => !$isFiltered,
       ]);
     }
 
     return view('keberangkatan.index', [
+      'gabung_haji' => $gabung_haji,
       'keberangkatan' => $keberangkatan,
-      'gabungHaji' => TGabungHaji::with(['customer', 'daftarHaji'])->whereNull('keberangkatan_id')->latest()->get(),
-      'gabungHajiDetail' => TGabungHaji::with(['customer', 'daftarHaji'])->latest()->get(),
+      'isFiltered' => $isFiltered
     ]);
   }
 
@@ -143,7 +148,7 @@ class GroupKeberangkatanController extends Controller
     if ($isFiltered) {
       $gabung_haji = $query->get();
     } else {
-      $gabung_haji = $query->latest()->paginate(5);
+      $gabung_haji = $query->latest()->paginate(10);
     }
 
     // Ambil data keberangkatan
