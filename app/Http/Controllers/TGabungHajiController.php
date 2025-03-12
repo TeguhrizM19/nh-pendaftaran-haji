@@ -216,14 +216,14 @@ class TGabungHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       TGabungHaji::create([
@@ -234,9 +234,9 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
-        'pelunasan_manasik' => $validated['pelunasan_manasik'],
-        'catatan' => $validated['catatan'],
+        'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
@@ -370,14 +370,14 @@ class TGabungHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       // Update data t_gabung_hajis
@@ -390,7 +390,7 @@ class TGabungHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'] ?? null,
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
-        'catatan' => $validated['catatan'],
+        'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
@@ -548,14 +548,14 @@ class TGabungHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       // **Create data baru di t_gabung_hajis**
@@ -569,7 +569,7 @@ class TGabungHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'] ?? null,
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
-        'catatan' => $validated['catatan'],
+        'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
@@ -679,14 +679,14 @@ class TGabungHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       TGabungHaji::create([
@@ -697,9 +697,9 @@ class TGabungHajiController extends Controller
         'kota_bank' => $validated['kota_bank'],
         'depag' => $validated['depag'],
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'], // Pelunasan Haji
-        'pelunasan_manasik' => $validated['pelunasan_manasik'],
-        'catatan' => $validated['catatan'],
+        'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
+        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });

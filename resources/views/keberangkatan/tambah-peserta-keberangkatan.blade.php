@@ -275,35 +275,35 @@
 
     // Semua Filter
     $(document).ready(function () {
-    $('#keberangkatan').select2({
+      $('#keberangkatan').select2({
         allowClear: true,
         placeholder: "Pilih Keberangkatan",
         width: '100%'
-    });
+      });
 
-    $('#pelunasan_haji').select2({
+      $('#pelunasan_haji').select2({
         allowClear: true,
         placeholder: "Pelunasan Haji",
         width: '100%'
-    });
+      });
 
-    // Pastikan select2 clear juga menghapus nilai di form
-    $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+      // Pastikan select2 clear juga menghapus nilai di form
+      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
         $(this).val(null).trigger('change');
         fetchFilteredData();
-    });
+      });
 
-    // Event listener untuk semua filter (termasuk input kosong)
-    $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
+      // Event listener untuk semua filter (termasuk input kosong)
+      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
         fetchFilteredData();
-    });
+      });
 
-    $('#search-btn').on('click', function (event) {
+      $('#search-btn').on('click', function (event) {
         event.preventDefault();
         fetchFilteredData();
-    });
+      });
 
-    function fetchFilteredData() {
+      function fetchFilteredData() {
         let pelunasan = $('#pelunasan_haji').val();
         let keberangkatan = $('#keberangkatan').val();
         let noPorsi1 = $('#no_porsi_haji_1').val().trim();
@@ -314,9 +314,9 @@
 
         // 🔹 Pastikan pelunasan dikirim dengan benar
         if (pelunasan === "Lunas") {
-            params.pelunasan = "Lunas"; // Kirim hanya "Lunas"
+          params.pelunasan = "Lunas"; // Kirim hanya "Lunas"
         } else if (pelunasan) {
-            params.pelunasan = "Belum Lunas"; // Jika bukan "Lunas", anggap "Belum Lunas"
+          params.pelunasan = "Belum Lunas"; // Jika bukan "Lunas", anggap "Belum Lunas"
         }
 
         if (keberangkatan) params.keberangkatan = keberangkatan;
@@ -325,29 +325,29 @@
         if (search) params.search = search;
 
         $.ajax({
-            url: "{{ route('keberangkatan.index') }}",
-            type: "GET",
-            data: params,
-            beforeSend: function () {
-                $('#table-body').html('<p class="text-center">Loading...</p>');
-            },
-            success: function (response) {
-                $('#table-body').html(response.html);
-                $('#pagination-container').toggle(!!response.paginate);
-            },
-            error: function () {
-                alert('Gagal mengambil data.');
-            }
+          url: "{{ route('keberangkatan.index') }}",
+          type: "GET",
+          data: params,
+          beforeSend: function () {
+            $('#table-body').html('<p class="text-center">Loading...</p>');
+          },
+          success: function (response) {
+            $('#table-body').html(response.html);
+            $('#pagination-container').toggle(!!response.paginate);
+          },
+          error: function () {
+            alert('Gagal mengambil data.');
+          }
         });
-    }
+      }
 
-    // Event listener untuk pencarian otomatis jika input kosong
-    $('#search-input').on('keyup input', function () {
+      // Event listener untuk pencarian otomatis jika input kosong
+      $('#search-input').on('keyup input', function () {
         if ($(this).val().trim() === '') {
-            fetchFilteredData();
+          fetchFilteredData();
         }
+      });
     });
-});
 
     // // Filter Tahun Keberangkatan
     // $(document).ready(function () {

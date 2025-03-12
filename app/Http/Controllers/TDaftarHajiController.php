@@ -252,14 +252,14 @@ class TDaftarHajiController extends Controller
         'alamat_ktp'        => $validated['alamat_ktp'],
         'provinsi_ktp'      => $validated['provinsi_ktp'],
         'kota_ktp'          => $validated['kota_ktp'],
-        'kecamatan_ktp'     => $validated['kecamatan_ktp'],
-        'kelurahan_ktp'     => $validated['kelurahan_ktp'],
+        'kecamatan_ktp'     => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp'     => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili'   => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili'     => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
         // Upload dokumen
         'ktp'   => $validated['ktp'] ?? null,
         'kk'    => $validated['kk'] ?? null,
@@ -282,7 +282,7 @@ class TDaftarHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         // 'pelunasan'       => $validated['pelunasan'], // Pelunasan Haji
         // 'pelunasan_manasik' => $validated['pelunasan_manasik'], // Pelunasan Haji
-        'catatan'       => $validated['catatan'],
+        'catatan'       => $validated['catatan'] ?? null,
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
@@ -431,13 +431,13 @@ class TDaftarHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       // **Update dokumen pelanggan**
@@ -477,7 +477,7 @@ class TDaftarHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null, // Pelunasan Haji
-        'catatan' => $validated['catatan'],
+        'catatan' => $validated['catatan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
 
@@ -715,13 +715,13 @@ class TDaftarHajiController extends Controller
         'alamat_ktp' => $validated['alamat_ktp'],
         'provinsi_ktp' => $validated['provinsi_ktp'],
         'kota_ktp' => $validated['kota_ktp'],
-        'kecamatan_ktp' => $validated['kecamatan_ktp'],
-        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
         'alamat_domisili' => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili' => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
       ]);
 
       // **Simpan dokumen pelanggan**
@@ -762,7 +762,7 @@ class TDaftarHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan'       => $validated['pelunasan'] ?? null, // Pelunasan Haji
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null, // Pelunasan Haji
-        'catatan'        => $validated['catatan'],
+        'catatan'        => $validated['catatan'] ?? null,
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 
@@ -938,14 +938,14 @@ class TDaftarHajiController extends Controller
         'alamat_ktp'        => $validated['alamat_ktp'],
         'provinsi_ktp'      => $validated['provinsi_ktp'],
         'kota_ktp'          => $validated['kota_ktp'],
-        'kecamatan_ktp'     => $validated['kecamatan_ktp'],
-        'kelurahan_ktp'     => $validated['kelurahan_ktp'],
+        'kecamatan_ktp'     => $validated['kecamatan_ktp'] ?? null,
+        'kelurahan_ktp'     => $validated['kelurahan_ktp'] ?? null,
         // Alamat Domisili
         'alamat_domisili'   => $validated['alamat_domisili'],
         'provinsi_domisili' => $validated['provinsi_domisili'],
         'kota_domisili'     => $validated['kota_domisili'],
-        'kecamatan_domisili' => $validated['kecamatan_domisili'],
-        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
         // Upload dokumen
         'ktp'   => $validated['ktp'] ?? null,
         'kk'    => $validated['kk'] ?? null,
@@ -968,7 +968,7 @@ class TDaftarHajiController extends Controller
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'pelunasan'       => $validated['pelunasan'] ?? null,
         'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
-        'catatan'       => $validated['catatan'],
+        'catatan'       => $validated['catatan'] ?? null,
         'dokumen'       => json_encode($validated['dokumen'] ?? []),
       ]);
 

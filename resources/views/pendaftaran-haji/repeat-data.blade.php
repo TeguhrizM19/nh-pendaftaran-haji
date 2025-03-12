@@ -131,7 +131,7 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="lunas_haji" type="radio" value="Lunas" name="pelunasan" 
-                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }} required
+                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="lunas_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Lunas
@@ -158,7 +158,8 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="pelunasan_manasik" type="radio" value="Lunas" name="pelunasan_manasik"
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    {{ old('pelunasan_manasik') == 'Lunas' ? 'checked' : '' }}
+                    class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="pelunasan_manasik" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Lunas
                     </label>
@@ -167,6 +168,7 @@
                 <li class="w-full">
                   <div class="flex items-center ps-3">
                     <input id="belum_lunas_manasik" type="radio" value="Belum Lunas" name="pelunasan_manasik"
+                    {{ old('pelunasan_manasik') == 'Belum Lunas' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="belum_lunas_manasik" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Belum Lunas
