@@ -16,7 +16,7 @@
               <!-- Kolom Nama (Lebih Lebar) -->
               <div class="w-full">
                 <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
-                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" required placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
             </div>
           </div>
@@ -215,7 +215,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 1</label>
-              <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" 
+              <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" required
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -231,7 +231,7 @@
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
-              <select name="tempat_lahir" id="tempat_lahir" 
+              <select name="tempat_lahir" id="tempat_lahir" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->tempat_lahir }}" selected>
                   {{ $customer->tempatLahir->kota_lahir ?? 'Pilih Tempat Lahir' }}
@@ -242,7 +242,7 @@
             <!-- Tanggal Lahir -->
             <div>
               <label for="tgl_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tanggal Lahir</label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" 
+              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" required
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -516,21 +516,21 @@
         <div class="relative">
           <!-- Alamat KTP -->
           <div>
-              <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
-              <textarea id="alamat_ktp" rows="2" name="alamat_ktp"
-                  class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Alamat KTP...">{{ old('alamat_ktp', $customer->alamat_ktp) }}</textarea>
+            <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
+            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required
+                class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase"
+                placeholder="Alamat KTP...">{{ old('alamat_ktp', $customer->alamat_ktp) }}</textarea>
           </div>
       
           <!-- Provinsi KTP -->
           <div class="mt-4">
-              <label for="provinsi_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Provinsi KTP</label>
-              <select name="provinsi_ktp" id="provinsi_ktp"
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->provinsi_ktp ?? '' }}" selected>
-                      {{ $provinsi_ktp->provinsi ?? 'Pilih Provinsi' }}
-                  </option>
-              </select>
+            <label for="provinsi_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Provinsi KTP</label>
+            <select name="provinsi_ktp" id="provinsi_ktp" required
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->provinsi_ktp ?? '' }}" selected>
+                {{ $provinsi_ktp->provinsi ?? 'Pilih Provinsi' }}
+              </option>
+            </select>
           </div>
       
           <!-- Kota KTP -->
@@ -539,83 +539,85 @@
               <select name="kota_ktp" id="kota_ktp" data-selected="{{ $customer->kota_ktp ?? '' }}" required
                   class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
                   <option value="{{ $customer->kota_ktp ?? '' }}" selected>
-                      {{ $kota_ktp->kota ?? 'Pilih Kota' }}
+                    {{ $kota_ktp->kota ?? 'Pilih Kota' }}
                   </option>
               </select>
           </div>
       
           <!-- Kecamatan KTP -->
           <div class="mt-4">
-              <label for="kecamatan_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
-              <select name="kecamatan_ktp" id="kecamatan_ktp" data-selected="{{ $customer->kecamatan_ktp ?? '' }}" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
-                      {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
-                  </option>
-              </select>
+            <label for="kecamatan_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
+            <select name="kecamatan_ktp" id="kecamatan_ktp" data-selected="{{ $customer->kecamatan_ktp ?? '' }}"
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
+                {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
+              </option>
+            </select>
           </div>
       
           <!-- Kelurahan KTP -->
           <div class="mt-4">
-              <label for="kelurahan_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Kelurahan</label>
-              <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->kelurahan_ktp ?? '' }}" selected>
-                      {{ $kelurahan_ktp->kelurahan ?? 'Pilih Kelurahan' }}
-                  </option>
-              </select>
+            <label for="kelurahan_ktp" class="mb-2 block text-sm font-medium text-[#099AA7]">Kelurahan</label>
+            <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}"
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->kelurahan_ktp ?? '' }}" selected>
+                {{ $kelurahan_ktp->kelurahan ?? 'Pilih Kelurahan' }}
+              </option>
+            </select>
           </div>
       
           <!-- Alamat Domisili -->
           <div class="mt-4">
-              <label for="alamat_domisili" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Domisili</label>
-              <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
-                  class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Alamat Domisili...">{{ old('alamat_domisili', $customer->alamat_domisili) }}</textarea>
+            <label for="alamat_domisili" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Domisili</label>
+            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
+              class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Alamat Domisili...">
+              {{ old('alamat_domisili', $customer->alamat_domisili) }}
+            </textarea>
           </div>
       
           <!-- Provinsi Domisili -->
           <div class="mt-4">
-              <label for="provinsi_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Provinsi</label>
-              <select name="provinsi_domisili" id="provinsi_domisili" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->provinsi_domisili ?? '' }}" selected>
-                      {{ $provinsi_domisili->provinsi ?? 'Pilih Provinsi' }}
-                  </option>
-              </select>
+            <label for="provinsi_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Provinsi</label>
+            <select name="provinsi_domisili" id="provinsi_domisili" required
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->provinsi_domisili ?? '' }}" selected>
+                {{ $provinsi_domisili->provinsi ?? 'Pilih Provinsi' }}
+              </option>
+            </select>
           </div>
       
           <!-- Kota Domisili -->
           <div class="mt-4">
-              <label for="kota_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kota</label>
-              <select name="kota_domisili" id="kota_domisili" data-selected="{{ $customer->kota_domisili ?? '' }}" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->kota_domisili ?? '' }}" selected>
-                      {{ $kota_domisili->kota ?? 'Pilih Kota' }}
-                  </option>
-              </select>
+            <label for="kota_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kota</label>
+            <select name="kota_domisili" id="kota_domisili" data-selected="{{ $customer->kota_domisili ?? '' }}" required
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->kota_domisili ?? '' }}" selected>
+                {{ $kota_domisili->kota ?? 'Pilih Kota' }}
+              </option>
+            </select>
           </div>
       
           <!-- Kecamatan Domisili -->
           <div class="mt-4">
-              <label for="kecamatan_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
-              <select name="kecamatan_domisili" id="kecamatan_domisili" data-selected="{{ $customer->kecamatan_domisili ?? '' }}" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->kecamatan_domisili ?? '' }}" selected>
-                      {{ $kecamatan_domisili->kecamatan ?? 'Pilih Kecamatan' }}
-                  </option>
-              </select>
+            <label for="kecamatan_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
+            <select name="kecamatan_domisili" id="kecamatan_domisili" data-selected="{{ $customer->kecamatan_domisili ?? '' }}"
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->kecamatan_domisili ?? '' }}" selected>
+                {{ $kecamatan_domisili->kecamatan ?? 'Pilih Kecamatan' }}
+              </option>
+            </select>
           </div>
       
           <!-- Kelurahan Domisili -->
           <div class="mt-4">
-              <label for="kelurahan_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kelurahan</label>
-              <select name="kelurahan_domisili" id="kelurahan_domisili" data-selected="{{ $customer->kelurahan_domisili ?? '' }}" required
-                  class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
-                  <option value="{{ $customer->kelurahan_domisili ?? '' }}" selected>
-                      {{ $kelurahan_domisili->kelurahan ?? 'Pilih Kelurahan' }}
-                  </option>
-              </select>
+            <label for="kelurahan_domisili" class="mb-2 block text-sm font-medium text-[#099AA7]">Kelurahan</label>
+            <select name="kelurahan_domisili" id="kelurahan_domisili" data-selected="{{ $customer->kelurahan_domisili ?? '' }}"
+              class="block w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm p-2.5 focus:ring-blue-300 focus:border-blue-500">
+              <option value="{{ $customer->kelurahan_domisili ?? '' }}" selected>
+                {{ $kelurahan_domisili->kelurahan ?? 'Pilih Kelurahan' }}
+              </option>
+            </select>
           </div>
         </div>              
       </div>
