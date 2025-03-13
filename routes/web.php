@@ -63,10 +63,12 @@ Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->na
 Route::resource('/gabung-haji', TGabungHajiController::class);
 Route::get('/search-gabung', [TGabungHajiController::class, 'search'])->name('gabung.search');
 Route::get('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'repeatDataGabung']);
-Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
+// Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
+Route::post('/repeat-data-gabung', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
+
 
 Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambilSemuaData']);
-Route::post('/ambil-semua-data-gabung/{id}/store', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
+Route::post('/ambil-semua-data-gabung', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
 
 // Route Keberangkatan
 Route::middleware(['auth', 'userAkses:super_admin,admin'])->group(function () {
