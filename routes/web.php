@@ -50,25 +50,23 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
   Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
-  Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
+  Route::post('/repeat-data-pendaftaran', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
 
-  Route::post('/ambil-semua-data-pendaftaran/{id}/store', [TDaftarHajiController::class, 'storeAmbilSemuaData'])->name('pendaftaran-haji-ambilSemuaData');
   Route::get('/ambil-semua-data-pendaftaran/{id}', [TDaftarHajiController::class, 'ambilSemuaData']);
-
-  // Cetak PDF
-  Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
-  Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
+  Route::post('/ambil-semua-data-pendaftaran', [TDaftarHajiController::class, 'storeAmbilSemuaData'])->name('pendaftaran-haji-ambilSemuaData');
 
   // Route Gabung Haji
   Route::resource('/gabung-haji', TGabungHajiController::class);
   Route::get('/search-gabung', [TGabungHajiController::class, 'search'])->name('gabung.search');
   Route::get('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'repeatDataGabung']);
-  // Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
   Route::post('/repeat-data-gabung', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
-
 
   Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambilSemuaData']);
   Route::post('/ambil-semua-data-gabung', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
+
+  // Cetak PDF
+  Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
+  Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
 
   // Route Keberangkatan
   Route::resource('/keberangkatan', GroupKeberangkatanController::class);

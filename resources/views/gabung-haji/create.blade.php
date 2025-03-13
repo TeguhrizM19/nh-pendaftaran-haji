@@ -636,9 +636,6 @@
       .catch(error => console.error('Error:', error));
   });
 
-
-
-
   // Menutup modal saat tombol close diklik
   document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("searchModal");

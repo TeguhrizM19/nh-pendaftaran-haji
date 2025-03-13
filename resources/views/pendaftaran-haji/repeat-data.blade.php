@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="{{ route('pendaftaran-haji-storeRepeatData', $daftar_haji->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('pendaftaran-haji-storeRepeatData') }}" method="POST" enctype="multipart/form-data">
       @csrf
       <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
@@ -16,7 +16,7 @@
               <!-- Kolom Nama (Lebih Lebar) -->
               <div class="w-full">
                 <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Customer</label>
-                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                  <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" required replaceholder="Nama" class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
-              <input type="text" name="bank" value="{{ old('bank', $daftar_haji->bank) }}" placeholder="Bank/Jumlah Setoran" 
+              <input type="text" name="bank" value="{{ old('bank') }}" placeholder="Bank/Jumlah Setoran" 
                 class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
@@ -68,9 +68,8 @@
                 class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Sumber Informasi</option>
                 @foreach($sumberInfo as $sumber)
-                  <option value="{{ $sumber->id }}" 
-                    {{ $sumber->id == $daftar_haji->sumber_info_id ? 'selected' : '' }}>
-                    {{ $sumber->info }}
+                  <option value="{{ $sumber->id }}" {{ old('sumber_info_id') == $sumber->id ? 'selected' : '' }}>
+                      {{ $sumber->info }}
                   </option>
                 @endforeach
               </select>
@@ -80,7 +79,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" value="{{ old('bpjs', $daftar_haji->bpjs) }}" placeholder="No BPJS" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              <input type="number" name="bpjs" value="{{ old('bpjs') }}" placeholder="No BPJS" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
               @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
               @error('bpjs')
@@ -105,19 +104,43 @@
             <!-- Kolom Paket Pendaftaran -->
             <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Paket Pendaftaran</h3>
-              <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
-                @foreach (['Reguler Tunai', 'Reguler Talangan', 'Khusus/Plus'] as $paket)
-                  <li class="w-full border-b border-gray-200 last:border-b-0">
+              <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
+                <div class="grid grid-cols-1 md:grid-cols-1">
+                  <!-- Reguler Tunai -->
+                  <li class="border-b border-gray-200">
                     <div class="flex items-center ps-3">
-                      <input type="radio" value="{{ $paket }}" name="paket_haji"
-                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                        {{ $daftar_haji->paket_haji == $paket ? 'checked' : '' }}>
-                      <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                        {{ $paket }}
+                      <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji"
+                        {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }}
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                      <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        Reguler Tunai
                       </label>
                     </div>
                   </li>
-                @endforeach
+                  <!-- Reguler Talangan (di desktop ada di bawah Reguler Tunai, di HP tetap urut) -->
+                  <li class="border-b border-gray-200">
+                    <div class="flex items-center ps-3">
+                      <input id="reguler-talangan" type="radio" value="Reguler Talangan" name="paket_haji"
+                        {{ old('paket_haji') == 'Reguler Talangan' ? 'checked' : '' }}
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                      <label for="reguler-talangan" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        Reguler Talangan
+                      </label>
+                    </div>
+                  </li>
+                </div>
+                <!-- Khusus/Plus (di HP ada di bawah Reguler Talangan) -->
+                <li class="w-full">
+                  <div class="flex items-center ps-3">
+                    <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
+                      {{ old('paket_haji') == 'Khusus/Plus' ? 'checked' : '' }}
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Khusus/Plus
+                    </label>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -185,7 +208,7 @@
             </label>
             <textarea id="message" rows="4" name="catatan"
             class="mb-4  block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Write your thoughts here...">{{ old('catatan', $daftar_haji->catatan) }}</textarea>
+            placeholder="Write your thoughts here...">{{ old('catatan') }}</textarea>
           </div>
         </div>
 
@@ -194,7 +217,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 1</label>
-              <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" 
+              <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" required
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -210,7 +233,7 @@
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
-              <select name="tempat_lahir" id="tempat_lahir" 
+              <select name="tempat_lahir" id="tempat_lahir" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->tempat_lahir }}" selected>
                   {{ $customer->tempatLahir->kota_lahir ?? 'Pilih Tempat Lahir' }}
@@ -221,7 +244,7 @@
             <!-- Tanggal Lahir -->
             <div>
               <label for="tgl_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tanggal Lahir</label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" 
+              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" required
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900  shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -360,12 +383,12 @@
             <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>  
             <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
               @foreach ($dokumen as $dok)
-                <li class="w-full border-b border-gray-200 last:border-b-0">
+                <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
-                    <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      {{ in_array((string) $dok->id, (array) $selected_documents) ? 'checked' : '' }}>
-                    <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      {{ in_array($dok->id, old('dokumen', $selectedDokumen ?? [])) ? 'checked' : '' }}>
+                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       {{ $dok->dokumen }}
                     </label>
                   </div>
@@ -496,7 +519,7 @@
           <!-- Alamat KTP -->
           <div>
             <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
-            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" 
+            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required
               class="block p-2.5 w-full text-sm text-black bg-white  rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
               placeholder="Alamat KTP...">{{ old('alamat_ktp', $customer->alamat_ktp) }}</textarea>
           </div>
@@ -507,7 +530,7 @@
               <label for="provinsi_ktp" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Provinsi KTP
               </label>
-              <select name="provinsi_ktp" id="provinsi_ktp" 
+              <select name="provinsi_ktp" id="provinsi_ktp" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->provinsi_ktp ?? '' }}" selected>
                   {{ $provinsi_ktp->provinsi ?? 'Pilih Provinsi' }}
@@ -532,7 +555,7 @@
           <div class="">
             <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium text-[#099AA7]">Kecamatan</label>
             <select name="kecamatan_ktp" id="kecamatan_ktp" 
-              data-selected="{{ $customer->kecamatan_ktp ?? '' }}" required
+              data-selected="{{ $customer->kecamatan_ktp ?? '' }}"
               class="w-full text-gray-900  bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
                 {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
@@ -544,7 +567,7 @@
           <div class="flex gap-4 mt-4">
             <div class="w-full ">
               <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">Kelurahan</label>
-              <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}" required
+              <select name="kelurahan_ktp" id="kelurahan_ktp" data-selected="{{ $customer->kelurahan_ktp ?? '' }}"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->kelurahan_ktp ?? '' }}" selected>
                   {{ $kelurahan_ktp->kelurahan ?? 'Pilih Kelurahan' }}
@@ -590,7 +613,7 @@
           <div class="">
             <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
             <select name="kecamatan_domisili" id="kecamatan_domisili" 
-            data-selected="{{ $customer->kecamatan_domisili ?? '' }}" required
+            data-selected="{{ $customer->kecamatan_domisili ?? '' }}"
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ $customer->kecamatan_domisili ?? '' }}" selected>
                 {{ $kecamatan_domisili->kecamatan ?? 'Pilih Kecamatan' }}
@@ -604,7 +627,7 @@
             <div class="w-full ">
               <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
               <select name="kelurahan_domisili" id="kelurahan_domisili" 
-              data-selected="{{ $customer->kelurahan_domisili ?? '' }}" required
+              data-selected="{{ $customer->kelurahan_domisili ?? '' }}"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->kelurahan_domisili ?? '' }}" selected>
                   {{ $kelurahan_domisili->kelurahan ?? 'Pilih kelurahan' }}

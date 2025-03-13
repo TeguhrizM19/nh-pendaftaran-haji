@@ -34,7 +34,7 @@
             <label for="no_porsi_haji" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
               Nomor Porsi Haji
             </label>
-            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji"
+            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" required
             class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
             ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
             @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
@@ -49,7 +49,7 @@
               <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Cabang Daftar
               </label>
-              <select name="cabang_id" id="cabang_id" required
+              <select name="cabang_id" id="cabang_id"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 @foreach($cabang as $cbg)
@@ -61,7 +61,7 @@
             </div>
             <div class="">
               <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
-              <select name="wilayah_daftar" id="wilayah_daftar" required>
+              <select name="wilayah_daftar" id="wilayah_daftar">
                 <option value="">Pilih</option>
                 @forelse ($wilayahKota as $wilayah)
                   <option value="{{ $wilayah->id }}" {{ old('wilayah_daftar') == $wilayah->id ? 'selected' : '' }}>
@@ -77,7 +77,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
-              <input type="text" name="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}" required
+              <input type="text" name="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}"
                 class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
@@ -97,7 +97,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}" required
+              <input type="number" name="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}"
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
               @error('bpjs')
@@ -127,7 +127,7 @@
                 <li class="border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji"
-                      {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }} required
+                      {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Reguler Tunai
@@ -248,7 +248,8 @@
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
-              <select name="tempat_lahir" id="tempat_lahir" required class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              <select name="tempat_lahir" id="tempat_lahir" required 
+              class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempatLahir as $kt)
                   <option value="{{ $kt->id }}" {{ old('tempat_lahir') == $kt->id ? 'selected' : '' }}>
@@ -263,7 +264,7 @@
             <!-- Tanggal Lahir -->
             <div>
               <label for="tgl_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tanggal Lahir</label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}" required
+              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}"
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900  shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -274,7 +275,7 @@
             <div>
               <div>
                 <label for="jenis_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Jenis ID</label>
-                <select id="jenis_id" name="jenis_id" required
+                <select id="jenis_id" name="jenis_id"
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg  shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih</option>
                   <option value="KTP" {{ old('jenis_id') == 'KTP' ? 'selected' : '' }}>KTP</option>
@@ -287,7 +288,7 @@
               <label for="no_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 No Identitas
               </label>
-              <input type="text" id="no_id" name="no_id" placeholder="Masukkan No Identitas" value="{{ old('no_id') }}" required
+              <input type="text" id="no_id" name="no_id" placeholder="Masukkan No Identitas" value="{{ old('no_id') }}"
                 class="block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset 
                 ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
                 @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
@@ -300,7 +301,7 @@
             <!-- Dropdown Warga -->
             <div>
               <label for="warga" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Warga</label>
-              <select id="warga" name="warga" required
+              <select id="warga" name="warga"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg  shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="WNI" {{ old('warga') == 'WNI' ? 'selected' : '' }}>WNI</option>
@@ -344,7 +345,7 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
-                      {{ old('status_nikah') == 'Menikah' ? 'checked' : '' }} required
+                      {{ old('status_nikah') == 'Menikah' ? 'checked' : '' }}
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Menikah
@@ -378,14 +379,14 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}" required
+              <input type="text" name="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}"
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
               <label for="pendidikan" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Pendidikan
               </label>
-              <select id="pendidikan" name="pendidikan" required
+              <select id="pendidikan" name="pendidikan"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg  shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="Tidak Sekolah" {{ old('pendidikan') == 'Tidak Sekolah' ? 'selected' : '' }}>Tidak Sekolah</option>
@@ -460,7 +461,7 @@
               Alamat Sesuai KTP
             </label>
             <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required
-            class="block p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            class="block p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
             placeholder="Write your thoughts here...">{{ old('alamat_ktp') }}</textarea>
           </div>
 
@@ -492,7 +493,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_ktp" id="kecamatan_ktp" required
+            <select name="kecamatan_ktp" id="kecamatan_ktp"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kecamatan</option>
               @if(old('kecamatan_ktp', $selectedKecamatan ?? false))
@@ -506,7 +507,7 @@
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full  shadow-slate-400">
                 <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_ktp" id="kelurahan_ktp" required
+                <select name="kelurahan_ktp" id="kelurahan_ktp"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Kelurahan</option>
                   @if(old('kelurahan_ktp', $selectedKelurahan ?? false))
@@ -540,7 +541,7 @@
               </div>
             </div>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili"
-            class="block mb-2 p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" required
+            class="block mb-2 p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required
             placeholder="Write your thoughts here...">{{ old('alamat_domisili') }}</textarea>
           </div>
 
@@ -571,7 +572,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_domisili" id="kecamatan_domisili" required
+            <select name="kecamatan_domisili" id="kecamatan_domisili"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ old('kecamatan_domisili', $selectedKecamatanDom ?? '') }}" selected>
                 {{ $namaKecamatanDom ?? 'Pilih Kecamatan' }}
@@ -585,7 +586,7 @@
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full  shadow-slate-400">
                 <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_domisili" id="kelurahan_domisili" required
+                <select name="kelurahan_domisili" id="kelurahan_domisili"
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="{{ old('kelurahan_domisili', $selectedKelurahanDom ?? '') }}" selected>
                     {{ $namaKelurahanDom ?? 'Pilih Kelurahan' }}
@@ -654,26 +655,6 @@
   document.getElementById("searchInput").focus();
   });
 
-  // // Tutup modal pencarian
-  // document.getElementById("closeSearch").addEventListener("click", function () {
-  // document.getElementById("searchModal").classList.add("hidden");
-  // });
-
-  // // Event delegation untuk tombol Repeat
-  // document.getElementById("customerList").addEventListener("click", function (e) {
-  //   let listItem = e.target.closest("li");
-  //   if (!listItem) return;
-
-  //   let customerId = listItem.dataset.id;
-
-  //   console.log("ID yang dikirim:", customerId);
-
-  //   if (e.target.classList.contains("repeat-btn")) {
-  //     // Arahkan ke halaman dengan ID di URL (GET method)
-  //     window.location.href = `/repeat-data-customer/${customerId}`;
-  //   }
-  // });
-
   // Pencarian real-time menggunakan AJAX
   document.getElementById("searchInput").addEventListener("input", function () {
     let query = this.value.trim();
@@ -687,25 +668,28 @@
     }
 
     fetch(`/search-pendaftaran?query=${encodeURIComponent(query)}`)
-    .then(response => response.json())
-    .then(data => {
-      customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
+      .then(response => response.json())
+      .then(data => {
+        console.log("Response Data:", data); // Debugging
 
-      if (data.length > 0) {
-        data.forEach(item => {
+        customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
+
+        data.customers.forEach(customer => {
+          let daftarHaji = data.daftarHaji.find(daftar => daftar.customer_id === customer.id);
+
           let li = document.createElement("li");
           li.classList.add("flex", "justify-start", "items-center", "p-4", "hover:bg-blue-100", "cursor-pointer", "gap-4");
 
           li.innerHTML = `
             <div class="flex-1">
-              <span class="font-semibold">No. Porsi Haji: ${item.no_porsi_haji}</span>
-              <span class="block text-gray-600">Nama: ${item.customer ? item.customer.nama : 'Tidak Ada'}</span>
+              <span class="font-semibold">NIK: ${customer.no_id}</span>
+              <span class="block text-gray-600">Nama: ${customer.nama}</span>
             </div>
             <div class="flex gap-2">
-              <a href="/repeat-data-pendaftaran/${item.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
+              <a href="/repeat-data-pendaftaran/${customer.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
                 🔄 Repeat Data
               </a>
-              <a href="/ambil-semua-data-pendaftaran/${item.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
+              <a href="/ambil-semua-data-pendaftaran/${customer.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
                 📥 Ambil Data
               </a>
             </div>
@@ -715,62 +699,10 @@
         });
 
         searchResults.classList.remove("hidden");
-      } else {
-        customerList.innerHTML = `<li class="p-4 text-gray-500">Tidak ada hasil ditemukan</li>`;
-      }
-    })
-    .catch(error => console.error('Error:', error));
-
+      })
+      .catch(error => console.error('Error:', error));
   });
 
-  // Pencarian real-time menggunakan AJAX
-  document.getElementById("searchInput").addEventListener("input", function () {
-    let query = this.value.trim();
-    let searchResults = document.getElementById("searchResults");
-    let customerList = document.getElementById("customerList");
-
-    if (query === "") {
-      searchResults.classList.add("hidden");
-      customerList.innerHTML = "";
-      return;
-    }
-
-    fetch(`/search-pendaftaran?query=${encodeURIComponent(query)}`)
-    .then(response => response.json())
-    .then(data => {
-      customerList.innerHTML = ""; // Kosongkan hasil sebelumnya
-
-      if (data.length > 0) {
-        data.forEach(item => {
-          let li = document.createElement("li");
-          li.classList.add("flex", "justify-start", "items-center", "p-4", "hover:bg-blue-100", "cursor-pointer", "gap-4");
-
-          li.innerHTML = `
-            <div class="flex-1">
-              <span class="font-semibold">No. Porsi: ${item.no_porsi_haji}</span>
-              <span class="block text-gray-600">Nama: ${item.customer ? item.customer.nama : 'Tidak Ada'}</span>
-            </div>
-            <div class="flex gap-2">
-              <a href="/repeat-data-pendaftaran/${item.id}" class="repeat-btn bg-[#099AA7] text-white px-4 py-2 rounded-lg text-sm">
-                🔄 Repeat Data
-              </a>
-              <a href="/ambil-semua-data-pendaftaran/${item.id}" class="ambil-btn bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
-                📥 Ambil Data
-              </a>
-            </div>
-          `;
-
-          customerList.appendChild(li);
-        });
-
-        searchResults.classList.remove("hidden");
-      } else {
-        customerList.innerHTML = `<li class="p-4 text-gray-500">Tidak ada hasil ditemukan</li>`;
-      }
-    })
-    .catch(error => console.error('Error:', error));
-
-  });
 
   // Menutup modal saat tombol close diklik
   document.addEventListener("DOMContentLoaded", function () {
@@ -784,12 +716,18 @@
     }
   });
 
-  // // Tutup dropdown search saat kehilangan fokus
-  // document.getElementById("searchInput").addEventListener("blur", function () {
-  //   setTimeout(() => {
-  //     document.getElementById("searchResults").classList.add("hidden");
-  //   }, 200);
-  // });
+  // Event delegation untuk tombol Repeat
+  document.getElementById("customerList").addEventListener("click", function (e) {
+    let listItem = e.target.closest("li");
+    if (!listItem) return;
+
+    let customerId = listItem.dataset.id;
+
+    if (e.target.classList.contains("repeat-btn")) {
+      // Arahkan ke halaman dengan ID di URL (GET method)
+      window.location.href = `/repeat-data-customer/${customerId}`;
+    }
+  });
 
   // Checkbox Gunakan alamat KTP 
   document.getElementById('copy-checkbox').addEventListener('change', function () { 
