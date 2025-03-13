@@ -24,60 +24,63 @@ Route::middleware(['auth'])->group(function () {
 
   // Route User
   Route::resource('/user', UserController::class);
-});
-
-// Route Pendaftaran Haji
-Route::resource('/pendaftaran-haji', TDaftarHajiController::class);
-Route::get('/get-cabang/{id}', [TDaftarHajiController::class, 'getCabang']);
-Route::get('/get-kota/{provinsi_id}', [TDaftarHajiController::class, 'getKota']);
-Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecamatan']);
-Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
-Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
-
-Route::get('/cabang/search', [PencarianSelect2Controller::class, 'searchCabang'])->name('cabang.search');
-Route::get('/wilayah/search', [PencarianSelect2Controller::class, 'searchWilayah'])->name('wilayah.search');
-Route::get('/tempat-lahir/search', [PencarianSelect2Controller::class, 'searchTempatLhr'])->name('tempat-lahir.search');
-Route::get('/search-provinsi', [PencarianSelect2Controller::class, 'searchProvinsi'])->name('provinsi.search');
-Route::get('/search-kota/{provinsi_id}', [PencarianSelect2Controller::class, 'searchKota']);
-Route::get('/search-kecamatan/{kota_id}', [PencarianSelect2Controller::class, 'searchKecamatan']);
-Route::get('/search-kelurahan/{kecamatan_id}', [PencarianSelect2Controller::class, 'searchKelurahan']);
-Route::get('/kota-bank/search', [PencarianSelect2Controller::class, 'searchKotaBank'])->name('kota-bank.search');
-Route::get('/depag/search', [PencarianSelect2Controller::class, 'searchDepag'])->name('depag.search');
-Route::get('/keberangkatan/search', [PencarianSelect2Controller::class, 'searchKeberangkatan'])->name('keberangkatan.search');
-
-Route::get('/get-no-porsi', [PencarianSelect2Controller::class, 'searchNoPorsi']);
-Route::get('/filter-no-porsi', [PencarianSelect2Controller::class, 'filterNoPorsi']);
-
-Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
-Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
-Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
-
-Route::post('/ambil-semua-data-pendaftaran/{id}/store', [TDaftarHajiController::class, 'storeAmbilSemuaData'])->name('pendaftaran-haji-ambilSemuaData');
-Route::get('/ambil-semua-data-pendaftaran/{id}', [TDaftarHajiController::class, 'ambilSemuaData']);
-
-// Cetak PDF
-Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
-Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
-
-// Route Gabung Haji
-Route::resource('/gabung-haji', TGabungHajiController::class);
-Route::get('/search-gabung', [TGabungHajiController::class, 'search'])->name('gabung.search');
-Route::get('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'repeatDataGabung']);
-// Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
-Route::post('/repeat-data-gabung', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
 
 
-Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambilSemuaData']);
-Route::post('/ambil-semua-data-gabung', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
+  // Route Pendaftaran Haji
+  Route::resource('/pendaftaran-haji', TDaftarHajiController::class);
+  Route::get('/get-cabang/{id}', [TDaftarHajiController::class, 'getCabang']);
+  Route::get('/get-kota/{provinsi_id}', [TDaftarHajiController::class, 'getKota']);
+  Route::get('/get-kecamatan/{kota_id}', [TDaftarHajiController::class, 'getKecamatan']);
+  Route::get('/get-kelurahan/{kecamatan_id}', [TDaftarHajiController::class, 'getKelurahan']);
+  Route::get('/get-kodepos/{kelurahan_id}', [TDaftarHajiController::class, 'getKodePos']);
 
-// Route Keberangkatan
-Route::middleware(['auth', 'userAkses:super_admin,admin'])->group(function () {
+  Route::get('/cabang/search', [PencarianSelect2Controller::class, 'searchCabang'])->name('cabang.search');
+  Route::get('/wilayah/search', [PencarianSelect2Controller::class, 'searchWilayah'])->name('wilayah.search');
+  Route::get('/tempat-lahir/search', [PencarianSelect2Controller::class, 'searchTempatLhr'])->name('tempat-lahir.search');
+  Route::get('/search-provinsi', [PencarianSelect2Controller::class, 'searchProvinsi'])->name('provinsi.search');
+  Route::get('/search-kota/{provinsi_id}', [PencarianSelect2Controller::class, 'searchKota']);
+  Route::get('/search-kecamatan/{kota_id}', [PencarianSelect2Controller::class, 'searchKecamatan']);
+  Route::get('/search-kelurahan/{kecamatan_id}', [PencarianSelect2Controller::class, 'searchKelurahan']);
+  Route::get('/kota-bank/search', [PencarianSelect2Controller::class, 'searchKotaBank'])->name('kota-bank.search');
+  Route::get('/depag/search', [PencarianSelect2Controller::class, 'searchDepag'])->name('depag.search');
+  Route::get('/keberangkatan/search', [PencarianSelect2Controller::class, 'searchKeberangkatan'])->name('keberangkatan.search');
+
+  Route::get('/get-no-porsi', [PencarianSelect2Controller::class, 'searchNoPorsi']);
+  Route::get('/filter-no-porsi', [PencarianSelect2Controller::class, 'filterNoPorsi']);
+
+  Route::get('/search-pendaftaran', [TDaftarHajiController::class, 'search'])->name('pendaftaran.search');
+  Route::get('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'repeatDataPendaftaran']);
+  Route::post('/repeat-data-pendaftaran/{id}', [TDaftarHajiController::class, 'storeRepeatData'])->name('pendaftaran-haji-storeRepeatData');
+
+  Route::post('/ambil-semua-data-pendaftaran/{id}/store', [TDaftarHajiController::class, 'storeAmbilSemuaData'])->name('pendaftaran-haji-ambilSemuaData');
+  Route::get('/ambil-semua-data-pendaftaran/{id}', [TDaftarHajiController::class, 'ambilSemuaData']);
+
+  // Cetak PDF
+  Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
+  Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
+
+  // Route Gabung Haji
+  Route::resource('/gabung-haji', TGabungHajiController::class);
+  Route::get('/search-gabung', [TGabungHajiController::class, 'search'])->name('gabung.search');
+  Route::get('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'repeatDataGabung']);
+  // Route::post('/repeat-data-gabung/{id}', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
+  Route::post('/repeat-data-gabung', [TGabungHajiController::class, 'storeRepeatData'])->name('gabung-haji.storeRepeatData');
+
+
+  Route::get('/ambil-semua-data-gabung/{id}', [TGabungHajiController::class, 'ambilSemuaData']);
+  Route::post('/ambil-semua-data-gabung', [TGabungHajiController::class, 'storeAmbilSemuaData'])->name('gabung-haji.ambilSemuaData');
+
+  // Route Keberangkatan
   Route::resource('/keberangkatan', GroupKeberangkatanController::class);
   Route::get('/peserta-keberangkatan', [GroupKeberangkatanController::class, 'indexKeberangkatan']);
   Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
     ->name('simpan.peserta.keberangkatan');
   Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
     ->name('hapus.peserta.keberangkatan');
+
+  Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan']);
+  Route::get('/filter-keberangkatan-laki', [DashboardController::class, 'filterKeberangkatanLaki']);
+  Route::get('/filter-keberangkatan-perempuan', [DashboardController::class, 'filterKeberangkatanPerempuan']);
 });
 
 
