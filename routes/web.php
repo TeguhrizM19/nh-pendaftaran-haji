@@ -77,13 +77,15 @@ Route::middleware(['auth'])->group(function () {
     ->name('hapus.peserta.keberangkatan');
 
   Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan']);
-  Route::get('/filter-keberangkatan-laki', [DashboardController::class, 'filterKeberangkatanLaki']);
-  Route::get('/filter-keberangkatan-perempuan', [DashboardController::class, 'filterKeberangkatanPerempuan']);
+
+  Route::get('/daftar-usia', [DashboardController::class, 'daftarUsia']);
+
+  Route::get('/usia-chart', [DashboardController::class, 'showUsiaChart']);
 });
 
 
 
-// Route::get('/create-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
+// Route::get('/create-DashboardController/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
 //     ->name('create.keberangkatan');
 // Route::get('/detail-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'detailKeberangkatan'])
 //     ->name('detail.keberangkatan');

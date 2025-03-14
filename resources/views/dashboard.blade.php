@@ -118,45 +118,64 @@
       </div>
     </div>
 
-  <script>
-    // Group Keberangkatan
-    $(document).ready(function () {
-      $('#keberangkatan').select2({
-        placeholder: "Pilih Group Keberangkatan",
-        allowClear: true,
-        width: '50%'
-      });
+    <!-- Baris 3 -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-5 mb-5"> 
+      <div class="container mt-5">
+      <h2>Grafik Rentang Usia</h2>
+      {!! $chart->container() !!}
+    </div>
 
-      $('#keberangkatan').on('select2:select', function (e) {
-        var tahunId = $(this).val();
-        var url = $(this).data('url');
 
-        if (tahunId) {
-          $.ajax({
-            url: url,
-            type: 'GET',
-            data: { tahun_id: tahunId },
-            success: function (response) {
-              $('#jumlahJamaah').text(response.total);
-              $('#jamaahLaki').text(response.laki);
-              $('#jamaahPerempuan').text(response.perempuan);
-              $('#pelunasanHaji').text(response.pelunasanHaji);
-              $('#belumLunasHaji').text(response.belumLunasHaji);
-              $('#pelunasanManasik').text(response.pelunasanManasik);
-              $('#belumLunasManasik').text(response.belumLunasManasik);
-            }
-          });
-        } else {
-          $('#jumlahJamaah').text(0);
-          $('#jamaahLaki').text(0);
-          $('#jamaahPerempuan').text(0);
-          $('#pelunasanHaji').text(0);
-          $('#belumLunasHaji').text(0);
-          $('#pelunasanManasik').text(0);
-          $('#belumLunasManasik').text(0);
-        }
-      });
+<script src="{{ $chart->cdn() }}">
+  // Group Keberangkatan
+  $(document).ready(function () {
+    $('#keberangkatan').select2({
+      placeholder: "Pilih Tahun Keberangkatan",
+      allowClear: true, // Memungkinkan tombol X untuk menghapus pilihan
+      width: '50%'
     });
 
-  </script>
+    // Event saat memilih tahun keberangkatan
+    $('#keberangkatan').on('select2:select', function (e) {
+      var tahunId = $(this).val();
+      var url = $(this).data('url');
+
+      if (tahunId) {
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: { tahun_id: tahunId },
+          success: function (response) {
+            $('#jumlahJamaah').text(response.total);
+            $('#jamaahLaki').text(response.laki);
+            $('#jamaahPerempuan').text(response.perempuan);
+            $('#pelunasanHaji').text(response.pelunasanHaji);
+            $('#belumLunasHaji').text(response.belumLunasHaji);
+            $('#pelunasanManasik').text(response.pelunasanManasik);
+            $('#belumLunasManasik').text(response.belumLunasManasik);
+          }
+        });
+      }
+    });
+
+    // Event saat tombol X diklik atau dropdown dikosongkan
+    $('#keberangkatan').on('select2:clear', function (e) {
+      resetData(); // Panggil fungsi reset
+    });
+
+    // Fungsi untuk mereset semua tampilan data ke 0
+    function resetData() {
+      $('#jumlahJamaah').text(0);
+      $('#jamaahLaki').text(0);
+      $('#jamaahPerempuan').text(0);
+      $('#pelunasanHaji').text(0);
+      $('#belumLunasHaji').text(0);
+      $('#pelunasanManasik').text(0);
+      $('#belumLunasManasik').text(0);
+    }
+  });
+
+</script>
+
+{{ $chart->script() }}
 </x-layout>
