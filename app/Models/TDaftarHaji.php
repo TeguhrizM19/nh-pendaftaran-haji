@@ -20,6 +20,7 @@ class TDaftarHaji extends Model
   use HasFactory;
 
   protected $guarded = ['id'];
+  protected $table = 't_daftar_hajis';
 
   public function customer()
   {

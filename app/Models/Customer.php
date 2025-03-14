@@ -8,6 +8,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\MSumberInfo;
 use App\Models\TDaftarHaji;
+use App\Models\TGabungHaji;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -55,6 +56,11 @@ class Customer extends Model
   public function daftarHaji()
   {
     return $this->hasMany(TDaftarHaji::class, 'customer_id');
+  }
+
+  public function gabungHaji()
+  {
+    return $this->hasOne(TGabungHaji::class, 'customer_id');
   }
 
   public function cabang()

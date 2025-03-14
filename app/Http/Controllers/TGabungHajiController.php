@@ -88,7 +88,7 @@ class TGabungHajiController extends Controller
     }
 
     // Ambil data
-    $gabung_haji = $isFiltered ? $query->latest()->get() : $query->latest()->paginate(10);
+    $gabung_haji = $isFiltered ? $query->latest()->get() : $query->latest()->paginate(20);
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
