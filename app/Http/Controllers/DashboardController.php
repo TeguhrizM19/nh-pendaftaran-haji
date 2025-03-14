@@ -16,9 +16,14 @@ class DashboardController extends Controller
 {
   public function index()
   {
+
+    // Ambil data keberangkatan
     $keberangkatan = GroupKeberangkatan::all();
+
+    // Ambil data usia dari customer
     $customers = Customer::select('tgl_lahir')->get();
 
+    // Inisialisasi rentang usia
     $usiaCounts = [
       '<= 20' => 0,
       '21-25' => 0,
@@ -33,8 +38,10 @@ class DashboardController extends Controller
       '>= 70' => 0,
     ];
 
+    // Hitung usia berdasarkan tanggal lahir
     foreach ($customers as $customer) {
       $usia = Carbon::parse($customer->tgl_lahir)->age;
+
       if ($usia <= 20) $usiaCounts['<= 20']++;
       elseif ($usia <= 25) $usiaCounts['21-25']++;
       elseif ($usia <= 30) $usiaCounts['26-30']++;
@@ -48,13 +55,13 @@ class DashboardController extends Controller
       else $usiaCounts['>= 70']++;
     }
 
-    // Buat chart
+    // Inisialisasi chart
     $usiaChart = new UsiaChart();
     $chart = $usiaChart->build($usiaCounts);
 
+    // Return view dengan data keberangkatan dan chart usia
     return view('dashboard', compact('keberangkatan', 'chart'));
   }
-
 
 
   public function filterKeberangkatan(Request $request)
@@ -149,103 +156,4 @@ class DashboardController extends Controller
       'belumLunasManasik' => $belumLunasManasik // Data belum lunas manasik
     ]);
   }
-
-  public function daftarUsia()
-  {
-    $customers = Customer::select('tgl_lahir')->get();
-
-    // Hitung usia setiap customer
-    $usiaList = $customers->map(function ($customer) {
-      return Carbon::parse($customer->tgl_lahir)->age;
-    });
-
-    // Inisialisasi kategori usia
-    $rentangUsia = [
-      'usia_20' => 0,
-      'usia_21_25' => 0,
-      'usia_26_30' => 0,
-      'usia_31_35' => 0,
-      'usia_36_40' => 0,
-      'usia_41_45' => 0,
-      'usia_46_50' => 0,
-      'usia_51_60' => 0,
-      'usia_61_65' => 0,
-      'usia_66_70' => 0,
-      'usia_70' => 0,
-    ];
-
-    // Masukkan setiap usia ke kategori
-    foreach ($usiaList as $usia) {
-      if ($usia <= 20) {
-        $rentangUsia['usia_20']++;
-      } elseif ($usia >= 21 && $usia <= 25) {
-        $rentangUsia['usia_21_25']++;
-      } elseif ($usia >= 26 && $usia <= 30) {
-        $rentangUsia['usia_26_30']++;
-      } elseif ($usia >= 31 && $usia <= 35) {
-        $rentangUsia['usia_31_35']++;
-      } elseif ($usia >= 36 && $usia <= 40) {
-        $rentangUsia['usia_36_40']++;
-      } elseif ($usia >= 41 && $usia <= 45) {
-        $rentangUsia['usia_41_45']++;
-      } elseif ($usia >= 46 && $usia <= 50) {
-        $rentangUsia['usia_46_50']++;
-      } elseif ($usia >= 51 && $usia <= 60) {
-        $rentangUsia['usia_51_60']++;
-      } elseif ($usia >= 61 && $usia <= 65) {
-        $rentangUsia['usia_61_65']++;
-      } elseif ($usia >= 66 && $usia <= 70) {
-        $rentangUsia['usia_66_70']++;
-      } else {
-        $rentangUsia['usia_70']++;
-      }
-    }
-
-    return response()->json([
-      'usiaList' => $usiaList,
-      'rentangUsia' => $rentangUsia
-    ]);
-  }
-
-  // public function showUsiaChart()
-  // {
-  //   $keberangkatan = GroupKeberangkatan::all();
-  //   $customers = Customer::select('tgl_lahir')->get();
-
-  //   $usiaCounts = [
-  //     '<= 20' => 0,
-  //     '21-25' => 0,
-  //     '26-30' => 0,
-  //     '31-35' => 0,
-  //     '36-40' => 0,
-  //     '41-45' => 0,
-  //     '46-50' => 0,
-  //     '51-60' => 0,
-  //     '61-65' => 0,
-  //     '66-70' => 0,
-  //     '>= 70' => 0,
-  //   ];
-
-  //   foreach ($customers as $customer) {
-  //     $usia = Carbon::parse($customer->tgl_lahir)->age;
-
-  //     if ($usia <= 20) $usiaCounts['<= 20']++;
-  //     elseif ($usia <= 25) $usiaCounts['21-25']++;
-  //     elseif ($usia <= 30) $usiaCounts['26-30']++;
-  //     elseif ($usia <= 35) $usiaCounts['31-35']++;
-  //     elseif ($usia <= 40) $usiaCounts['36-40']++;
-  //     elseif ($usia <= 45) $usiaCounts['41-45']++;
-  //     elseif ($usia <= 50) $usiaCounts['46-50']++;
-  //     elseif ($usia <= 60) $usiaCounts['51-60']++;
-  //     elseif ($usia <= 65) $usiaCounts['61-65']++;
-  //     elseif ($usia <= 70) $usiaCounts['66-70']++;
-  //     else $usiaCounts['>= 70']++;
-  //   }
-
-  //   // Inisialisasi chart
-  //   $usiaChart = new UsiaChart();
-  //   $chart = $usiaChart->build($usiaCounts);
-
-  //   return view('dashboard', compact('chart', 'keberangkatan'));
-  // }
 }
