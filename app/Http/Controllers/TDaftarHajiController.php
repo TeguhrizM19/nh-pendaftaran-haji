@@ -29,9 +29,6 @@ class TDaftarHajiController extends Controller
   {
     $query = TDaftarHaji::with('customer');
 
-    // Cek apakah ada filter pencarian
-    $isFiltered = false;
-
     if ($request->has('search')) {
       $search = $request->search;
       $query->where('no_porsi_haji', 'like', "%{$search}%")
@@ -41,35 +38,61 @@ class TDaftarHajiController extends Controller
             ->orWhere('jenis_kelamin', 'like', "%{$search}%")
             ->orWhere('no_hp_1', 'like', "%{$search}%");
         });
-      $isFiltered = true;
     }
 
-    // Cek filter no_porsi_haji (rentang)
+    // Filter berdasarkan rentang nomor porsi haji
     if ($request->has('no_porsi_haji_1') && $request->has('no_porsi_haji_2')) {
       $noPorsi1 = $request->no_porsi_haji_1;
       $noPorsi2 = $request->no_porsi_haji_2;
 
       if (!empty($noPorsi1) && !empty($noPorsi2)) {
         $query->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
-        $isFiltered = true;
       }
     }
 
-    // Jika filter aktif, tampilkan semua data tanpa paginate
-    if ($isFiltered) {
-      $daftar_haji = $query->get(); // Mengambil semua data tanpa paginate
-    } else {
-      $daftar_haji = $query->latest()->paginate(5);
+    // Filter berdasarkan keberangkatan
+    if ($request->filled('keberangkatan')) {
+      $query->where('keberangkatan_id', $request->keberangkatan);
     }
+
+    // Filter pelunasan
+    if ($request->has('pelunasan') && !empty($request->pelunasan)) {
+      $pelunasan = $request->pelunasan;
+      if ($pelunasan === 'Lunas') {
+        $query->where('pelunasan', 'Lunas');
+      } elseif ($pelunasan === 'Belum Lunas') {
+        $query->where(function ($q) {
+          $q->whereNull('pelunasan')
+            ->orWhere('pelunasan', '')
+            ->orWhere('pelunasan', '-')
+            ->orWhere('pelunasan', '!=', 'Lunas');
+        });
+      }
+    }
+
+    // Ambil data dengan pagination
+    $daftar_haji = $query->latest()->paginate(3)->appends($request->query());
+    $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
-      return response()->json([
-        'html' => trim(view('pendaftaran-haji.partial-table', ['daftar_haji' => $daftar_haji])->render()),
-        'paginate' => !$isFiltered,
-      ]);
+      if ($daftar_haji instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+        return response()->json([
+          'html' => trim(view('pendaftaran-haji.partial-table', ['daftar_haji' => $daftar_haji])->render()),
+          'pagination' => $daftar_haji->links('pagination::tailwind')->toHtml(),
+          'paginate' => true,
+        ]);
+      } else {
+        return response()->json([
+          'html' => trim(view('gabung-haji.partial-table', ['daftar_haji' => $daftar_haji])->render()),
+          'paginate' => false,
+        ]);
+      }
     }
 
-    return view('pendaftaran-haji.index', ['daftar_haji' => $daftar_haji]);
+    return view('pendaftaran-haji.index', [
+      'daftar_haji' => $daftar_haji,
+      'keberangkatan' => $keberangkatan,
+    ]);
   }
 
   /**

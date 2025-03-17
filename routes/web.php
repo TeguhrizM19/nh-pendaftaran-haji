@@ -70,13 +70,12 @@ Route::middleware(['auth'])->group(function () {
 
   // Route Keberangkatan
   Route::resource('/keberangkatan', GroupKeberangkatanController::class);
-  Route::get('/peserta-keberangkatan', [GroupKeberangkatanController::class, 'indexKeberangkatan']);
   Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
     ->name('simpan.peserta.keberangkatan');
   Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
     ->name('hapus.peserta.keberangkatan');
 
-  Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan']);
+  Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan'])->name('filter.keberangkatan');
 
   Route::get('/daftar-usia', [DashboardController::class, 'daftarUsia']);
 

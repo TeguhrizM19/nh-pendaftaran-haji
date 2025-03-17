@@ -24,7 +24,6 @@ class TGabungHajiController extends Controller
   public function index(Request $request)
   {
     $query = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan']);
-    $isFiltered = false;
 
     // Filter berdasarkan search umum
     if ($request->has('search')) {
@@ -41,7 +40,6 @@ class TGabungHajiController extends Controller
             $q->where('no_porsi_haji', 'like', "%{$search}%");
           });
       });
-      $isFiltered = true;
     }
 
     // Filter berdasarkan rentang nomor porsi haji
@@ -55,14 +53,11 @@ class TGabungHajiController extends Controller
             $q->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
           });
       });
-
-      $isFiltered = true;
     }
 
     // Filter berdasarkan keberangkatan
     if ($request->filled('keberangkatan')) {
       $query->where('keberangkatan_id', $request->keberangkatan);
-      $isFiltered = true;
     }
 
     if ($request->filled('pelunasan')) {
@@ -87,24 +82,30 @@ class TGabungHajiController extends Controller
       }
     }
 
-    // Ambil data
-    $gabung_haji = $isFiltered ? $query->latest()->get() : $query->latest()->paginate(20);
+    // Ambil data dengan pagination
+    $gabung_haji = $query->latest()->paginate(5)->appends($request->query());
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
-      return response()->json([
-        'html' => trim(view('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])->render()),
-        'paginate' => !$isFiltered,
-      ]);
+      if ($gabung_haji instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+        return response()->json([
+          'html' => trim(view('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])->render()),
+          'pagination' => $gabung_haji->links('pagination::tailwind')->toHtml(),
+          'paginate' => true,
+        ]);
+      } else {
+        return response()->json([
+          'html' => trim(view('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])->render()),
+          'paginate' => false,
+        ]);
+      }
     }
 
     return view('gabung-haji.index', [
       'gabung_haji' => $gabung_haji,
       'keberangkatan' => $keberangkatan,
-      'isFiltered' => $isFiltered
     ]);
   }
-
 
   /**
    * Show the form for creating a new resource.

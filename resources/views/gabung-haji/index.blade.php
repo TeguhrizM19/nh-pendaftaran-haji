@@ -26,25 +26,6 @@
   </script>
   @endif
 
-  <style>
-    table {
-    table-layout: fixed; /* Paksa tabel mengikuti ukuran tetap */
-    width: 100%;
-}
-
-th, td {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
-
-th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
-    max-width: 150px; /* Batasi lebar kolom */
-    word-break: break-word; /* Paksa teks turun ke bawah */
-    display: block; /* Pastikan tidak berdempetan */
-}
-  </style>
-
   <div>
     <x-page-title>Data Gabung KBIH</x-page-title>
   </div>
@@ -57,7 +38,7 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
         </svg>
-        Tambah Gabung Haji
+        Tambah Gabung KBIH
       </a>
     </div>
 
@@ -86,11 +67,6 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
       <div class="flex flex-wrap gap-2 w-full md:w-auto">
         <input type="search" id="no_porsi_haji_1" name="no_porsi_haji_1" class="w-full md:w-[150px] p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji...">
         <input type="search" id="no_porsi_haji_2" name="no_porsi_haji_2" class="w-full md:w-[150px] p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji...">
-        <button type="submit" id="search-btn" class="p-2.5 text-sm font-medium text-white bg-[#099AA7] rounded-lg hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300">
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
-          </svg>
-        </button>
       </div>
 
       <!-- Search -->
@@ -126,18 +102,16 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
         </tr>
       </thead>
       <tbody id="table-body">
-        @include('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])   
+        @include('gabung-haji.partial-table', ['gabung_haji' => $gabung_haji])
       </tbody>
     </table>
     
-    {{-- Cek apakah data dipaginate --}}
-    @if (!$isFiltered)
+    <!-- Paginate -->
     <div id="pagination-container" class="mt-4">
-        <div id="pagination-links">
-            {{ $gabung_haji->links('pagination::tailwind') }}
-        </div>
+      <div id="pagination-links">
+        {{ $gabung_haji->links('pagination::tailwind') }}
+      </div>
     </div>
-    @endif
   </div>
   
   <script>
@@ -167,6 +141,7 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
 
     // Semua Filter
     $(document).ready(function () {
+      // Inisialisasi Select2
       $('#keberangkatan').select2({
         allowClear: true,
         placeholder: "Pilih Keberangkatan",
@@ -179,36 +154,20 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
         width: '100%'
       });
 
-      // Pastikan select2 clear juga menghapus nilai di form
-      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
-        $(this).val(null).trigger('change');
-        fetchFilteredData();
-      });
-
-      // Event listener untuk semua filter (termasuk input kosong)
-      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
-        fetchFilteredData();
-      });
-
-      $('#search-btn').on('click', function (event) {
-        event.preventDefault();
-        fetchFilteredData();
-      });
-
-      function fetchFilteredData() {
+      // Fungsi untuk mengambil data yang difilter
+      function fetchFilteredData(page = 1) {
         let pelunasan = $('#pelunasan_haji').val();
         let keberangkatan = $('#keberangkatan').val();
         let noPorsi1 = $('#no_porsi_haji_1').val().trim();
         let noPorsi2 = $('#no_porsi_haji_2').val().trim();
         let search = $('#search-input').val().trim();
 
-        let params = {};
+        let params = { page: page };
 
-        // 🔹 Pastikan pelunasan dikirim dengan benar
         if (pelunasan === "Lunas") {
-          params.pelunasan = "Lunas"; // Kirim hanya "Lunas"
+          params.pelunasan = "Lunas";
         } else if (pelunasan) {
-          params.pelunasan = "Belum Lunas"; // Jika bukan "Lunas", anggap "Belum Lunas"
+          params.pelunasan = "Belum Lunas";
         }
 
         if (keberangkatan) params.keberangkatan = keberangkatan;
@@ -225,7 +184,11 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
           },
           success: function (response) {
             $('#table-body').html(response.html);
-            $('#pagination-container').toggle(!!response.paginate);
+            if (response.paginate) {
+              $('#pagination-links').html(response.pagination);
+            } else {
+              $('#pagination-links').empty();
+            }
           },
           error: function () {
             alert('Gagal mengambil data.');
@@ -233,11 +196,36 @@ th:nth-child(2), td:nth-child(2) { /* Kolom Nama */
         });
       }
 
+      // Event listener untuk clear Select2
+      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+        $(this).val(null).trigger('change');
+        fetchFilteredData();
+      });
+
+      // Event listener untuk perubahan filter
+      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
+        fetchFilteredData();
+      });
+
+      // Event listener untuk tombol search
+      $('#search-btn').on('click', function (event) {
+        event.preventDefault();
+        fetchFilteredData();
+      });
+
       // Event listener untuk pencarian otomatis jika input kosong
       $('#search-input').on('keyup input', function () {
         if ($(this).val().trim() === '') {
           fetchFilteredData();
         }
+      });
+
+      // Event listener untuk pagination
+      $(document).on('click', '#pagination-links a', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        let page = url.split('page=')[1];
+        fetchFilteredData(page);
       });
     });
 
