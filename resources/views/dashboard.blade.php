@@ -74,7 +74,8 @@
   </div>
 
   <!-- Baris 2 -->
-  <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 mt-5 mb-5"> 
+  {{-- <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4 mt-5 mb-5">  --}}
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
     <div>
       <!-- Pelunasan Haji -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
@@ -112,7 +113,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div>
       <!-- Pelunasan Manasik -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
         <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
@@ -150,7 +153,7 @@
       </div>
     </div>
 
-    <div class="rounded-lg items-center w-full border bg-white shadow-gray-500 shadow-lg transition hover:shadow-lg hover:shadow-[#099AA7] p-4 sm:p-6">
+    <div class="lg:col-span-2 rounded-lg items-center w-full border bg-white shadow-gray-500 shadow-lg transition hover:shadow-lg hover:shadow-[#099AA7] p-4 sm:p-6">
       <h2 class="mt-5 text-lg font-medium text-gray-900">
         Grafik Usia Keberangkatan
       </h2>
