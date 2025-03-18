@@ -20,7 +20,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 mb-5">
     <!-- Jumlah Jama'ah -->
     <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-      <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+      <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
         <h3 class="text-lg font-medium">
           Jumlah Jama'ah
         </h3>
@@ -38,7 +38,7 @@
 
     <!-- Jama'ah Laki-Laki -->
     <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-      <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+      <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
         <h3 class="text-lg font-medium">
           Jama'ah Laki-Laki
         </h3>
@@ -56,7 +56,7 @@
 
     <!-- Jama'ah Perempuan -->
     <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-      <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+      <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
         <h3 class="text-lg font-medium">
           Jama'ah Perempuan
         </h3>
@@ -78,7 +78,7 @@
     <div>
       <!-- Pelunasan Haji -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-        <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+        <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
           <h3 class="text-lg font-medium">
             Pelunasan Haji
           </h3>
@@ -96,7 +96,7 @@
       </div>
       <!-- Belum Lunas Haji -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-        <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+        <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
           <h3 class="text-lg font-medium">
             Belum Lunas Haji
           </h3>
@@ -115,7 +115,7 @@
 
       <!-- Pelunasan Manasik -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-        <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+        <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
           <h3 class="text-lg font-medium">
             Pelunasan Manasik
           </h3>
@@ -133,7 +133,7 @@
 
       <!-- Belum Lunas Manasik -->
       <div class="bg-white rounded-lg mb-5 w-full shadow-lg overflow-hidden transition hover:shadow-lg hover:shadow-[#099AA7]"> 
-        <div class="bg-[#099AA7] p-4 text-white rounded-lg"> 
+        <div class="bg-gradient-to-r from-cyan-500  to-teal-500 p-4 text-white rounded-lg"> 
           <h3 class="text-lg font-medium">
             Belum Lunas Manasik
           </h3>
