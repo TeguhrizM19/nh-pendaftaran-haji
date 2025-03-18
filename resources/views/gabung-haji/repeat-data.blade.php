@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="{{ route('gabung-haji.storeRepeatData') }}" method="POST"> 
+    <form id="formPendaftaran" action="{{ route('gabung-haji.storeRepeatData') }}" method="POST"> 
       @csrf
       <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
@@ -16,10 +16,7 @@
               <!-- Kolom Nama (Lebih Lebar) -->
               <div class="w-full">
                 <label class="block mb-1 text-sm font-medium leading-6 text-[#099AA7]">Nama Lengkap</label>
-                <input type="text" name="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama Lengkap" required
-                class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 
-                ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
-                text-sm leading-6 uppercase" required />
+                <input type="text" name="nama" id="nama" value="{{ old('nama', $customer->nama) }}" placeholder="Nama Lengkap" required class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
             </div>
           </div>
@@ -27,7 +24,7 @@
           <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
             <div>
               <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Nama Panggilan</label>
-              <input type="text" name="panggilan" value="{{ old('panggilan', $customer->panggilan) }}" placeholder="Nama Panggilan"
+              <input type="text" name="panggilan" id="panggilan" value="{{ old('panggilan', $customer->panggilan) }}" placeholder="Nama Panggilan"
               class="mb-3 block w-full rounded-md  border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
             </div>
           </div>
@@ -35,9 +32,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">Nomor spph</label>
-              <input type="number" name="no_spph" placeholder="Nomor SPPH" value="{{ old('no_spph') }}"
-              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
-              ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              <input type="number" name="no_spph" id="no_spph" placeholder="Nomor SPPH" value="{{ old('no_spph') }}" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
               @error('no_spph') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
               @error('no_spph')
@@ -48,7 +43,7 @@
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi Haji</label>
               <input type="number" id="no_porsi" name="no_porsi" placeholder="Masukkan Nomor Porsi" 
-              value="{{ old('no_porsi') }}" required
+              value="{{ old('no_porsi') }}" 
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
               ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
               @error('no_porsi') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
@@ -64,9 +59,8 @@
               <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
                 Nama Bank
               </label>
-              <input type="text" name="nama_bank" value="{{ old('nama_bank') }}" 
-                placeholder="Bank/Jumlah Setoran" required
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              <input type="text" name="nama_bank" id="nama_bank" value="{{ old('nama_bank') }}" 
+                placeholder="Bank/Jumlah Setoran" class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
             <div>
@@ -88,7 +82,7 @@
             <div>
               <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Depag</label>
               <div class="">
-                <select name="depag" id="depag" required
+                <select name="depag" id="depag" 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   @if(isset($gabung_haji->depag))
                     <option value="{{ $gabung_haji->depag }}" selected>
@@ -247,10 +241,10 @@
           </div>
 
           <div>
-            <label for="message" class="block mb-2 text-sm font-medium text-[#099AA7]">
+            <label for="catatan" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Catatan
             </label>
-            <textarea id="message" rows="4" name="catatan"
+            <textarea id="catatan" rows="4" name="catatan"
             class="mb-4  block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
             placeholder="Write your thoughts here...">{{ old('catatan') }}</textarea>
           </div>
@@ -262,12 +256,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">No HP 1</label>
-              <input type="text" name="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" required
+              <input type="text" name="no_hp_1" id="no_hp_1" value="{{ old('no_hp_1', $customer->no_hp_1) }}" placeholder="No HP 1" 
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm" />
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">No HP 2</label>
-              <input type="text" name="no_hp_2" value="{{ old('no_hp_2', $customer->no_hp_2) }}" placeholder="No HP 2"
+              <input type="text" name="no_hp_2" id="no_hp_2" value="{{ old('no_hp_2', $customer->no_hp_2) }}" placeholder="No HP 2"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm" />
             </div>
           </div>
@@ -276,7 +270,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Tempat Lahir</label>
-              <select name="tempat_lahir" required
+              <select name="tempat_lahir" id="tempat_lahir"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm">
                 <option value="{{ $customer->tempat_lahir }}" selected>
                   {{ $customer->tempatLahir->kota_lahir ?? 'Pilih Tempat Lahir' }}
@@ -285,7 +279,7 @@
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Tanggal Lahir</label>
-              <input type="date" name="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" required
+              <input type="date" name="tgl_lahir" id="tgl_lahir" value="{{ old('tgl_lahir', $customer->tgl_lahir) }}" 
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm" />
             </div>
           </div>
@@ -294,7 +288,7 @@
           <div class="grid grid-cols-[1fr_2fr_1fr] gap-4">
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Jenis ID</label>
-              <select name="jenis_id"
+              <select name="jenis_id" id="jenis_id"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm">
                 <option value="KTP" {{ $customer->jenis_id == 'KTP' ? 'selected' : '' }}>KTP</option>
                 <option value="SIM" {{ $customer->jenis_id == 'SIM' ? 'selected' : '' }}>SIM</option>
@@ -302,13 +296,13 @@
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">No Identitas</label>
-              <input type="text" name="no_id" value="{{ old('no_id', $customer->no_id) }}" 
+              <input type="text" name="no_id" id="no_id" value="{{ old('no_id', $customer->no_id) }}" 
                 placeholder="Masukkan No Identitas"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm" />
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Warga</label>
-              <select name="warga"
+              <select name="warga" id="warga"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-indigo-600 focus:border-indigo-600 text-sm">
                 <option value="WNI" {{ $customer->warga == 'WNI' ? 'selected' : '' }}>WNI</option>
                 <option value="WNA" {{ $customer->warga == 'WNA' ? 'selected' : '' }}>WNA</option>
@@ -319,7 +313,7 @@
           <!-- Alamat Sesuai KTP -->
           <div>
             <label class="block mb-2 text-sm font-medium text-[#099AA7]">Alamat Sesuai KTP</label>
-            <textarea name="alamat_ktp" required
+            <textarea name="alamat_ktp" id="alamat_ktp"
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-md text-sm p-2 focus:ring-blue-300 focus:border-blue-500"
               rows="2">{{ $customer->alamat_ktp ?? '' }}</textarea>
           </div>
@@ -328,7 +322,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Provinsi</label>
-              <select name="provinsi_ktp" required
+              <select name="provinsi_ktp" id="provinsi_ktp"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->provinsi_ktp ?? '' }}" selected>
                   {{ $provinsi_ktp->provinsi ?? 'Pilih Provinsi' }}
@@ -337,7 +331,7 @@
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Kota</label>
-              <select name="kota_ktp" required
+              <select name="kota_ktp" id="kota_ktp"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->kota_ktp ?? '' }}" selected>
                   {{ $kota_ktp->kota ?? 'Pilih Kota' }}
@@ -346,7 +340,7 @@
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Kecamatan</label>
-              <select name="kecamatan_ktp"
+              <select name="kecamatan_ktp" id="kecamatan_ktp"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->kecamatan_ktp ?? '' }}" selected>
                   {{ $kecamatan_ktp->kecamatan ?? 'Pilih Kecamatan' }}
@@ -355,7 +349,7 @@
             </div>
             <div>
               <label class="block mb-2 text-sm font-medium text-[#099AA7]">Kelurahan</label>
-              <select name="kelurahan_ktp"
+              <select name="kelurahan_ktp" id="kelurahan_ktp"
                 class="w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-sm focus:ring-blue-300 focus:border-blue-500">
                 <option value="{{ $customer->kelurahan_ktp ?? '' }}" selected>
                   {{ $kelurahan_ktp->kelurahan ?? 'Pilih Kelurahan' }}
@@ -410,7 +404,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block mb-1 text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" value="{{ old('pekerjaan', $customer->pekerjaan) }}" placeholder="Pekerjaan" 
+              <input type="text" name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan', $customer->pekerjaan) }}" placeholder="Pekerjaan" 
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -435,14 +429,14 @@
             <label for="alamat_domisili" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Alamat Domisili
             </label>
-            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
+            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" 
               class="mb-4 block p-2.5 w-full  shadow-slate-400 text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Alamat Domisili...">{{ old('alamat_domisili', $customer->alamat_domisili) }}</textarea>
           </div>
 
           <div class=" shadow-slate-400">
             <label for="provinsi_domisili" class="mt-4 mb-1 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
-            <select name="provinsi_domisili" id="provinsi_domisili" required
+            <select name="provinsi_domisili" id="provinsi_domisili" 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ $customer->provinsi_domisili ?? '' }}" selected>
                 {{ $provinsi_domisili->provinsi ?? 'Pilih Provinsi' }}
@@ -452,7 +446,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kota_domisili" class="mt-4 mb-1 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_domisili" id="kota_domisili" required data-selected="{{ $customer->kota_domisili ?? '' }}"
+            <select name="kota_domisili" id="kota_domisili"  data-selected="{{ $customer->kota_domisili ?? '' }}"
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
             <option value="{{ $customer->kota_domisili ?? '' }}" selected>
               {{ $kota_domisili->kota ?? 'Pilih Kota' }}
@@ -532,6 +526,91 @@
   </div>
 
 <script>
+  document.getElementById("formPendaftaran").addEventListener("submit", function(event) {
+    let fields = [
+      { id: "paggilan", label: "Nama Panggilan" },
+      { id: "no_spph", label: "No SPPH" },
+      { id: "no_porsi", label: "No Porsi Haji" },
+      { id: "nama_bank", label: "Nama Bank" },
+      { id: "kota_bank", label: "Kot bank" },
+      { id: "depag", label: "Depag" },
+      { id: "keberangkatan", label: "Tahun Keberangkatan" },
+      { id: "catatan", label: "Catatan" },
+      { id: "no_hp_1", label: "No HP 1" },
+      { id: "no_hp_2", label: "No HP 2" },
+      { id: "jenis_id", label: "Jenis ID" },
+      { id: "no_id", label: "No ID" },
+      { id: "warga", label: "Warga" },
+      { id: "tempat_lahir", label: "Tempat Lahir" },
+      { id: "tgl_lahir", label: "Tanggal Lahir" },
+      { id: "pekerjaan", label: "Pekerjaan" },
+      { id: "pendidikan", label: "Pendidikan" },
+      { id: "alamat_ktp", label: "Alamat KTP" },
+      { id: "provinsi_ktp", label: "Provinsi KTP" },
+      { id: "kota_ktp", label: "Kota KTP" },
+      { id: "kecamatan_ktp", label: "Kecamatan KTP" },
+      { id: "kelurahan_ktp", label: "Kelurahan KTP" },
+      { id: "alamat_domisili", label: "Alamat Domisili" },
+      { id: "provinsi_domisili", label: "Provinsi Domisili" },
+      { id: "kota_domisili", label: "Kota Domisili" },
+      { id: "kecamatan_domisili", label: "Kecamatan Domisili" },
+      { id: "kelurahan_domisili", label: "Kelurahan Domisili" },
+      { id: "ktp", label: "Upload KTP" },
+      { id: "kk", label: "Upload KK" },
+      { id: "surat", label: "Upload Surat" },
+      { id: "spph", label: "Upload SPPH" },
+      { id: "bpih", label: "Upload BPIH" },
+      { id: "photo", label: "Upload Photo" }
+    ];
+
+    let emptyFields = fields.filter(field => {
+      let value = document.getElementById(field.id)?.value.trim();
+      return value === "";
+    });
+
+    // Cek radio button yang wajib diisi
+    let radioFields = [
+      { name: "paket_haji", label: "Paket Haji" },
+      { name: "jenis_kelamin", label: "Jenis Kelamin" },
+      { name: "status_nikah", label: "Status Nikah" }
+    ];
+
+    radioFields.forEach(field => {
+      let isChecked = document.querySelector(`input[name="${field.name}"]:checked`);
+      if (!isChecked) {
+        emptyFields.push({ label: field.label });
+      }
+    });
+
+    if (emptyFields.length > 0) {
+      event.preventDefault(); // Mencegah submit jika ada field kosong
+
+      let fieldNames = emptyFields.map(field => `<li>${field.label}</li>`).join("");
+
+      Swal.fire({
+        title: "Data Yang Belum Diisi",
+        html: `
+          <div style="text-align: left; max-height: 300px; overflow-y: auto;">
+            <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2; padding-left: 20px;">
+              ${fieldNames}
+            </ul>
+          </div>
+          <p style="text-align: center;">Tetap simpan data?</p>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#099AA7",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ya, Simpan",
+        cancelButtonText: "Batal"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById("formPendaftaran").submit(); // Submit setelah konfirmasi
+        }
+      });
+    }
+  });
+
   // Select2
   // Tempat Lahir
   $(document).ready(function () { 
