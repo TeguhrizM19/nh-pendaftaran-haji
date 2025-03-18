@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form action="/pendaftaran-haji" method="POST" enctype="multipart/form-data">
+    <form id="formPendaftaran" action="/pendaftaran-haji" method="POST" enctype="multipart/form-data">
       @csrf
 
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
@@ -34,7 +34,7 @@
             <label for="no_porsi_haji" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
               Nomor Porsi Haji
             </label>
-            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" required
+            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" 
             class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
             ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
             @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
@@ -77,7 +77,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
-              <input type="text" name="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}"
+              <input type="text" name="bank" id="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}"
                 class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
@@ -97,7 +97,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}"
+              <input type="number" name="bpjs" id="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}"
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
               
               @error('bpjs')
@@ -169,7 +169,7 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="lunas_haji" type="radio" value="Lunas" name="pelunasan" 
-                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }} required
+                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }} 
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="lunas_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Lunas
@@ -196,7 +196,7 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="lunas_haji" type="radio" value="Lunas" name="pelunasan" 
-                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }} required
+                      {{ old('pelunasan') == 'Lunas' ? 'checked' : '' }} 
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="lunas_haji" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Lunas
@@ -218,10 +218,10 @@
           </div>                
 
           <div>
-            <label for="message" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
+            <label for="catatan" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
               Catatan
             </label>
-            <textarea id="message" rows="4" name="catatan"
+            <textarea id="catatan" rows="4" name="catatan"
             class="mb-4  block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
             placeholder="Write your thoughts here...">{{ old('catatan') }}</textarea>
           </div>
@@ -232,12 +232,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 1</label>
-              <input type="text" name="no_hp_1" placeholder="No HP 1" value="{{ old('no_hp_1') }}" required
+              <input type="text" name="no_hp_1" id="no_hp_1" placeholder="No HP 1" value="{{ old('no_hp_1') }}" 
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">No HP 2</label>
-              <input type="text" name="no_hp_2" placeholder="No HP 2" value="{{ old('no_hp_2') }}"
+              <input type="text" name="no_hp_2" id="no_hp_2" placeholder="No HP 2" value="{{ old('no_hp_2') }}"
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -248,7 +248,7 @@
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
-              <select name="tempat_lahir" id="tempat_lahir" required 
+              <select name="tempat_lahir" id="tempat_lahir"  
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempatLahir as $kt)
@@ -318,7 +318,7 @@
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="laki-laki" type="radio" value="Laki-Laki" name="jenis_kelamin" 
-                      {{ old('jenis_kelamin') == 'Laki-Laki' ? 'checked' : '' }} required
+                      {{ old('jenis_kelamin') == 'Laki-Laki' ? 'checked' : '' }} 
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="laki-laki" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Laki-Laki
@@ -379,7 +379,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}"
+              <input type="text" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}"
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -460,7 +460,7 @@
             <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">
               Alamat Sesuai KTP
             </label>
-            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required
+            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" 
             class="block p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
             placeholder="Write your thoughts here...">{{ old('alamat_ktp') }}</textarea>
           </div>
@@ -469,7 +469,7 @@
             <label for="provinsi" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <select name="provinsi_ktp" id="provinsi_ktp" required
+            <select name="provinsi_ktp" id="provinsi_ktp" 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
               @foreach ($provinsi as $prov)
@@ -482,7 +482,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_ktp" id="kota_ktp" required
+            <select name="kota_ktp" id="kota_ktp" 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kota</option>
               @if(old('kota_ktp', $selectedKota ?? false))
@@ -541,13 +541,13 @@
               </div>
             </div>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili"
-            class="block mb-2 p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required
+            class="block mb-2 p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
             placeholder="Write your thoughts here...">{{ old('alamat_domisili') }}</textarea>
           </div>
 
           <div class=" shadow-slate-400">
             <label for="provinsi_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Provinsi</label>
-            <select name="provinsi_domisili" id="provinsi_domisili" required
+            <select name="provinsi_domisili" id="provinsi_domisili" 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
               @foreach ($provinsi as $prov)
@@ -561,7 +561,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_domisili" id="kota_domisili" required
+            <select name="kota_domisili" id="kota_domisili" 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ old('kota_domisili', $selectedKotaDom ?? '') }}" selected>
                 {{ $namaKotaDom ?? 'Pilih Kota' }}
@@ -649,13 +649,99 @@
   </div>
 
 <script>
+  // Konfirmasi data yang belum diisi
+  document.getElementById("formPendaftaran").addEventListener("submit", function(event) {
+    let fields = [
+      { id: "no_porsi_haji", label: "No Porsi Haji" },
+      { id: "cabang_id", label: "Cabang" },
+      { id: "sumber_info", label: "Sumber Info" },
+      { id: "wilayah_daftar", label: "Wilayah Daftar" },
+      { id: "bpjs", label: "BPJS" },
+      { id: "bank", label: "Bank" },
+      { id: "keberangkatan", label: "Tahun Keberangkatan" },
+      { id: "catatan", label: "Catatan" },
+      { id: "no_hp_1", label: "No HP 1" },
+      { id: "no_hp_2", label: "No HP 2" },
+      { id: "jenis_id", label: "Jenis ID" },
+      { id: "no_id", label: "No ID" },
+      { id: "warga", label: "Warga" },
+      { id: "tempat_lahir", label: "Tempat Lahir" },
+      { id: "tgl_lahir", label: "Tanggal Lahir" },
+      { id: "pekerjaan", label: "Pekerjaan" },
+      { id: "pendidikan", label: "Pendidikan" },
+      { id: "alamat_ktp", label: "Alamat KTP" },
+      { id: "provinsi_ktp", label: "Provinsi KTP" },
+      { id: "kota_ktp", label: "Kota KTP" },
+      { id: "kecamatan_ktp", label: "Kecamatan KTP" },
+      { id: "kelurahan_ktp", label: "Kelurahan KTP" },
+      { id: "alamat_domisili", label: "Alamat Domisili" },
+      { id: "provinsi_domisili", label: "Provinsi Domisili" },
+      { id: "kota_domisili", label: "Kota Domisili" },
+      { id: "kecamatan_domisili", label: "Kecamatan Domisili" },
+      { id: "kelurahan_domisili", label: "Kelurahan Domisili" },
+      { id: "ktp", label: "Upload KTP" },
+      { id: "kk", label: "Upload KK" },
+      { id: "surat", label: "Upload Surat" },
+      { id: "spph", label: "Upload SPPH" },
+      { id: "bpih", label: "Upload BPIH" },
+      { id: "photo", label: "Upload Photo" }
+    ];
+
+    let emptyFields = fields.filter(field => {
+      let value = document.getElementById(field.id)?.value.trim();
+      return value === "";
+    });
+
+    // Cek radio button yang wajib diisi
+    let radioFields = [
+      { name: "paket_haji", label: "Paket Haji" },
+      { name: "jenis_kelamin", label: "Jenis Kelamin" },
+      { name: "status_nikah", label: "Status Nikah" }
+    ];
+
+    radioFields.forEach(field => {
+      let isChecked = document.querySelector(`input[name="${field.name}"]:checked`);
+      if (!isChecked) {
+        emptyFields.push({ label: field.label });
+      }
+    });
+
+    if (emptyFields.length > 0) {
+      event.preventDefault(); // Mencegah submit jika ada field kosong
+
+      let fieldNames = emptyFields.map(field => `<li>${field.label}</li>`).join("");
+
+      Swal.fire({
+        title: "Data Yang Belum Diisi",
+        html: `
+          <div style="text-align: left; max-height: 300px; overflow-y: auto;">
+            <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2; padding-left: 20px;">
+              ${fieldNames}
+            </ul>
+          </div>
+          <p style="text-align: center;">Tetap simpan data?</p>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#099AA7",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ya, Simpan",
+        cancelButtonText: "Batal"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById("formPendaftaran").submit(); // Submit setelah konfirmasi
+        }
+      });
+    }
+  });
+
   // Tampilkan modal pencarian
   document.getElementById("openSearch").addEventListener("click", function () {
   document.getElementById("searchModal").classList.remove("hidden");
   document.getElementById("searchInput").focus();
   });
 
-  // Pencarian real-time menggunakan AJAX
+  // Pencarian real-time Repeat dan Ambil Data
   document.getElementById("searchInput").addEventListener("input", function () {
     let query = this.value.trim();
     let searchResults = document.getElementById("searchResults");
@@ -702,7 +788,6 @@
       })
       .catch(error => console.error('Error:', error));
   });
-
 
   // Menutup modal saat tombol close diklik
   document.addEventListener("DOMContentLoaded", function () {

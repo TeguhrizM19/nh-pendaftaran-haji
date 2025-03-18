@@ -169,219 +169,94 @@
   </style>
 
 <script>
-  // Sweet Alert Konfirmasi Delete
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".deleteForm").forEach(function (form) {
-      form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Mencegah form langsung submit
-        
-        Swal.fire({
-          title: "Apakah Anda yakin?",
-          text: "Data akan dihapus secara permanen!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#3085d6",
-          confirmButtonText: "Ya, Hapus!",
-          cancelButtonText: "Batal"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            form.submit(); // Submit form jika dikonfirmasi
-          }
-        });
-      });
-    });
-  });
-
   // Semua Filter
   $(document).ready(function () {
-      // Inisialisasi Select2
-      $('#keberangkatan').select2({
-        allowClear: true,
-        placeholder: "Pilih Keberangkatan",
-        width: '100%'
-      });
-
-      $('#pelunasan_haji').select2({
-        allowClear: true,
-        placeholder: "Pilih Pelunasan Haji",
-        width: '100%'
-      });
-
-      // Fungsi untuk mengambil data yang difilter
-      function fetchFilteredData(page = 1) {
-        let pelunasan = $('#pelunasan_haji').val();
-        let keberangkatan = $('#keberangkatan').val();
-        let noPorsi1 = $('#no_porsi_haji_1').val().trim();
-        let noPorsi2 = $('#no_porsi_haji_2').val().trim();
-        let search = $('#search-input').val().trim();
-
-        let params = { page: page };
-
-        if (pelunasan === "Lunas") {
-          params.pelunasan = "Lunas";
-        } else if (pelunasan) {
-          params.pelunasan = "Belum Lunas";
-        }
-
-        if (keberangkatan) params.keberangkatan = keberangkatan;
-        if (noPorsi1) params.no_porsi_haji_1 = noPorsi1;
-        if (noPorsi2) params.no_porsi_haji_2 = noPorsi2;
-        if (search) params.search = search;
-
-        $.ajax({
-          url: "{{ route('pendaftaran-haji.index') }}",
-          type: "GET",
-          data: params,
-          beforeSend: function () {
-            $('#table-body').html('<p class="text-center">Loading...</p>');
-          },
-          success: function (response) {
-            $('#table-body').html(response.html);
-            if (response.paginate) {
-              $('#pagination-links').html(response.pagination);
-            } else {
-              $('#pagination-links').empty();
-            }
-          },
-          error: function () {
-            alert('Gagal mengambil data.');
-          }
-        });
-      }
-
-      // Event listener untuk clear Select2
-      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
-        $(this).val(null).trigger('change');
-        fetchFilteredData();
-      });
-
-      // Event listener untuk perubahan filter
-      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
-        fetchFilteredData();
-      });
-
-      // Event listener untuk tombol search
-      $('#search-btn').on('click', function (event) {
-        event.preventDefault();
-        fetchFilteredData();
-      });
-
-      // Event listener untuk pencarian otomatis jika input kosong
-      $('#search-input').on('keyup input', function () {
-        if ($(this).val().trim() === '') {
-          fetchFilteredData();
-        }
-      });
-
-      // Event listener untuk pagination
-      $(document).on('click', '#pagination-links a', function (e) {
-        e.preventDefault();
-        let url = $(this).attr('href');
-        let page = url.split('page=')[1];
-        fetchFilteredData(page);
-      });
+    // Inisialisasi Select2
+    $('#keberangkatan').select2({
+      allowClear: true,
+      placeholder: "Pilih Keberangkatan",
+      width: '100%'
     });
 
-  // Search
-  // document.addEventListener("DOMContentLoaded", function () {
-  //   const searchInput = document.getElementById("search-input");
-  //   const tableBody = document.getElementById("table-body");
-  //   const paginationContainer = document.getElementById("pagination-container");
+    $('#pelunasan_haji').select2({
+      allowClear: true,
+      placeholder: "Pilih Pelunasan Haji",
+      width: '100%'
+    });
 
-  //   searchInput.addEventListener("input", function () {
-  //     let searchTerm = searchInput.value.trim();
-  //     let url = searchTerm ? `/pendaftaran-haji?search=${searchTerm}` : "/pendaftaran-haji";
+    // Fungsi untuk mengambil data yang difilter
+    function fetchFilteredData(page = 1) {
+      let pelunasan = $('#pelunasan_haji').val();
+      let keberangkatan = $('#keberangkatan').val();
+      let noPorsi1 = $('#no_porsi_haji_1').val().trim();
+      let noPorsi2 = $('#no_porsi_haji_2').val().trim();
+      let search = $('#search-input').val().trim();
 
-  //     fetch(url, {
-  //       headers: {
-  //         "X-Requested-With": "XMLHttpRequest"
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       if (data.html) {
-  //         tableBody.innerHTML = data.html.trim();
+      let params = { page: page };
 
-  //         // Sembunyikan pagination jika pencarian dilakukan
-  //         if (data.paginate) {
-  //           paginationContainer.style.display = "block";
-  //         } else {
-  //           paginationContainer.style.display = "none";
-  //         }
-  //       }
-  //     })
-  //     .catch(error => console.error("Error fetching data:", error));
-  //   });
-  // });
+      if (pelunasan === "Lunas") {
+        params.pelunasan = "Lunas";
+      } else if (pelunasan) {
+        params.pelunasan = "Belum Lunas";
+      }
 
-  // Filter rentang no porsi haji
-  // document.addEventListener("DOMContentLoaded", function () {
-  //   const searchButton = document.getElementById("search-btn");
-  //   const tableBody = document.getElementById("table-body");
-  //   const paginationContainer = document.getElementById("pagination-container");
-  //   const noPorsi1 = document.getElementById("no_porsi_haji_1");
-  //   const noPorsi2 = document.getElementById("no_porsi_haji_2");
+      if (keberangkatan) params.keberangkatan = keberangkatan;
+      if (noPorsi1) params.no_porsi_haji_1 = noPorsi1;
+      if (noPorsi2) params.no_porsi_haji_2 = noPorsi2;
+      if (search) params.search = search;
 
-  //   // Fungsi untuk me-reset tabel ke kondisi awal
-  //   function resetTable() {
-  //     fetch(`/pendaftaran-haji`, {
-  //       headers: {
-  //         "X-Requested-With": "XMLHttpRequest"
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       if (tableBody) {
-  //         tableBody.innerHTML = data.html;
-  //       }
+      $.ajax({
+        url: "{{ route('pendaftaran-haji.index') }}",
+        type: "GET",
+        data: params,
+        beforeSend: function () {
+          $('#table-body').html('<p class="text-center">Loading...</p>');
+        },
+        success: function (response) {
+          $('#table-body').html(response.html);
+          if (response.paginate) {
+            $('#pagination-links').html(response.pagination);
+          } else {
+            $('#pagination-links').empty();
+          }
+        },
+        error: function () {
+          alert('Gagal mengambil data.');
+        }
+      });
+    }
 
-  //       // Tampilkan pagination kembali
-  //       if (paginationContainer) {
-  //         paginationContainer.style.display = data.paginate ? "block" : "none";
-  //       }
-  //     })
-  //     .catch(error => console.error("Error fetching data:", error));
-  //   }
+    // Event listener untuk clear Select2
+    $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+      $(this).val(null).trigger('change');
+      fetchFilteredData();
+    });
 
-  //   // Event listener untuk tombol pencarian
-  //   searchButton.addEventListener("click", function (event) {
-  //     event.preventDefault();
-  //     console.log("Tombol pencarian ditekan!");
+    // Event listener untuk perubahan filter
+    $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
+      fetchFilteredData();
+    });
 
-  //     let noPorsi1Value = noPorsi1.value.trim();
-  //     let noPorsi2Value = noPorsi2.value.trim();
+    // Event listener untuk tombol search
+    $('#search-btn').on('click', function (event) {
+      event.preventDefault();
+      fetchFilteredData();
+    });
 
-  //     console.log("No Porsi Haji 1:", noPorsi1Value);
-  //     console.log("No Porsi Haji 2:", noPorsi2Value);
+    // Event listener untuk pencarian otomatis jika input kosong
+    $('#search-input').on('keyup input', function () {
+      if ($(this).val().trim() === '') {
+        fetchFilteredData();
+      }
+    });
 
-  //     fetch(`/pendaftaran-haji?no_porsi_haji_1=${noPorsi1Value}&no_porsi_haji_2=${noPorsi2Value}`, {
-  //       headers: {
-  //         "X-Requested-With": "XMLHttpRequest"
-  //       }
-  //     })
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         if (tableBody) {
-  //           tableBody.innerHTML = data.html;
-  //         }
-
-  //         // Sembunyikan pagination jika filter aktif
-  //         if (paginationContainer) {
-  //           paginationContainer.style.display = data.paginate ? "block" : "none";
-  //         }
-  //       })
-  //       .catch(error => console.error("Error fetching data:", error));
-  //     });
-
-  //   // Event listener saat tombol "x" ditekan pada input search
-  //   [noPorsi1, noPorsi2].forEach(input => {
-  //     input.addEventListener("input", function () {
-  //       if (!noPorsi1.value.trim() && !noPorsi2.value.trim()) {
-  //         resetTable();
-  //       }
-  //     });
-  //   });
-  // });
+    // Event listener untuk pagination
+    $(document).on('click', '#pagination-links a', function (e) {
+      e.preventDefault();
+      let url = $(this).attr('href');
+      let page = url.split('page=')[1];
+      fetchFilteredData(page);
+    });
+  });
 </script>
 </x-layout>

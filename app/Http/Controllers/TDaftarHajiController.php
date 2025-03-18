@@ -71,7 +71,7 @@ class TDaftarHajiController extends Controller
     }
 
     // Ambil data dengan pagination
-    $daftar_haji = $query->latest()->paginate(3)->appends($request->query());
+    $daftar_haji = $query->latest()->paginate(10)->appends($request->query());
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
@@ -146,32 +146,32 @@ class TDaftarHajiController extends Controller
     $validated = $request->validate([
       // Validasi untuk m_customers
       'nama'           => 'required|string|max:255',
-      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_1'        => 'nullable|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
-      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
-      'tgl_lahir'      => 'required|date',
+      'tempat_lahir'   => 'nullable|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'nullable|date',
       'jenis_id'       => 'nullable|string',
       'no_id'          => 'nullable|digits:16|unique:m_customers,no_id',
       'warga'          => 'nullable|string',
-      'jenis_kelamin'  => 'required|string',
+      'jenis_kelamin'  => 'nullable|string',
       'status_nikah'   => 'nullable|string',
       'pekerjaan'      => 'nullable|string',
       'pendidikan'     => 'nullable|string',
       // Alamat KTP
-      'alamat_ktp'     => 'required|string',
-      'provinsi_ktp'   => 'required|exists:m_provinsis,id',
-      'kota_ktp'       => 'required|exists:m_kotas,id',
+      'alamat_ktp'     => 'nullable|string',
+      'provinsi_ktp'   => 'nullable|exists:m_provinsis,id',
+      'kota_ktp'       => 'nullable|exists:m_kotas,id',
       'kecamatan_ktp'  => 'nullable|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'nullable|exists:m_kelurahans,id',
       // Alamat Domisili
-      'alamat_domisili'    => 'required|string',
-      'provinsi_domisili'  => 'required|exists:m_provinsis,id',
-      'kota_domisili'      => 'required|exists:m_kotas,id',
+      'alamat_domisili'    => 'nullable|string',
+      'provinsi_domisili'  => 'nullable|exists:m_provinsis,id',
+      'kota_domisili'      => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // Validasi untuk t_daftar_hajis
-      'no_porsi_haji'  => 'required|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -200,37 +200,61 @@ class TDaftarHajiController extends Controller
       // Upload file satu per satu
       if ($request->file('ktp')) {
         $newName = time() . "_ktp." . $request->ktp->extension();
+        // server
         $request->ktp->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['ktp'] = $newName;
       }
 
       if ($request->file('kk')) {
         $newName = time() . "_kk." . $request->kk->extension();
+        // server
         $request->kk->move('../public_html/folder-image-truenas', $newName);
+
+        // Local
+        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['kk'] = $newName;
       }
 
       if ($request->file('surat')) {
         $newName = time() . "_surat." . $request->surat->extension();
+        // server
         $request->surat->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['surat'] = $newName;
       }
 
       if ($request->file('spph')) {
         $newName = time() . "_spph." . $request->spph->extension();
+        // server
         $request->spph->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['spph'] = $newName;
       }
 
       if ($request->file('bpih')) {
         $newName = time() . "_bpih." . $request->bpih->extension();
+        // server
         $request->bpih->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['bpih'] = $newName;
       }
 
       if ($request->file('photo')) {
         $newName = time() . "_photo." . $request->photo->extension();
+        // server
         $request->photo->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['photo'] = $newName;
       }
 
@@ -257,9 +281,8 @@ class TDaftarHajiController extends Controller
       ]);
     });
 
-    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil disimpan beserta dokumen.');
+    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil disimpan');
   }
-
 
   /**
    * Display the specified resource.
@@ -327,32 +350,32 @@ class TDaftarHajiController extends Controller
     $validated = $request->validate([
       // m_customers
       'nama'           => 'required|string|max:255',
-      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_1'        => 'nullable|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
-      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
-      'tgl_lahir'      => 'required|date',
+      'tempat_lahir'   => 'nullable|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'nullable|date',
       'jenis_id'       => 'nullable|string',
       'no_id'          => ['nullable', 'numeric', 'digits:16', Rule::unique('m_customers', 'no_id')->ignore($customer->id)],
       'warga'          => 'nullable|string',
-      'jenis_kelamin'  => 'required|string',
+      'jenis_kelamin'  => 'nullable|string',
       'status_nikah'   => 'nullable|string',
       'pekerjaan'      => 'nullable|string',
       'pendidikan'     => 'nullable|string',
       // Alamat KTP
-      'alamat_ktp'     => 'required|string',
-      'provinsi_ktp'   => 'required|exists:m_provinsis,id',
-      'kota_ktp'       => 'required|exists:m_kotas,id',
+      'alamat_ktp'     => 'nullable|string',
+      'provinsi_ktp'   => 'nullable|exists:m_provinsis,id',
+      'kota_ktp'       => 'nullable|exists:m_kotas,id',
       'kecamatan_ktp'  => 'nullable|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'nullable|exists:m_kelurahans,id',
       // Alamat Domisili
-      'alamat_domisili' => 'required|string',
-      'provinsi_domisili' => 'required|exists:m_provinsis,id',
-      'kota_domisili'  => 'required|exists:m_kotas,id',
+      'alamat_domisili' => 'nullable|string',
+      'provinsi_domisili' => 'nullable|exists:m_provinsis,id',
+      'kota_domisili'  => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // t_daftar_hajis
-      'no_porsi_haji'  => ['required', 'numeric', 'digits:10', Rule::unique('t_daftar_hajis', 'no_porsi_haji')->ignore($daftar_haji->id)],
+      'no_porsi_haji'  => ['nullable', 'numeric', 'digits:10', Rule::unique('t_daftar_hajis', 'no_porsi_haji')->ignore($daftar_haji->id)],
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -383,25 +406,25 @@ class TDaftarHajiController extends Controller
       // **Update data customer**
       $customer->update([
         'nama' => strtoupper($validated['nama']),
-        'no_hp_1' => $validated['no_hp_1'],
+        'no_hp_1' => $validated['no_hp_1'] ?? null,
         'no_hp_2' => $validated['no_hp_2'] ?? null,
-        'tempat_lahir' => $validated['tempat_lahir'],
-        'tgl_lahir' => $validated['tgl_lahir'],
+        'tempat_lahir' => $validated['tempat_lahir'] ?? null,
+        'tgl_lahir' => $validated['tgl_lahir'] ?? null,
         'jenis_id' => $validated['jenis_id'] ?? null,
         'no_id' => $validated['no_id'] ?? null,
         'warga' => $validated['warga'] ?? null,
-        'jenis_kelamin' => $validated['jenis_kelamin'],
+        'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
         'status_nikah' => $validated['status_nikah'] ?? null,
         'pekerjaan' => $validated['pekerjaan'] ?? null,
         'pendidikan' => $validated['pendidikan'] ?? null,
-        'alamat_ktp' => $validated['alamat_ktp'],
-        'provinsi_ktp' => $validated['provinsi_ktp'],
-        'kota_ktp' => $validated['kota_ktp'],
+        'alamat_ktp' => $validated['alamat_ktp'] ?? null,
+        'provinsi_ktp' => $validated['provinsi_ktp'] ?? null,
+        'kota_ktp' => $validated['kota_ktp'] ?? null,
         'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
         'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
-        'alamat_domisili' => $validated['alamat_domisili'],
-        'provinsi_domisili' => $validated['provinsi_domisili'],
-        'kota_domisili' => $validated['kota_domisili'],
+        'alamat_domisili' => $validated['alamat_domisili'] ?? null,
+        'provinsi_domisili' => $validated['provinsi_domisili'] ?? null,
+        'kota_domisili' => $validated['kota_domisili'] ?? null,
         'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
         'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
         'update_user' => $user
@@ -415,7 +438,7 @@ class TDaftarHajiController extends Controller
           // Hapus file lama jika ada
           if (!empty($customer->$field)) {
             // server
-            $oldFilePath = '../public_html/folder-image-truenas' . $customer->$field;
+            $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
 
             // local
             // $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
@@ -442,7 +465,7 @@ class TDaftarHajiController extends Controller
 
       // **Update data daftar haji**
       $daftar_haji->update([
-        'no_porsi_haji' => $validated['no_porsi_haji'],
+        'no_porsi_haji' => $validated['no_porsi_haji'] ?? null,
         'cabang_id' => $validated['cabang_id'] ?? null,
         'sumber_info_id' => $validated['sumber_info_id'] ?? null,
         'wilayah_daftar' => $validated['wilayah_daftar'] ?? null,
@@ -486,46 +509,35 @@ class TDaftarHajiController extends Controller
   {
     DB::transaction(function () use ($id) {
       $daftarHaji = TDaftarHaji::findOrFail($id);
+      $customer = Customer::findOrFail($daftarHaji->customer_id);
 
-      // Ambil ID customer sebelum menghapus
-      $customerId = $daftarHaji->customer_id;
+      // Hapus file dokumen terkait
+      foreach (['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'] as $field) {
+        // local
+        // $filePathLocal = public_path("uploads/dokumen_haji/{$customer->$field}");
+        // if (!empty($customer->$field) && file_exists($filePathLocal)) {
+        //   @unlink($filePathLocal);
+        // }
 
-      // Ambil data customer
-      $customer = Customer::findOrFail($customerId);
-
-      // Daftar kolom dokumen yang harus dihapus
-      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
-
-      foreach ($fileFields as $field) {
-        if (!empty($customer->$field)) {
-          $filePath = public_path("uploads/dokumen_haji/{$customer->$field}");
-
-          if (file_exists($filePath)) {
-            if (@unlink($filePath)) {
-              Log::info("File berhasil dihapus: {$filePath}");
-            } else {
-              Log::error("Gagal menghapus file: {$filePath}");
-            }
-          } else {
-            Log::warning("File tidak ditemukan: {$filePath}");
-          }
+        // server
+        $filePathServer = '../public_html/folder-image-truenas/' . $customer->$field;
+        if (!empty($customer->$field) && file_exists($filePathServer)) {
+          @unlink($filePathServer);
         }
       }
 
       // Hapus data di t_daftar_hajis
       $daftarHaji->delete();
 
-      // Cek apakah masih ada data di t_daftar_hajis dengan customer_id yang sama
-      $customerExists = TDaftarHaji::where('customer_id', $customerId)->exists();
-
-      if (!$customerExists) {
-        // Jika tidak ada lagi data di t_daftar_hajis untuk customer ini, hapus customer
+      // Hapus customer jika tidak ada lagi data di t_daftar_hajis
+      if (!TDaftarHaji::where('customer_id', $customer->id)->exists()) {
         $customer->delete();
       }
     });
 
     return redirect('/pendaftaran-haji')->with('success', 'Data dan dokumen berhasil dihapus.');
   }
+
 
   // function untuk wilayah indonasia
   public function getKota($provinsi_id)
@@ -611,32 +623,32 @@ class TDaftarHajiController extends Controller
     $validated = $request->validate([
       // m_customers
       'nama'           => 'required|string|max:255',
-      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_1'        => 'nullable|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
-      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
-      'tgl_lahir'      => 'required|date',
+      'tempat_lahir'   => 'nullable|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'nullable|date',
       'jenis_id'       => 'nullable|string',
       'no_id'          => ['nullable', 'numeric', 'digits:16', Rule::unique('m_customers', 'no_id')->ignore($customer->id)],
       'warga'          => 'nullable|string',
-      'jenis_kelamin'  => 'required|string',
+      'jenis_kelamin'  => 'nullable|string',
       'status_nikah'   => 'nullable|string',
       'pekerjaan'      => 'nullable|string',
       'pendidikan'     => 'nullable|string',
       // Alamat KTP
-      'alamat_ktp'     => 'required|string',
-      'provinsi_ktp'   => 'required|exists:m_provinsis,id',
-      'kota_ktp'       => 'required|exists:m_kotas,id',
+      'alamat_ktp'     => 'nullable|string',
+      'provinsi_ktp'   => 'nullable|exists:m_provinsis,id',
+      'kota_ktp'       => 'nullable|exists:m_kotas,id',
       'kecamatan_ktp'  => 'nullable|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'nullable|exists:m_kelurahans,id',
       // Alamat Domisili
-      'alamat_domisili'  => 'required|string',
-      'provinsi_domisili' => 'required|exists:m_provinsis,id',
-      'kota_domisili'    => 'required|exists:m_kotas,id',
+      'alamat_domisili'  => 'nullable|string',
+      'provinsi_domisili' => 'nullable|exists:m_provinsis,id',
+      'kota_domisili'    => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // t_daftar_hajis
-      'no_porsi_haji'  => 'required|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -671,14 +683,20 @@ class TDaftarHajiController extends Controller
         'update_user'     => $user
       ]));
 
-      // **Upload file tanpa foreach**
-      $uploadFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
+      // **Update dokumen pelanggan**
+      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
 
-      foreach ($uploadFields as $field) {
+      foreach ($fileFields as $field) {
         if ($request->hasFile($field)) {
           // Hapus file lama jika ada
           if (!empty($customer->$field)) {
-            $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
+            // server
+            $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
+
+            // local
+            // $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
+
+            // Cek apakah file ada
             if (file_exists($oldFilePath)) {
               unlink($oldFilePath);
             }
@@ -686,19 +704,24 @@ class TDaftarHajiController extends Controller
 
           // Simpan file baru
           $newFileName = time() . '_' . $field . '.' . $request->file($field)->extension();
-          $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
+          // server
+          $request->file($field)->move('../public_html/folder-image-truenas', $newFileName);
+
+          // local
+          // $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
 
           // Simpan nama file baru di database
           $customer->$field = $newFileName;
         }
       }
 
+      // Simpan perubahan customer
       $customer->save();
 
       // **Buat data baru di t_daftar_hajis**
       $daftarHaji = TDaftarHaji::create([
         'customer_id'    => $customer->id,
-        'no_porsi_haji'  => $validated['no_porsi_haji'],
+        'no_porsi_haji'  => $validated['no_porsi_haji'] ?? null,
         'cabang_id'      => $validated['cabang_id'] ?? null,
         'sumber_info_id' => $validated['sumber_info_id'] ?? null,
         'wilayah_daftar' => $validated['wilayah_daftar'] ?? null,
@@ -765,32 +788,32 @@ class TDaftarHajiController extends Controller
     $validated = $request->validate([
       // Validasi untuk m_customers
       'nama'           => 'required|string|max:255',
-      'no_hp_1'        => 'required|string|max:15',
+      'no_hp_1'        => 'nullable|string|max:15',
       'no_hp_2'        => 'nullable|string|max:15',
-      'tempat_lahir'   => 'required|integer|exists:m_kotas,id',
-      'tgl_lahir'      => 'required|date',
+      'tempat_lahir'   => 'nullable|integer|exists:m_kotas,id',
+      'tgl_lahir'      => 'nullable|date',
       'jenis_id'       => 'nullable|string',
       'no_id'          => 'nullable|digits:16|unique:m_customers,no_id',
       'warga'          => 'nullable|string',
-      'jenis_kelamin'  => 'required|string',
+      'jenis_kelamin'  => 'nullable|string',
       'status_nikah'   => 'nullable|string',
       'pekerjaan'      => 'nullable|string',
       'pendidikan'     => 'nullable|string',
       // Alamat KTP
-      'alamat_ktp'     => 'required|string',
-      'provinsi_ktp'   => 'required|exists:m_provinsis,id',
-      'kota_ktp'       => 'required|exists:m_kotas,id',
+      'alamat_ktp'     => 'nullable|string',
+      'provinsi_ktp'   => 'nullable|exists:m_provinsis,id',
+      'kota_ktp'       => 'nullable|exists:m_kotas,id',
       'kecamatan_ktp'  => 'nullable|exists:m_kecamatans,id',
       'kelurahan_ktp'  => 'nullable|exists:m_kelurahans,id',
       // Alamat Domisili
-      'alamat_domisili'    => 'required|string',
-      'provinsi_domisili'  => 'required|exists:m_provinsis,id',
-      'kota_domisili'      => 'required|exists:m_kotas,id',
+      'alamat_domisili'    => 'nullable|string',
+      'provinsi_domisili'  => 'nullable|exists:m_provinsis,id',
+      'kota_domisili'      => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // Validasi untuk t_daftar_hajis
-      'no_porsi_haji'  => 'required|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -819,37 +842,61 @@ class TDaftarHajiController extends Controller
       // Upload file satu per satu
       if ($request->file('ktp')) {
         $newName = time() . "_ktp." . $request->ktp->extension();
+        // server
         $request->ktp->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['ktp'] = $newName;
       }
 
       if ($request->file('kk')) {
         $newName = time() . "_kk." . $request->kk->extension();
+        // server
         $request->kk->move('../public_html/folder-image-truenas', $newName);
+
+        // Local
+        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['kk'] = $newName;
       }
 
       if ($request->file('surat')) {
         $newName = time() . "_surat." . $request->surat->extension();
+        // server
         $request->surat->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['surat'] = $newName;
       }
 
       if ($request->file('spph')) {
         $newName = time() . "_spph." . $request->spph->extension();
+        // server
         $request->spph->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['spph'] = $newName;
       }
 
       if ($request->file('bpih')) {
         $newName = time() . "_bpih." . $request->bpih->extension();
+        // server
         $request->bpih->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['bpih'] = $newName;
       }
 
       if ($request->file('photo')) {
         $newName = time() . "_photo." . $request->photo->extension();
+        // server
         $request->photo->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
         $validated['photo'] = $newName;
       }
 

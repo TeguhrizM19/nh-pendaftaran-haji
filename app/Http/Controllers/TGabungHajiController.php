@@ -83,7 +83,7 @@ class TGabungHajiController extends Controller
     }
 
     // Ambil data dengan pagination
-    $gabung_haji = $query->latest()->paginate(5)->appends($request->query());
+    $gabung_haji = $query->latest()->paginate(10)->appends($request->query());
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
     if ($request->ajax()) {
@@ -157,7 +157,7 @@ class TGabungHajiController extends Controller
       // m_customers
       'nama' => 'required|string|max:255',
       'panggilan' => 'nullable|string|max:50',
-      'no_hp_1' => 'required|string|max:15',
+      'no_hp_1' => 'nullable|string|max:15',
       'no_hp_2' => 'nullable|string|max:15',
       'tempat_lahir' => 'required|integer|exists:m_kotas,id',
       'tgl_lahir' => 'required|date',

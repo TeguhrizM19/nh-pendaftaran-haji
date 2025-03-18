@@ -63,3 +63,29 @@
   </td>
 </tr>
 @endforelse
+
+<script>
+  // Sweet Alert Konfirmasi Delete
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".deleteForm").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Mencegah form langsung submit
+        
+        Swal.fire({
+          title: "Apakah Anda yakin?",
+          text: "Data akan dihapus secara permanen!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Ya, Hapus!",
+          cancelButtonText: "Batal"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit(); // Submit form jika dikonfirmasi
+          }
+        });
+      });
+    });
+  });
+</script>
