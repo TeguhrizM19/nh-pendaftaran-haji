@@ -90,7 +90,7 @@
               <label for="depag" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Depag
               </label>
-                <select name="depag" id="depag" 
+                <select name="depag" id="depag" required 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Kota Bank</option>
                   @foreach ($depag as $dp)
@@ -206,7 +206,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">No HP 1</label>
-              <input type="text" name="no_hp_1" id="no_hp_1" placeholder="No HP 1" value="{{ old('no_hp_1') }}" 
+              <input type="text" name="no_hp_1" id="no_hp_1" required placeholder="No HP 1" value="{{ old('no_hp_1') }}" 
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
@@ -222,7 +222,7 @@
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 Tempat Lahir
               </label>
-              <select name="tempat_lahir" id="tempat_lahir"  
+              <select name="tempat_lahir" id="tempat_lahir" required 
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih Tempat Lahir</option>
                 @forelse ($tempatLahir as $kt)
@@ -240,7 +240,7 @@
               <label for="tgl_lahir" class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">
                 Tanggal Lahir
               </label>
-              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}" 
+              <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}" required 
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
             </div>
           </div>
@@ -251,7 +251,7 @@
             <div>
               <div>
                 <label for="jenis_id" class="block text-sm font-medium leading-6 text-[#099AA7]">Jenis ID</label>
-                <select id="jenis_id" name="jenis_id"
+                <select id="jenis_id" name="jenis_id" required
                   class="w-full mt-2 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih</option>
                   <option value="KTP" {{ old('jenis_id') == 'KTP' ? 'selected' : '' }}>KTP</option>
@@ -264,9 +264,7 @@
               <label for="no_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 No Identitas
               </label>
-              <input type="text" id="no_id" name="no_id" placeholder="Masukkan No Identitas" value="{{ old('no_id') }}"
-                class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
-                ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+              <input type="text" id="no_id" name="no_id" required placeholder="Masukkan No Identitas" value="{{ old('no_id') }}" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
                 @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
             
                 @error('no_id')
@@ -277,7 +275,7 @@
             <!-- Dropdown Warga -->
             <div>
               <label for="warga" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Warga</label>
-              <select id="warga" name="warga"
+              <select id="warga" name="warga" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="WNI" {{ old('warga') == 'WNI' ? 'selected' : '' }}>WNI</option>
@@ -290,7 +288,7 @@
             <label for="alamat_ktp" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
               Alamat Sesuai KTP
             </label>
-            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" 
+            <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required 
             class="block p-2.5 w-full text-sm text-black bg-white shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
             placeholder="Write your thoughts here...">{{ old('alamat_ktp') }}</textarea>
           </div>
@@ -299,7 +297,7 @@
             <label for="provinsi" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <select name="provinsi_ktp" id="provinsi_ktp" 
+            <select name="provinsi_ktp" id="provinsi_ktp" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
               @foreach ($provinsi as $prov)
@@ -312,7 +310,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_ktp" id="kota_ktp" 
+            <select name="kota_ktp" id="kota_ktp" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kota</option>
               @if(old('kota_ktp', $selectedKota ?? false))
@@ -430,12 +428,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
               <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
-              <input type="text" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}"
+              <input type="text" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}" required
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
               <label for="pendidikan" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Pendidikan</label>
-              <select id="pendidikan" name="pendidikan"
+              <select id="pendidikan" name="pendidikan" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 <option value="Tidak Sekolah" {{ old('pendidikan') == 'Tidak Sekolah' ? 'selected' : '' }}>Tidak Sekolah</option>
@@ -463,7 +461,7 @@
                 </label>
               </div>
             </div>            
-            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" 
+            <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required 
             class="block p-2.5 w-full text-sm text-black bg-white shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
             placeholder="Write your thoughts here...">{{ old('alamat_domisili') }}</textarea>
           </div>
@@ -473,7 +471,7 @@
             class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
               Provinsi
             </label>
-            <select name="provinsi_domisili" id="provinsi_domisili" 
+            <select name="provinsi_domisili" id="provinsi_domisili" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Provinsi</option>
               @foreach ($provinsi as $prov)
@@ -488,7 +486,7 @@
 
           <div class=" shadow-slate-400">
             <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
-            <select name="kota_domisili" id="kota_domisili" 
+            <select name="kota_domisili" id="kota_domisili" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ old('kota_domisili', $selectedKotaDom ?? '') }}" selected>
                 {{ $namaKotaDom ?? 'Pilih Kota' }}
@@ -577,84 +575,84 @@
 
 <script>
   // Konfirmasi data yang belum diisi
-  document.getElementById("formPendaftaran").addEventListener("submit", function(event) {
-    let fields = [
-      { id: "paggilan", label: "Nama Panggilan" },
-      { id: "no_spph", label: "No SPPH" },
-      { id: "no_porsi", label: "No Porsi Haji" },
-      { id: "nama_bank", label: "Nama Bank" },
-      { id: "kota_bank", label: "Kota bank" },
-      { id: "depag", label: "Depag" },
-      { id: "keberangkatan", label: "Tahun Keberangkatan" },
-      { id: "catatan", label: "Catatan" },
-      { id: "no_hp_1", label: "No HP 1" },
-      { id: "no_hp_2", label: "No HP 2" },
-      { id: "jenis_id", label: "Jenis ID" },
-      { id: "no_id", label: "No ID" },
-      { id: "warga", label: "Warga" },
-      { id: "tempat_lahir", label: "Tempat Lahir" },
-      { id: "tgl_lahir", label: "Tanggal Lahir" },
-      { id: "pekerjaan", label: "Pekerjaan" },
-      { id: "pendidikan", label: "Pendidikan" },
-      { id: "alamat_ktp", label: "Alamat KTP" },
-      { id: "provinsi_ktp", label: "Provinsi KTP" },
-      { id: "kota_ktp", label: "Kota KTP" },
-      { id: "kecamatan_ktp", label: "Kecamatan KTP" },
-      { id: "kelurahan_ktp", label: "Kelurahan KTP" },
-      { id: "alamat_domisili", label: "Alamat Domisili" },
-      { id: "provinsi_domisili", label: "Provinsi Domisili" },
-      { id: "kota_domisili", label: "Kota Domisili" },
-      { id: "kecamatan_domisili", label: "Kecamatan Domisili" },
-      { id: "kelurahan_domisili", label: "Kelurahan Domisili" },
-    ];
+  // document.getElementById("formPendaftaran").addEventListener("submit", function(event) {
+  //   let fields = [
+  //     { id: "paggilan", label: "Nama Panggilan" },
+  //     { id: "no_spph", label: "No SPPH" },
+  //     { id: "no_porsi", label: "No Porsi Haji" },
+  //     { id: "nama_bank", label: "Nama Bank" },
+  //     { id: "kota_bank", label: "Kota bank" },
+  //     { id: "depag", label: "Depag" },
+  //     { id: "keberangkatan", label: "Tahun Keberangkatan" },
+  //     { id: "catatan", label: "Catatan" },
+  //     { id: "no_hp_1", label: "No HP 1" },
+  //     { id: "no_hp_2", label: "No HP 2" },
+  //     { id: "jenis_id", label: "Jenis ID" },
+  //     { id: "no_id", label: "No ID" },
+  //     { id: "warga", label: "Warga" },
+  //     { id: "tempat_lahir", label: "Tempat Lahir" },
+  //     { id: "tgl_lahir", label: "Tanggal Lahir" },
+  //     { id: "pekerjaan", label: "Pekerjaan" },
+  //     { id: "pendidikan", label: "Pendidikan" },
+  //     { id: "alamat_ktp", label: "Alamat KTP" },
+  //     { id: "provinsi_ktp", label: "Provinsi KTP" },
+  //     { id: "kota_ktp", label: "Kota KTP" },
+  //     { id: "kecamatan_ktp", label: "Kecamatan KTP" },
+  //     { id: "kelurahan_ktp", label: "Kelurahan KTP" },
+  //     { id: "alamat_domisili", label: "Alamat Domisili" },
+  //     { id: "provinsi_domisili", label: "Provinsi Domisili" },
+  //     { id: "kota_domisili", label: "Kota Domisili" },
+  //     { id: "kecamatan_domisili", label: "Kecamatan Domisili" },
+  //     { id: "kelurahan_domisili", label: "Kelurahan Domisili" },
+  //   ];
 
-    let emptyFields = fields.filter(field => {
-      let value = document.getElementById(field.id)?.value.trim();
-      return value === "";
-    });
+  //   let emptyFields = fields.filter(field => {
+  //     let value = document.getElementById(field.id)?.value.trim();
+  //     return value === "";
+  //   });
 
-    // Cek radio button yang wajib diisi
-    let radioFields = [
-      { name: "paket_haji", label: "Paket Haji" },
-      { name: "jenis_kelamin", label: "Jenis Kelamin" },
-      { name: "status_nikah", label: "Status Nikah" }
-    ];
+  //   // Cek radio button yang wajib diisi
+  //   let radioFields = [
+  //     { name: "paket_haji", label: "Paket Haji" },
+  //     { name: "jenis_kelamin", label: "Jenis Kelamin" },
+  //     { name: "status_nikah", label: "Status Nikah" }
+  //   ];
 
-    radioFields.forEach(field => {
-      let isChecked = document.querySelector(`input[name="${field.name}"]:checked`);
-      if (!isChecked) {
-        emptyFields.push({ label: field.label });
-      }
-    });
+  //   radioFields.forEach(field => {
+  //     let isChecked = document.querySelector(`input[name="${field.name}"]:checked`);
+  //     if (!isChecked) {
+  //       emptyFields.push({ label: field.label });
+  //     }
+  //   });
 
-    if (emptyFields.length > 0) {
-      event.preventDefault(); // Mencegah submit jika ada field kosong
+  //   if (emptyFields.length > 0) {
+  //     event.preventDefault(); // Mencegah submit jika ada field kosong
 
-      let fieldNames = emptyFields.map(field => `<li>${field.label}</li>`).join("");
+  //     let fieldNames = emptyFields.map(field => `<li>${field.label}</li>`).join("");
 
-      Swal.fire({
-        title: "Data Yang Belum Diisi",
-        html: `
-          <div style="text-align: left; max-height: 300px; overflow-y: auto;">
-            <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2; padding-left: 20px;">
-              ${fieldNames}
-            </ul>
-          </div>
-          <p style="text-align: center;">Tetap simpan data?</p>
-        `,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#099AA7",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Ya, Simpan",
-        cancelButtonText: "Batal"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          document.getElementById("formPendaftaran").submit(); // Submit setelah konfirmasi
-        }
-      });
-    }
-  });
+  //     Swal.fire({
+  //       title: "Data Yang Belum Diisi",
+  //       html: `
+  //         <div style="text-align: left; max-height: 300px; overflow-y: auto;">
+  //           <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2; padding-left: 20px;">
+  //             ${fieldNames}
+  //           </ul>
+  //         </div>
+  //         <p style="text-align: center;">Tetap simpan data?</p>
+  //       `,
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#099AA7",
+  //       cancelButtonColor: "#3085d6",
+  //       confirmButtonText: "Ya, Simpan",
+  //       cancelButtonText: "Batal"
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         document.getElementById("formPendaftaran").submit(); // Submit setelah konfirmasi
+  //       }
+  //     });
+  //   }
+  // });
 
   // Tampilkan modal pencarian
   document.getElementById("openSearch").addEventListener("click", function () {
