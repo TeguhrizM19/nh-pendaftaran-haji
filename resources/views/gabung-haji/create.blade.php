@@ -14,7 +14,9 @@
             <div class="flex flex-col-reverse sm:flex-row sm:items-end gap-2 w-full">
               <!-- Input Nama Customer -->
               <div class="w-full sm:w-96">
-                <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Lengkap</label>
+                <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                  Nama Lengkap <span class="text-red-500 text-lg">*</span>
+                </label>
                 <input type="text" name="nama" id="nama" placeholder="Nama Lengkap" value="{{ old('nama') }}" required class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
               </div>
               <!-- Tombol Cari -->
@@ -63,16 +65,18 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Nama Bank</label>
-              <input type="text" name="nama_bank" id="nama_bank" placeholder="Bank/Jumlah Setoran" value="{{ old('nama_bank') }}" class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Nama Bank <span class="text-red-500 text-lg">*</span>
+              </label>
+              <input type="text" name="nama_bank" id="nama_bank" required placeholder="Bank/Jumlah Setoran" value="{{ old('nama_bank') }}" class="mb-2 block w-full rounded-md border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
             <div>
               <label for="kota_bank" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Kota Bank
+                Kota Bank <span class="text-red-500 text-lg">*</span>
               </label>
               <div>
-                <select name="kota_bank" id="kota_bank"
+                <select name="kota_bank" id="kota_bank" required
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Kota Bank</option>
                   @foreach ($kotaBank as $kb)
@@ -88,7 +92,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
               <label for="depag" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Depag
+                Depag <span class="text-red-500 text-lg">*</span>
               </label>
                 <select name="depag" id="depag" required 
                   class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -102,7 +106,7 @@
               </div>
               
               <div>
-                <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
+                <label class="block mt-1 mb-2 text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
                 <select name="keberangkatan_id" id="keberangkatan" class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Tahun Keberangkatan</option>
                   @foreach($keberangkatan as $berangkat)
@@ -205,12 +209,14 @@
         <div class="relative">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">No HP 1</label>
+              <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">
+                No HP 1 <span class="text-red-500 text-lg">*</span>
+              </label>
               <input type="text" name="no_hp_1" id="no_hp_1" required placeholder="No HP 1" value="{{ old('no_hp_1') }}" 
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
-              <label class="block text-sm font-medium mb-2 leading-6 text-[#099AA7]">No HP 2</label>
+              <label class="block text-sm font-medium mt-1 mb-2 leading-6 text-[#099AA7]">No HP 2</label>
               <input type="text" name="no_hp_2" id="no_hp_2" placeholder="No HP 2" value="{{ old('no_hp_2') }}"
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
@@ -220,7 +226,7 @@
             <!-- Tempat Lahir -->
             <div class=" shadow-slate-400">
               <label for="tempat_lahir" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Tempat Lahir
+                Tempat Lahir <span class="text-red-500 text-lg">*</span>
               </label>
               <select name="tempat_lahir" id="tempat_lahir" required 
               class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -238,7 +244,7 @@
             <!-- Tanggal Lahir -->
             <div>
               <label for="tgl_lahir" class="block text-sm mb-2 font-medium leading-6 text-[#099AA7]">
-                Tanggal Lahir
+                Tanggal Lahir <span class="text-red-500 text-lg">*</span>
               </label>
               <input type="date" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}" required 
               class="block w-full rounded-md border border-gray-300 p-2 text-gray-900 shadow-slate-400 focus:ring-2 focus:ring-indigo-600 text-sm leading-6" />
@@ -250,7 +256,9 @@
             <!-- Dropdown Jenis ID -->
             <div>
               <div>
-                <label for="jenis_id" class="block text-sm font-medium leading-6 text-[#099AA7]">Jenis ID</label>
+                <label for="jenis_id" class="block text-sm font-medium leading-6 text-[#099AA7]">
+                  Jenis ID <span class="text-red-500 text-lg">*</span>
+                </label>
                 <select id="jenis_id" name="jenis_id" required
                   class="w-full mt-2 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih</option>
@@ -262,7 +270,7 @@
             <!-- Input No Identitas (Lebih Lebar) -->
             <div>
               <label for="no_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                No Identitas
+                No Identitas <span class="text-red-500 text-lg">*</span>
               </label>
               <input type="text" id="no_id" name="no_id" required placeholder="Masukkan No Identitas" value="{{ old('no_id') }}" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
                 @error('no_id') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
@@ -274,7 +282,9 @@
 
             <!-- Dropdown Warga -->
             <div>
-              <label for="warga" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Warga</label>
+              <label for="warga" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Warga <span class="text-red-500 text-lg">*</span>
+              </label>
               <select id="warga" name="warga" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
@@ -286,7 +296,7 @@
         
           <div>
             <label for="alamat_ktp" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
-              Alamat Sesuai KTP
+              Alamat Sesuai KTP <span class="text-red-500 text-lg">*</span>
             </label>
             <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required 
             class="block p-2.5 w-full text-sm text-black bg-white shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
@@ -295,7 +305,7 @@
 
           <div class=" shadow-slate-400">
             <label for="provinsi" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-              Provinsi
+              Provinsi <span class="text-red-500 text-lg">*</span>
             </label>
             <select name="provinsi_ktp" id="provinsi_ktp" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -309,7 +319,9 @@
           </div>
 
           <div class=" shadow-slate-400">
-            <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
+            <label for="kota_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+              Kota <span class="text-red-500 text-lg">*</span>
+            </label>
             <select name="kota_ktp" id="kota_ktp" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kota</option>
@@ -320,8 +332,10 @@
           </div>
 
           <div class=" shadow-slate-400">
-            <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_ktp" id="kecamatan_ktp" value="{{ old('kecamatan_ktp') }}"
+            <label for="kecamatan_ktp" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+              Kecamatan <span class="text-red-500 text-lg">*</span>
+            </label>
+            <select name="kecamatan_ktp" id="kecamatan_ktp" value="{{ old('kecamatan_ktp') }}" required
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="">Pilih Kecamatan</option>
               @if(old('kecamatan_ktp', $selectedKecamatan ?? false))
@@ -334,8 +348,10 @@
             <div class="flex gap-4 mt-4">
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full shadow-slate-400">
-                <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_ktp" id="kelurahan_ktp"
+                <label for="kelurahan_ktp" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
+                  Kelurahan <span class="text-red-500 text-lg">*</span>
+                </label>
+                <select name="kelurahan_ktp" id="kelurahan_ktp" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="">Pilih Kelurahan</option>
                   @if(old('kelurahan_ktp', $selectedKelurahan ?? false))
@@ -362,12 +378,14 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Dropdown Jenis Kelamin -->
             <div>
-              <label class="mb-2 block text-sm font-medium text-[#099AA7]">Jenis Kelamin</label>
+              <label class="mb-2 block text-sm font-medium text-[#099AA7]">
+                Jenis Kelamin <span class="text-red-500 text-lg">*</span>
+              </label>
               <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="laki-laki" type="radio" value="Laki-Laki" name="jenis_kelamin" 
-                      {{ old('jenis_kelamin') == 'Laki-Laki' ? 'checked' : '' }} 
+                      {{ old('jenis_kelamin') == 'Laki-Laki' ? 'checked' : '' }} required 
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="laki-laki" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Laki-Laki
@@ -389,12 +407,14 @@
           
             <!-- Dropdown Status -->
             <div>
-              <label class="mb-2 block text-sm font-medium text-[#099AA7]">Status</label>
+              <label class="mb-2 block text-sm font-medium text-[#099AA7]">
+                Status <span class="text-red-500 text-lg">*</span>
+              </label>
               <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
                   <div class="flex items-center ps-3">
                     <input id="menikah" type="radio" value="Menikah" name="status_nikah" 
-                      {{ old('status_nikah') == 'Menikah' ? 'checked' : '' }}
+                      {{ old('status_nikah') == 'Menikah' ? 'checked' : '' }} required
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
                     <label for="menikah" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       Menikah
@@ -427,12 +447,16 @@
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
-              <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Pekerjaan</label>
+              <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
+                Pekerjaan <span class="text-red-500 text-lg">*</span>
+              </label>
               <input type="text" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" value="{{ old('pekerjaan') }}" required
               class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
             <div>
-              <label for="pendidikan" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Pendidikan</label>
+              <label for="pendidikan" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
+                Pendidikan <span class="text-red-500 text-lg">*</span>
+              </label>
               <select id="pendidikan" name="pendidikan" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg shadow-slate-400 text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
@@ -451,7 +475,7 @@
           <div>
             <div class="flex items-center gap-4 mb-2 mt-1">
               <label for="alamat_domisili" class="text-sm font-medium text-[#099AA7]">
-                Alamat Domisili
+                Alamat Domisili <span class="text-red-500 text-lg">*</span>
               </label>
               <div class="flex items-center gap-2">
                 <input id="copy-checkbox" type="checkbox" name="copy_checkbox"
@@ -469,7 +493,7 @@
           <div class=" shadow-slate-400">
             <label for="provinsi_domisili" 
             class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-              Provinsi
+              Provinsi <span class="text-red-500 text-lg">*</span>
             </label>
             <select name="provinsi_domisili" id="provinsi_domisili" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
@@ -485,7 +509,9 @@
           </div>
 
           <div class=" shadow-slate-400">
-            <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kota</label>
+            <label for="kota_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+              Kota <span class="text-red-500 text-lg">*</span>
+            </label>
             <select name="kota_domisili" id="kota_domisili" required 
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ old('kota_domisili', $selectedKotaDom ?? '') }}" selected>
@@ -496,8 +522,10 @@
           </div>
 
           <div class=" shadow-slate-400">
-            <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Kecamatan</label>
-            <select name="kecamatan_domisili" id="kecamatan_domisili"
+            <label for="kecamatan_domisili" class="mt-4 mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+              Kecamatan <span class="text-red-500 text-lg">*</span>
+            </label>
+            <select name="kecamatan_domisili" id="kecamatan_domisili" required
             class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
               <option value="{{ old('kecamatan_domisili', $selectedKecamatanDom ?? '') }}" selected>
                 {{ $namaKecamatanDom ?? 'Pilih Kecamatan' }}
@@ -510,8 +538,10 @@
             <div class="flex gap-4 mt-4">
               <!-- Kolom Kelurahan (Lebih Lebar) -->
               <div class="w-full shadow-slate-400">
-                <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Kelurahan</label>
-                <select name="kelurahan_domisili" id="kelurahan_domisili"
+                <label for="kelurahan_domisili" class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">
+                  Kelurahan <span class="text-red-500 text-lg">*</span>
+                </label>
+                <select name="kelurahan_domisili" id="kelurahan_domisili" required
                 class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                   <option value="{{ old('kelurahan_domisili', $selectedKelurahanDom ?? '') }}" selected>
                     {{ $namaKelurahanDom ?? 'Pilih Kelurahan' }}

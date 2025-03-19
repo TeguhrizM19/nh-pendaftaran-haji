@@ -27,40 +27,49 @@ class TDaftarHajiController extends Controller
 
   public function index(Request $request)
   {
-    $query = TDaftarHaji::with('customer');
+    $query = TDaftarHaji::with('customer', 'keberangkatan');
 
+    // 🔹 Pencarian Umum
     if ($request->has('search')) {
       $search = $request->search;
-      $query->where('no_porsi_haji', 'like', "%{$search}%")
-        ->orWhereHas('customer', function ($q) use ($search) {
-          $q->where('nama', 'like', "%{$search}%")
-            ->orWhere('paket_haji', 'like', "%{$search}%")
-            ->orWhere('jenis_kelamin', 'like', "%{$search}%")
-            ->orWhere('no_hp_1', 'like', "%{$search}%");
-        });
+
+      $query->where(function ($q) use ($search) {
+        $q->where('no_porsi_haji', 'like', "%{$search}%")
+          ->orWhereRaw("(CASE WHEN pelunasan = 'Lunas' THEN 'Lunas' ELSE 'Belum Lunas' END) LIKE ?", ["{$search}%"])
+          ->orWhereRaw("(CASE WHEN pelunasan_manasik = 'Lunas' THEN 'Lunas' ELSE 'Belum Lunas' END) LIKE ?", ["{$search}%"])
+          ->orWhereHas('customer', function ($subQuery) use ($search) {
+            $subQuery->where('nama', 'like', "%{$search}%")
+              ->orWhere('paket_haji', 'like', "%{$search}%")
+              ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+              ->orWhere('no_hp_1', 'like', "%{$search}%");
+          })
+          ->orWhereHas('keberangkatan', function ($subQuery) use ($search) {
+            $subQuery->where('keberangkatan', 'like', "%{$search}%");
+          });
+      });
     }
 
-    // Filter berdasarkan rentang nomor porsi haji
+    // 🔹 Filter Rentang Nomor Porsi Haji
     if ($request->has('no_porsi_haji_1') && $request->has('no_porsi_haji_2')) {
       $noPorsi1 = $request->no_porsi_haji_1;
       $noPorsi2 = $request->no_porsi_haji_2;
-
       if (!empty($noPorsi1) && !empty($noPorsi2)) {
         $query->whereBetween('no_porsi_haji', [$noPorsi1, $noPorsi2]);
       }
     }
 
-    // Filter berdasarkan keberangkatan
+    // 🔹 Filter Keberangkatan
     if ($request->filled('keberangkatan')) {
-      $query->where('keberangkatan_id', $request->keberangkatan);
+      $query->whereHas('keberangkatan', function ($q) use ($request) {
+        $q->where('keberangkatan', 'like', "%{$request->keberangkatan}%");
+      });
     }
 
-    // Filter pelunasan
-    if ($request->has('pelunasan') && !empty($request->pelunasan)) {
-      $pelunasan = $request->pelunasan;
-      if ($pelunasan === 'Lunas') {
+    // 🔹 Filter Pelunasan Haji
+    if ($request->filled('pelunasan')) {
+      if ($request->pelunasan === 'Lunas') {
         $query->where('pelunasan', 'Lunas');
-      } elseif ($pelunasan === 'Belum Lunas') {
+      } else {
         $query->where(function ($q) {
           $q->whereNull('pelunasan')
             ->orWhere('pelunasan', '')
@@ -70,7 +79,21 @@ class TDaftarHajiController extends Controller
       }
     }
 
-    // Ambil data dengan pagination
+    // 🔹 Filter Pelunasan Manasik
+    if ($request->filled('pelunasan_manasik')) {
+      if ($request->pelunasan_manasik === 'Lunas') {
+        $query->where('pelunasan_manasik', 'Lunas');
+      } else {
+        $query->where(function ($q) {
+          $q->whereNull('pelunasan_manasik')
+            ->orWhere('pelunasan_manasik', '')
+            ->orWhere('pelunasan_manasik', '-')
+            ->orWhere('pelunasan_manasik', '!=', 'Lunas');
+        });
+      }
+    }
+
+    // 🔹 Pagination & Response
     $daftar_haji = $query->latest()->paginate(10)->appends($request->query());
     $keberangkatan = GroupKeberangkatan::latest()->get();
 
@@ -94,6 +117,8 @@ class TDaftarHajiController extends Controller
       'keberangkatan' => $keberangkatan,
     ]);
   }
+
+
 
   /**
    * Show the form for creating a new resource.

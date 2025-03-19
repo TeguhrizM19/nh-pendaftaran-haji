@@ -31,16 +31,18 @@
   @endif
 
   <div class="mt-4 flex flex-wrap md:flex-row justify-between items-center gap-2">
-    <div class="w-full sm:w-auto flex items-center gap-2">
-      {{-- @if (Auth::user()->level == 'super_admin') --}}
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Tombol Modal -->
       <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" 
         class="w-10 flex items-center justify-center gap-x-2 rounded-md bg-[#099AA7] py-1 text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#099AA7]">
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
         </svg>
       </button>
-      {{-- @endif --}}
-      <form id="form-simpan" class="w-full md:w-auto flex items-center gap-2">
+    
+      <!-- Form -->
+      <form id="form-simpan" class="w-full flex flex-wrap md:flex-nowrap md:w-auto items-center gap-2">
+        <!-- Dropdown -->
         <select name="keberangkatan_id" id="tahun-keberangkatan" 
           class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
           <option value="">Tahun</option>
@@ -48,51 +50,84 @@
           <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
           @endforeach
         </select>
-        <button type="submit" class="px-3 py-1.5 rounded-md bg-[#099AA7] text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80">Simpan</button>
-        <button type="submit" form="form-hapus" class="px-3 py-1.5 rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Hapus</button>
+    
+        <!-- Tombol Simpan & Hapus -->
+        <div class="w-full flex justify-start md:w-auto md:justify-normal gap-2">
+          <button type="submit" class="px-3 py-1.5 rounded-md bg-[#099AA7] text-sm font-semibold text-white shadow-sm hover:bg-[#099AA7]/80">
+            Simpan
+          </button>
+          <button type="submit" form="form-hapus" class="px-3 py-1.5 rounded-md bg-red-600 text-sm font-semibold text-white shadow-sm hover:bg-red-500">
+            Hapus
+          </button>
+        </div>
       </form>
+    
       <form id="form-hapus"></form>
     </div>
 
     <div class="w-full md:w-auto flex flex-wrap md:flex-row flex-col gap-2 md:ml-auto">
-      <!-- Filter Pelunasan Haji -->
-      <form id="filterForm">
-        <div class="w-full md:w-auto flex items-center">
-          <select name="pelunasan" id="pelunasan_haji" class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
-            <option value="">Pelunasan Haji</option>
-            <option value="Lunas">Lunas</option>
-            <option value="Belum Lunas">Belum Lunas</option>
-          </select>
-        </div>
-      </form>  
+      <div class="grid grid-cols-1 gap-2">
+        <!-- Filter Pelunasan Haji -->
+        <form>
+          <div class="w-full md:w-auto flex items-center">
+            <select name="pelunasan" id="pelunasan_haji" class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
+              <option value="">Pelunasan Haji</option>
+              <option value="Lunas">Lunas</option>
+              <option value="Belum Lunas">Belum Lunas</option>
+            </select>
+          </div>
+        </form>
 
-      <div class="w-full md:w-auto">
-        <select name="keberangkatan" id="keberangkatan" required class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
-          <option value="">Pilih Tahun</option>
-          @foreach ($keberangkatan as $berangkat)
-          <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
-          @endforeach
-        </select>
+        <!-- Filter Pelunasan Manasik -->
+        <form>
+          <div class="w-full md:w-auto flex items-center">
+            <select name="pelunasan_manasik" id="pelunasan_manasik" class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
+              <option value="">Pelunasan Manasik</option>
+              <option value="Lunas">Lunas</option>
+              <option value="Belum Lunas">Belum Lunas</option>
+            </select>
+          </div>
+        </form>
       </div>
 
       <!-- Filter No Porsi Haji -->
-      <div class="flex flex-wrap gap-2 w-full md:w-auto">
-        <input type="search" id="no_porsi_haji_1" name="no_porsi_haji_1" class="w-full md:w-[150px] p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji...">
-        <input type="search" id="no_porsi_haji_2" name="no_porsi_haji_2" class="w-full md:w-[150px] p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="No Porsi Haji...">
+      <div class="grid grid-cols-1 gap-2">
+        <div class="w-full">
+          <input type="search" id="no_porsi_haji_1" name="no_porsi_haji_1"
+            class="w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="No Porsi Haji 1...">
+        </div>
+        
+        <div class="w-full">
+          <input type="search" id="no_porsi_haji_2" name="no_porsi_haji_2"
+            class="w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="No Porsi Haji 2...">
+        </div>
       </div>
 
-      <!-- Search -->
-      <form method="GET" action="{{ route('keberangkatan.index') }}" class="w-full md:w-[220px]">
-        <label for="default-search" class="sr-only">Search</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+      <div class="grid grid-cols-1 gap-2">
+        <!-- Search -->
+        <form method="GET" action="{{ route('gabung-haji.index') }}" class="w-full md:w-[220px]">
+          <label for="default-search" class="sr-only">Search</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+            <input type="search" id="search-input" name="search" value="{{ request('search') }}" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Semua Data...">
           </div>
-          <input type="search" id="search-input" name="search" value="{{ request('search') }}" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari data...">
+        </form>
+
+        <div class="w-full md:w-auto">
+          <select name="keberangkatan" id="keberangkatan" class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
+            <option value="">Pilih Tahun</option>
+            @foreach ($keberangkatan as $berangkat)
+            <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
+            @endforeach
+          </select>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -183,9 +218,16 @@
         width: '100%'
       });
 
+      $('#pelunasan_manasik').select2({
+        allowClear: true,
+        placeholder: "Pilih Pelunasan Manasik",
+        width: '100%'
+      });
+
       // Fungsi untuk mengambil data yang difilter
       function fetchFilteredData(page = 1) {
         let pelunasan = $('#pelunasan_haji').val();
+        let pelunasanManasik = $('#pelunasan_manasik').val();
         let keberangkatan = $('#keberangkatan').val();
         let noPorsi1 = $('#no_porsi_haji_1').val().trim();
         let noPorsi2 = $('#no_porsi_haji_2').val().trim();
@@ -197,6 +239,12 @@
           params.pelunasan = "Lunas";
         } else if (pelunasan) {
           params.pelunasan = "Belum Lunas";
+        }
+
+        if (pelunasanManasik === "Lunas") {
+          params.pelunasan_manasik = "Lunas";
+        } else if (pelunasanManasik) {
+          params.pelunasan_manasik = "Belum Lunas";
         }
 
         if (keberangkatan) params.keberangkatan = keberangkatan;
@@ -226,13 +274,13 @@
       }
 
       // Event listener untuk clear Select2
-      $('#keberangkatan, #pelunasan_haji').on('select2:clear', function () {
+      $('#keberangkatan, #pelunasan_haji, #pelunasan_manasik').on('select2:clear', function () {
         $(this).val(null).trigger('change');
         fetchFilteredData();
       });
 
       // Event listener untuk perubahan filter
-      $('#keberangkatan, #pelunasan_haji, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
+      $('#keberangkatan, #pelunasan_haji, #pelunasan_manasik, #no_porsi_haji_1, #no_porsi_haji_2, #search-input').on('change input', function () {
         fetchFilteredData();
       });
 
