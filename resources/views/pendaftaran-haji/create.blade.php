@@ -80,8 +80,10 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
             <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Bank</label>
-              <input type="text" name="bank" id="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}"
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Bank <span class="text-red-500 text-lg">*</span>
+              </label>
+              <input type="text" name="bank" id="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}" required
                 class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
             </div>
 
