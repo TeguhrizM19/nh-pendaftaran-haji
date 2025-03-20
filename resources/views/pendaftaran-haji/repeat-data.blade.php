@@ -49,7 +49,9 @@
             </div>
 
             <div class="">
-              <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Wilayah Daftar</label>
+              <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Wilayah Daftar <span class="text-red-500 text-lg">*</span>
+              </label>
               <select name="wilayah_daftar" id="wilayah_daftar" class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500" required>
                 @if(isset($daftar_haji->wilayah_daftar))
                   <option value="{{ $daftar_haji->wilayah_daftar }}" selected>{{ $wilayahDaftar->kota_lahir ?? 'Pilih Wilayah Daftar' }}</option>
@@ -885,6 +887,23 @@
         cache: true
       }
     });
+  });
+
+  // Sumber Info
+  $(document).ready(function () {
+    $('#sumber_info').select2({
+      placeholder: "Pilih Sumber Informasi",
+      allowClear: true,
+      width: '100%'
+    });
+
+    // Ambil nilai old value dari Laravel
+    var oldSumberInfo = "{{ old('sumber_info_id') }}";
+
+    // Jika old value ada, set di Select2
+    if (oldSumberInfo) {
+      $('#sumber_info').val(oldSumberInfo).trigger('change');
+    }
   });
 
   // Provinsi KTP

@@ -18,6 +18,7 @@ use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class TDaftarHajiController extends Controller
 {
@@ -117,8 +118,6 @@ class TDaftarHajiController extends Controller
       'keberangkatan' => $keberangkatan,
     ]);
   }
-
-
 
   /**
    * Show the form for creating a new resource.
@@ -406,11 +405,10 @@ class TDaftarHajiController extends Controller
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
       'paket_haji'     => 'nullable|string',
       'bpjs'           => 'nullable|digits:13',
-      // 'bpjs'  => ['required', 'numeric', 'digits:13', Rule::unique('t_daftar_hajis', 'bpjs')->ignore($daftar_haji->id)],
       'bank'   => 'nullable|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
-      'pelunasan'     => 'nullable|string', // Pelunasan Haji
-      'pelunasan_manasik' => 'nullable|string', // Pelunasan Haji
+      'pelunasan'     => 'nullable|string',
+      'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -426,104 +424,101 @@ class TDaftarHajiController extends Controller
     ]);
 
     DB::beginTransaction();
-    try {
-      $user = Auth::user()->name; // Ambil nama user yang sedang login
-      // **Update data customer**
-      $customer->update([
-        'nama' => strtoupper($validated['nama']),
-        'no_hp_1' => $validated['no_hp_1'] ?? null,
-        'no_hp_2' => $validated['no_hp_2'] ?? null,
-        'tempat_lahir' => $validated['tempat_lahir'] ?? null,
-        'tgl_lahir' => $validated['tgl_lahir'] ?? null,
-        'jenis_id' => $validated['jenis_id'] ?? null,
-        'no_id' => $validated['no_id'] ?? null,
-        'warga' => $validated['warga'] ?? null,
-        'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
-        'status_nikah' => $validated['status_nikah'] ?? null,
-        'pekerjaan' => $validated['pekerjaan'] ?? null,
-        'pendidikan' => $validated['pendidikan'] ?? null,
-        'alamat_ktp' => $validated['alamat_ktp'] ?? null,
-        'provinsi_ktp' => $validated['provinsi_ktp'] ?? null,
-        'kota_ktp' => $validated['kota_ktp'] ?? null,
-        'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
-        'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
-        'alamat_domisili' => $validated['alamat_domisili'] ?? null,
-        'provinsi_domisili' => $validated['provinsi_domisili'] ?? null,
-        'kota_domisili' => $validated['kota_domisili'] ?? null,
-        'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
-        'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
-        'update_user' => $user
-      ]);
 
-      // **Update dokumen pelanggan**
-      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
+    $user = Auth::user()->name; // Ambil nama user yang sedang login
 
-      foreach ($fileFields as $field) {
-        if ($request->hasFile($field)) {
-          // Hapus file lama jika ada
-          if (!empty($customer->$field)) {
-            // server
-            $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
+    // **Update data customer**
+    $customer->update([
+      'nama' => strtoupper($validated['nama']),
+      'no_hp_1' => $validated['no_hp_1'] ?? null,
+      'no_hp_2' => $validated['no_hp_2'] ?? null,
+      'tempat_lahir' => $validated['tempat_lahir'] ?? null,
+      'tgl_lahir' => $validated['tgl_lahir'] ?? null,
+      'jenis_id' => $validated['jenis_id'] ?? null,
+      'no_id' => $validated['no_id'] ?? null,
+      'warga' => $validated['warga'] ?? null,
+      'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
+      'status_nikah' => $validated['status_nikah'] ?? null,
+      'pekerjaan' => $validated['pekerjaan'] ?? null,
+      'pendidikan' => $validated['pendidikan'] ?? null,
+      'alamat_ktp' => $validated['alamat_ktp'] ?? null,
+      'provinsi_ktp' => $validated['provinsi_ktp'] ?? null,
+      'kota_ktp' => $validated['kota_ktp'] ?? null,
+      'kecamatan_ktp' => $validated['kecamatan_ktp'] ?? null,
+      'kelurahan_ktp' => $validated['kelurahan_ktp'] ?? null,
+      'alamat_domisili' => $validated['alamat_domisili'] ?? null,
+      'provinsi_domisili' => $validated['provinsi_domisili'] ?? null,
+      'kota_domisili' => $validated['kota_domisili'] ?? null,
+      'kecamatan_domisili' => $validated['kecamatan_domisili'] ?? null,
+      'kelurahan_domisili' => $validated['kelurahan_domisili'] ?? null,
+      'update_user' => $user
+    ]);
 
-            // local
-            // $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
-            if (file_exists($oldFilePath)) {
-              unlink($oldFilePath);
-            }
-          }
+    // **Update dokumen pelanggan**
+    $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
 
-          // Simpan file baru
-          $newFileName = time() . '_' . $field . '.' . $request->file($field)->extension();
+    foreach ($fileFields as $field) {
+      if ($request->hasFile($field)) {
+        // Hapus file lama jika ada
+        if (!empty($customer->$field)) {
           // server
-          $request->file($field)->move('../public_html/folder-image-truenas', $newFileName);
+          $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
 
           // local
-          // $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
+          // $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
 
-          // Simpan nama file baru di database
-          $customer->$field = $newFileName;
+          if (file_exists($oldFilePath)) {
+            unlink($oldFilePath);
+          }
         }
+
+        // Simpan file baru
+        $newFileName = time() . '_' . $field . '.' . $request->file($field)->extension();
+        // server
+        $request->file($field)->move('../public_html/folder-image-truenas', $newFileName);
+
+        // local
+        // $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
+
+        // Simpan nama file baru di database
+        $customer->$field = $newFileName;
       }
-
-      // Simpan perubahan customer
-      $customer->save();
-
-      // **Update data daftar haji**
-      $daftar_haji->update([
-        'no_porsi_haji' => $validated['no_porsi_haji'] ?? null,
-        'cabang_id' => $validated['cabang_id'] ?? null,
-        'sumber_info_id' => $validated['sumber_info_id'] ?? null,
-        'wilayah_daftar' => $validated['wilayah_daftar'] ?? null,
-        'paket_haji' => $validated['paket_haji'] ?? null,
-        'bpjs' => $validated['bpjs'] ?? null,
-        'bank' => $validated['bank'] ?? null,
-        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan' => $validated['pelunasan'] ?? null, // Pelunasan Haji
-        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null, // Pelunasan Haji
-        'catatan' => $validated['catatan'] ?? null,
-        'dokumen' => json_encode($validated['dokumen'] ?? []),
-        'update_user' => $user
-      ]);
-
-      // **Update atau Buat TGabungHaji**
-      if ($gabung_haji) {
-        $gabung_haji->update([
-          'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        ]);
-      } else {
-        TGabungHaji::create([
-          'daftar_haji_id' => $daftar_haji->id,
-          'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        ]);
-      }
-
-      DB::commit();
-      return redirect('/pendaftaran-haji')->with('success', 'Data berhasil diperbarui beserta dokumen.');
-    } catch (\Exception $e) {
-      DB::rollback();
-      // Log::error("Update Error: " . $e->getMessage());
-      return back()->withErrors(['error' => 'Terjadi kesalahan saat memperbarui data!']);
     }
+
+    $customer->save();
+
+    // **Update data daftar haji**
+    $daftar_haji->update([
+      'no_porsi_haji' => $validated['no_porsi_haji'] ?? null,
+      'cabang_id' => $validated['cabang_id'] ?? null,
+      'sumber_info_id' => $validated['sumber_info_id'] ?? null,
+      'wilayah_daftar' => $validated['wilayah_daftar'] ?? null,
+      'paket_haji' => $validated['paket_haji'] ?? null,
+      'bpjs' => $validated['bpjs'] ?? null,
+      'bank' => $validated['bank'] ?? null,
+      'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+      'pelunasan' => $validated['pelunasan'] ?? null,
+      'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
+      'catatan' => $validated['catatan'] ?? null,
+      'dokumen' => json_encode($validated['dokumen'] ?? []),
+      'update_user' => $user
+    ]);
+
+    // **Update atau Buat TGabungHaji**
+    if ($gabung_haji) {
+      $gabung_haji->update([
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+      ]);
+    } else {
+      TGabungHaji::create([
+        'daftar_haji_id' => $daftar_haji->id,
+        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+      ]);
+    }
+
+    DB::commit();
+
+    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil diperbarui beserta dokumen.');
   }
 
   /**
@@ -642,7 +637,6 @@ class TDaftarHajiController extends Controller
   {
     $customer = Customer::findOrFail($request->customer_id);
 
-    // Jika keberangkatan_id kosong, ubah menjadi null sebelum validasi
     $request->merge(['keberangkatan_id' => $request->keberangkatan_id ?: null]);
 
     $validated = $request->validate([
@@ -671,7 +665,6 @@ class TDaftarHajiController extends Controller
       'kota_domisili'    => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
-
       // t_daftar_hajis
       'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
@@ -696,38 +689,48 @@ class TDaftarHajiController extends Controller
       'dokumen.*'  => 'exists:m_dok_hajis,id',
     ]);
 
-    DB::beginTransaction();
-    try {
+    DB::transaction(function () use ($customer, $validated, $request) {
       $user = Auth::user()->name;
 
-      // **Update data customer dengan array_merge()**
-      $customer->update(array_merge($validated, [
-        'nama'            => strtoupper($validated['nama']),
-        'alamat_ktp'      => strtoupper($validated['alamat_ktp']),
+      // **Simpan data lama sebelum update**
+      $oldFiles = [];
+      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
+      foreach ($fileFields as $field) {
+        $oldFiles[$field] = $customer->getOriginal($field);
+      }
+
+      // **Update Data Customer**
+      $customer->update([
+        'nama' => strtoupper($validated['nama']),
+        'alamat_ktp' => strtoupper($validated['alamat_ktp']),
         'alamat_domisili' => strtoupper($validated['alamat_domisili']),
-        'update_user'     => $user
-      ]));
+        'provinsi_ktp' => $validated['provinsi_ktp'],
+        'kota_ktp' => $validated['kota_ktp'],
+        'kecamatan_ktp' => $validated['kecamatan_ktp'],
+        'kelurahan_ktp' => $validated['kelurahan_ktp'],
+        'provinsi_domisili' => $validated['provinsi_domisili'],
+        'kota_domisili' => $validated['kota_domisili'],
+        'kecamatan_domisili' => $validated['kecamatan_domisili'],
+        'kelurahan_domisili' => $validated['kelurahan_domisili'],
+        'update_user' => $user,
+      ]);
 
       // **Update dokumen pelanggan**
-      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
-
       foreach ($fileFields as $field) {
         if ($request->hasFile($field)) {
-          // Hapus file lama jika ada
-          if (!empty($customer->$field)) {
+          // **Hapus file lama jika ada**
+          if (!empty($oldFiles[$field])) {
             // server
             $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
 
             // local
-            // $oldFilePath = public_path('uploads/dokumen_haji/' . $customer->$field);
-
-            // Cek apakah file ada
-            if (file_exists($oldFilePath)) {
-              unlink($oldFilePath);
+            // $oldFilePath = public_path('uploads/dokumen_haji/' . $oldFiles[$field]);
+            if (File::exists($oldFilePath)) {
+              File::delete($oldFilePath);
             }
           }
 
-          // Simpan file baru
+          // **Simpan file baru**
           $newFileName = time() . '_' . $field . '.' . $request->file($field)->extension();
           // server
           $request->file($field)->move('../public_html/folder-image-truenas', $newFileName);
@@ -735,44 +738,27 @@ class TDaftarHajiController extends Controller
           // local
           // $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
 
-          // Simpan nama file baru di database
-          $customer->$field = $newFileName;
+          // **Update field dokumen di database**
+          $customer->update([$field => $newFileName]);
         }
       }
 
-      // Simpan perubahan customer
-      $customer->save();
-
       // **Buat data baru di t_daftar_hajis**
-      $daftarHaji = TDaftarHaji::create([
-        'customer_id'    => $customer->id,
-        'no_porsi_haji'  => $validated['no_porsi_haji'] ?? null,
-        'cabang_id'      => $validated['cabang_id'] ?? null,
-        'sumber_info_id' => $validated['sumber_info_id'] ?? null,
-        'wilayah_daftar' => $validated['wilayah_daftar'] ?? null,
-        'paket_haji'     => $validated['paket_haji'] ?? null,
-        'bpjs'           => $validated['bpjs'] ?? null,
-        'bank'           => $validated['bank'] ?? null,
-        'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'pelunasan'       => $validated['pelunasan'] ?? null,
-        'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
-        'catatan'        => $validated['catatan'] ?? null,
-        'dokumen'        => json_encode($validated['dokumen'] ?? []),
-        'create_user'    => $user
-      ]);
+      $daftarHaji = TDaftarHaji::create(array_merge($validated, [
+        'customer_id'     => $customer->id,
+        'dokumen'         => json_encode($validated['dokumen'] ?? []),
+        'create_user'     => $user
+      ]));
 
+      // **Buat data di TGabungHaji**
       TGabungHaji::create([
-        'customer_id'    => $customer->id,
+        'customer_id' => $customer->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'daftar_haji_id' => $daftarHaji->id
       ]);
+    });
 
-      DB::commit();
-      return redirect('/pendaftaran-haji')->with('success', 'Data berhasil ditambahkan.');
-    } catch (\Exception $e) {
-      DB::rollback();
-      return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data!']);
-    }
+    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil ditambahkan.');
   }
 
 
