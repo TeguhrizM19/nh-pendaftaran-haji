@@ -69,7 +69,8 @@
       @endauth
 
       {{-- @auth --}}
-        <button data-collapse-toggle="navbar-user" type="button"
+      {{-- Hamberger Menu --}}
+        {{-- <button data-collapse-toggle="navbar-user" type="button"
           class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-300"
           aria-controls="navbar-user" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
@@ -77,8 +78,7 @@
             fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
           </svg>
-
-        </button>
+        </button> --}}
 
       {{-- @endauth --}}
     </div>
