@@ -530,18 +530,25 @@ class TDaftarHajiController extends Controller
       $daftarHaji = TDaftarHaji::findOrFail($id);
       $customer = Customer::findOrFail($daftarHaji->customer_id);
 
-      // Hapus file dokumen terkait
-      foreach (['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'] as $field) {
-        // local
-        // $filePathLocal = public_path("uploads/dokumen_haji/{$customer->$field}");
-        // if (!empty($customer->$field) && file_exists($filePathLocal)) {
-        //   @unlink($filePathLocal);
-        // }
+      // Cek apakah masih ada id customer yang sama di t_daftar_hajis
+      $isDuplicate = TDaftarHaji::where('customer_id', $customer->id)
+        ->where('id', '!=', $id) // Pastikan bukan data yang akan dihapus
+        ->exists();
 
-        // server
-        $filePathServer = '../public_html/folder-image-truenas/' . $customer->$field;
-        if (!empty($customer->$field) && file_exists($filePathServer)) {
-          @unlink($filePathServer);
+      // Hapus file dokumen jika tidak ada customer_id yang sama lagi
+      if (!$isDuplicate) {
+        foreach (['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'] as $field) {
+          // local
+          // $filePathLocal = public_path("uploads/dokumen_haji/{$customer->$field}");
+          // if (!empty($customer->$field) && file_exists($filePathLocal)) {
+          //   @unlink($filePathLocal);
+          // }
+
+          // server
+          $filePathServer = '../public_html/folder-image-truenas/' . $customer->$field;
+          if (!empty($customer->$field) && file_exists($filePathServer)) {
+            @unlink($filePathServer);
+          }
         }
       }
 
@@ -554,8 +561,9 @@ class TDaftarHajiController extends Controller
       }
     });
 
-    return redirect('/pendaftaran-haji')->with('success', 'Data dan dokumen berhasil dihapus.');
+    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil dihapus.');
   }
+
 
   // function untuk wilayah indonasia
   public function getKota($provinsi_id)

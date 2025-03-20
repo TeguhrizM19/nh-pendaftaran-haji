@@ -13,40 +13,40 @@
       {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $gabung->no_spph }}
+      {{ $gabung->no_spph ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       @if (!empty($gabung->no_porsi))
-        {{ $gabung->no_porsi }}
+        {{ $gabung->no_porsi ?? '-' }}
       @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->no_porsi_haji))
-        {{ $gabung->daftarHaji->no_porsi_haji }}
+        {{ $gabung->daftarHaji->no_porsi_haji ?? '-' }}
       @else
         -
       @endif
     </td>
     <th class="px-4 py-3 font-medium text-black w-[150px] break-all whitespace-normal">
-      {{ $gabung->customer->nama }}
+      {{ $gabung->customer->nama ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $gabung->customer->jenis_kelamin }}
+      {{ $gabung->customer->jenis_kelamin ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $gabung->customer->no_hp_1 }}
+      {{ $gabung->customer->no_hp_1 ?? '-' }}
     </td>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
         @if (!empty($gabung->pelunasan))
-            {{ $gabung->pelunasan }}
+            {{ $gabung->pelunasan ?? '-' }}
         @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan))
-            {{ $gabung->daftarHaji->pelunasan }}
+            {{ $gabung->daftarHaji->pelunasan ?? '-' }}
         @else
             -
         @endif
       </th>
       <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
         @if (!empty($gabung->pelunasan_manasik))
-            {{ $gabung->pelunasan_manasik }}
+            {{ $gabung->pelunasan_manasik ?? '-' }}
         @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan_manasik))
-            {{ $gabung->daftarHaji->pelunasan_manasik }}
+            {{ $gabung->daftarHaji->pelunasan_manasik ?? '-' }}
         @else
             -
         @endif

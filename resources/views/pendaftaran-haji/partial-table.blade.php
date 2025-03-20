@@ -7,19 +7,19 @@
       {{ $daftar->keberangkatan->keberangkatan ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $daftar->no_porsi_haji }}
+      {{ $daftar->no_porsi_haji ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $daftar->customer->nama }}
+      {{ $daftar->customer->nama ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->paket_haji ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $daftar->customer->jenis_kelamin }}
+      {{ $daftar->customer->jenis_kelamin ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $daftar->customer->no_hp_1 }}
+      {{ $daftar->customer->no_hp_1 ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->pelunasan ?? '-' }}
