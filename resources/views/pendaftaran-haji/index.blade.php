@@ -157,7 +157,9 @@
           <th scope="col" class="px-6 py-3">No</th>
           <th scope="col" class="px-6 py-3">Keberangkatan</th>
           <th scope="col" class="px-6 py-3">No Porsi Haji</th>
-          <th scope="col" class="px-6 py-3">Nama</th>
+          <th scope="col" class="px-4 py-3 w-[150px] sm:w-[180px] md:w-[200px] lg:w-[250px] break-words sm:break-normal overflow-hidden text-ellipsis">
+            Nama
+          </th>
           <th scope="col" class="px-6 py-3">Paket Pendaftaran</th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>

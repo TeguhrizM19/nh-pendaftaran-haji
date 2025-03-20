@@ -9,7 +9,7 @@
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->no_porsi_haji ?? '-' }}
     </td>
-    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+    <th scope="col" class="px-6 py-4 font-medium w-[150px] sm:w-[180px] md:w-[200px] lg:w-[250px] break-words sm:break-normal overflow-hidden text-ellipsis">
       {{ $daftar->customer->nama ?? '-' }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">

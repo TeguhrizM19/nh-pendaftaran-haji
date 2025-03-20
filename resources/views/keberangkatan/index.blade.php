@@ -140,7 +140,9 @@
           <th scope="col" class="px-6 py-3">Keberangkatan</th>
           <th scope="col" class="px-6 py-3">No SPPH</th>
           <th scope="col" class="px-6 py-3">No PORSI</th>
-          <th scope="col" class="px-4 py-3 w-[150px] break-all whitespace-normal">Nama</th>
+          <th scope="col" class="px-4 py-3 w-[150px] sm:w-[180px] md:w-[200px] lg:w-[250px] break-words sm:break-normal overflow-hidden text-ellipsis">
+            Nama
+          </th>
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>
           <th scope="col" class="px-2 py-3">Pelunasan Haji</th>
