@@ -7,6 +7,14 @@
     <form id="formPendaftaran" action="/pendaftaran-haji" method="POST" enctype="multipart/form-data">
       @csrf
 
+      {{-- <div class="w-[1850px] grid grid-cols-2 md:grid-cols-2 mb-2">
+        <span class="flex items-center">
+          <span class="h-0.5 rounded-full flex-1 bg-[#099AA7]"></span>
+          <span class="shrink-0 px-6 text-[#099AA7] text-xl font-medium">Data Pribadi Customer</span>
+          <span class="h-0.5 rounded-full flex-1 bg-[#099AA7]"></span>
+        </span>
+      </div> --}}
+
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
         {{-- Kolom 1 --}}
         <div>
@@ -32,158 +40,8 @@
             </div>                        
           </div>
 
-          <div>
-            <label for="no_porsi_haji" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
-              Nomor Porsi Haji
-            </label>
-            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" 
-            class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
-            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
-            @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
-            
-            @error('no_porsi_haji')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
-          </div>
-        
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-            <div class="">
-              <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Cabang Daftar <span class="text-red-500 text-lg">*</span>
-              </label>
-              <select name="cabang_id" id="cabang_id" required
-                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih</option>
-                @foreach($cabang as $cbg)
-                <option value="{{ $cbg->id }}" {{ old('cabang_id') == $cbg->id ? 'selected' : '' }}>
-                  {{ $cbg->cabang }}
-                </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="">
-              <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Wilayah Daftar <span class="text-red-500 text-lg">*</span>
-              </label>
-              <select name="wilayah_daftar" id="wilayah_daftar" required>
-                <option value="">Pilih</option>
-                @forelse ($wilayahKota as $wilayah)
-                  <option value="{{ $wilayah->id }}" {{ old('wilayah_daftar') == $wilayah->id ? 'selected' : '' }}>
-                      {{ $wilayah->kota_lahir }}
-                  </option>
-                @empty
-                  <option value="">Wilayah Masih Kosong</option>
-                @endforelse
-              </select>            
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
-            <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Bank <span class="text-red-500 text-lg">*</span>
-              </label>
-              <input type="text" name="bank" id="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}" required
-                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
-            </div>
-
-            <div>
-              <label for="sumber_info" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Sumber Informasi <span class="text-red-500 text-lg">*</span>
-              </label>
-              <select name="sumber_info_id" id="sumber_info" required 
-              class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih Sumber Informasi</option>
-                @foreach($sumberInfo as $sumber)
-                  <option value="{{ $sumber->id }}" {{ old('sumber_info_id') == $sumber->id ? 'selected' : '' }}>
-                    {{ $sumber->info }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
-              <input type="number" name="bpjs" id="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}"
-              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
-              
-              @error('bpjs')
-              <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-              @enderror
-            </div>
-
-            <div>
-              <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
-              <select name="keberangkatan_id" id="keberangkatan" class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                <option value="">Pilih Tahun Keberangkatan</option>
-                @foreach($keberangkatan as $berangkat)
-                  <option value="{{ $berangkat->id }}" {{ old('keberangkatan_id') == $berangkat->id ? 'selected' : '' }}>
-                    {{ $berangkat->keberangkatan }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <h3 class="mb-3 font-semibold text-[#099AA7]">
-              Paket Pendaftaran <span class="text-red-500 text-lg">*</span>
-            </h3>
-            <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
-              <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
-              <div class="grid grid-cols-1 md:grid-cols-1">
-                <!-- Reguler Tunai -->
-                <li class="border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji"
-                      {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }} required
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Reguler Tunai
-                    </label>
-                  </div>
-                </li>
-                <!-- Reguler Talangan (di desktop ada di bawah Reguler Tunai, di HP tetap urut) -->
-                <li class="border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="reguler-talangan" type="radio" value="Reguler Talangan" name="paket_haji"
-                      {{ old('paket_haji') == 'Reguler Talangan' ? 'checked' : '' }}
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                    <label for="reguler-talangan" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      Reguler Talangan
-                    </label>
-                  </div>
-                </li>
-              </div>
-              <!-- Khusus/Plus (di HP ada di bawah Reguler Talangan) -->
-              <li class="w-full">
-                <div class="flex items-center ps-3">
-                  <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
-                    {{ old('paket_haji') == 'Khusus/Plus' ? 'checked' : '' }}
-                    class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
-                  <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                    Khusus/Plus
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </div>              
-
-          <div>
-            <label for="catatan" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
-              Catatan
-            </label>
-            <textarea id="catatan" rows="4" name="catatan"
-            class="mb-4  block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
-            placeholder="Write your thoughts here...">{{ old('catatan') }}</textarea>
-          </div>
-        </div>
-
-        {{-- Kolom 2 --}}
-        <div class="relative">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <!-- Kolom No HP -->
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
                 No HP 1 <span class="text-red-500 text-lg">*</span>
@@ -243,6 +101,7 @@
                 </select>
               </div>
             </div>
+
             <!-- Input No Identitas (Lebih Lebar) -->
             <div>
               <label for="no_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
@@ -368,61 +227,9 @@
               </select>            
             </div>
           </div>
-          
-          <!-- Kolom Dokumen -->
-          <div class="w-full">
-            <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
-            <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
-              @foreach ($dokumen as $dok)
-                <li class="w-full border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      {{ in_array($dok->id, old('dokumen', $selectedDokumen ?? [])) ? 'checked' : '' }}>
-                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      {{ $dok->dokumen }}
-                    </label>
-                  </div>
-                </li>
-              @endforeach
-            </ul>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
-            <!-- KTP -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
-              <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="ktp" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-            <!-- KK -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
-              <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="kk" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-            <!-- Surat Nikah/Akte lahir/Ijazah -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
-              <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="surat" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-            <!-- SPPH -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
-              <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="spph" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-            <!-- BPIH -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
-              <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="bpih" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-            <!-- Pas Photo -->
-            <div>
-              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
-              <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="photo" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
-            </div>
-          </div>
         </div>
-        
-        {{-- Kolom 3 Alamat --}}
+
+        {{-- Kolom 2 --}}
         <div class="relative">
           <div>
             <label for="alamat_ktp" class="block mb-2 text-sm font-medium text-[#099AA7]">
@@ -430,7 +237,7 @@
             </label>
             <textarea id="alamat_ktp" rows="2" name="alamat_ktp" required 
             class="block p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
-            placeholder="Write your thoughts here...">{{ old('alamat_ktp') }}</textarea>
+            placeholder="Alamat Sesuai KTP...">{{ old('alamat_ktp') }}</textarea>
           </div>
 
           <div class=" shadow-slate-400">
@@ -516,7 +323,7 @@
             </div>
             <textarea id="alamat_domisili" rows="2" name="alamat_domisili" required
             class="block mb-2 p-2.5 w-full text-sm text-black bg-white  shadow-slate-400 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" 
-            placeholder="Write your thoughts here...">{{ old('alamat_domisili') }}</textarea>
+            placeholder="Alamat Domisili...">{{ old('alamat_domisili') }}</textarea>
           </div>
 
           <div class=" shadow-slate-400">
@@ -586,6 +393,221 @@
               </div> --}}
             </div>
           </div>
+          
+        </div>
+        
+        <!-- Kolom 3 -->
+        <div class="relative">
+          <!-- Kolom Nomor Porsi Haji -->
+          <div>
+            <label for="no_porsi_haji" class="mb-2 mt-1 block text-sm font-medium leading-6 text-[#099AA7]">
+              Nomor Porsi Haji
+            </label>
+            <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" 
+            class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
+            ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
+            @error('no_porsi_haji') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+            
+            @error('no_porsi_haji')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+          </div>
+        
+          <!-- Kolom Cabang Daftar -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+            <div class="">
+              <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Cabang Daftar <span class="text-red-500 text-lg">*</span>
+              </label>
+              <select name="cabang_id" id="cabang_id" required
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach($cabang as $cbg)
+                <option value="{{ $cbg->id }}" {{ old('cabang_id') == $cbg->id ? 'selected' : '' }}>
+                  {{ $cbg->cabang }}
+                </option>
+                @endforeach
+              </select>
+            </div>
+
+            <!-- Kolom Wilayah Daftar -->
+            <div class="">
+              <label for="wilayah_daftar" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Wilayah Daftar <span class="text-red-500 text-lg">*</span>
+              </label>
+              <select name="wilayah_daftar" id="wilayah_daftar" required>
+                <option value="">Pilih</option>
+                @forelse ($wilayahKota as $wilayah)
+                  <option value="{{ $wilayah->id }}" {{ old('wilayah_daftar') == $wilayah->id ? 'selected' : '' }}>
+                      {{ $wilayah->kota_lahir }}
+                  </option>
+                @empty
+                  <option value="">Wilayah Masih Kosong</option>
+                @endforelse
+              </select>            
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
+            <!-- Kolom Bank -->
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Bank <span class="text-red-500 text-lg">*</span>
+              </label>
+              <input type="text" name="bank" id="bank" placeholder="Bank/Jumlah Setoran" value="{{ old('bank') }}" required
+                class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+
+            <!-- Kolom Sumber Informasi -->
+            <div>
+              <label for="sumber_info" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Sumber Informasi <span class="text-red-500 text-lg">*</span>
+              </label>
+              <select name="sumber_info_id" id="sumber_info" required 
+              class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Sumber Informasi</option>
+                @foreach($sumberInfo as $sumber)
+                  <option value="{{ $sumber->id }}" {{ old('sumber_info_id') == $sumber->id ? 'selected' : '' }}>
+                    {{ $sumber->info }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <!-- Kolom BPJS -->
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">BPJS</label>
+              <input type="number" name="bpjs" id="bpjs" placeholder="No BPJS" value="{{ old('bpjs') }}"
+              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 @error('bpjs') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
+              
+              @error('bpjs')
+              <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <!-- Kolom Tahun Keberangkatan -->
+            <div>
+              <label class="block mb-2 text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
+              <select name="keberangkatan_id" id="keberangkatan" class="w-full text-gray-900 bg-white border  border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih Tahun Keberangkatan</option>
+                @foreach($keberangkatan as $berangkat)
+                  <option value="{{ $berangkat->id }}" {{ old('keberangkatan_id') == $berangkat->id ? 'selected' : '' }}>
+                    {{ $berangkat->keberangkatan }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <!-- Kolom Paket Pendaftaran -->
+          <div class="mt-3">
+            <h3 class="mb-3 font-semibold text-[#099AA7]">
+              Paket Pendaftaran <span class="text-red-500 text-lg">*</span>
+            </h3>
+            <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+              <!-- Layout desktop (2 kolom), di HP jadi 1 kolom -->
+              <div class="grid grid-cols-1 md:grid-cols-1">
+                <!-- Reguler Tunai -->
+                <li class="border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="reguler-tunai" type="radio" value="Reguler Tunai" name="paket_haji"
+                      {{ old('paket_haji') == 'Reguler Tunai' ? 'checked' : '' }} required
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="reguler-tunai" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Reguler Tunai
+                    </label>
+                  </div>
+                </li>
+                <!-- Reguler Talangan (di desktop ada di bawah Reguler Tunai, di HP tetap urut) -->
+                <li class="border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="reguler-talangan" type="radio" value="Reguler Talangan" name="paket_haji"
+                      {{ old('paket_haji') == 'Reguler Talangan' ? 'checked' : '' }}
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <label for="reguler-talangan" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Reguler Talangan
+                    </label>
+                  </div>
+                </li>
+              </div>
+              <!-- Khusus/Plus (di HP ada di bawah Reguler Talangan) -->
+              <li class="w-full">
+                <div class="flex items-center ps-3">
+                  <input id="khusus" type="radio" value="Khusus/Plus" name="paket_haji"
+                    {{ old('paket_haji') == 'Khusus/Plus' ? 'checked' : '' }}
+                    class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                  <label for="khusus" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                    Khusus/Plus
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Kolom Dokumen -->
+          <div class="w-full">
+            <h3 class="mb-3 mt-3 font-semibold text-[#099AA7]">Dokumen</h3>
+            <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
+              @foreach ($dokumen as $dok)
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ in_array($dok->id, old('dokumen', $selectedDokumen ?? [])) ? 'checked' : '' }}>
+                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      {{ $dok->dokumen }}
+                    </label>
+                  </div>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+            <!-- KTP -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+              <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="ktp" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- KK -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+              <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="kk" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- Surat Nikah/Akte lahir/Ijazah -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+              <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="surat" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- SPPH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+              <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="spph" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- BPIH -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+              <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="bpih" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+            <!-- Pas Photo -->
+            <div>
+              <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+              <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="photo" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+            </div>
+          </div>
+
+          <!-- Kolom Catatan -->
+          <div>
+            <label for="catatan" class="block mb-2 mt-4 text-sm font-medium text-[#099AA7]">
+              Catatan
+            </label>
+            <textarea id="catatan" rows="4" name="catatan"
+            class="mb-4  block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" 
+            placeholder="Write your thoughts here...">{{ old('catatan') }}</textarea>
+          </div>
+
         </div>
       </div>
 
