@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -557,7 +556,6 @@ class TDaftarHajiController extends Controller
 
     return redirect('/pendaftaran-haji')->with('success', 'Data dan dokumen berhasil dihapus.');
   }
-
 
   // function untuk wilayah indonasia
   public function getKota($provinsi_id)
