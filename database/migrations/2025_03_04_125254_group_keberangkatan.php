@@ -14,6 +14,9 @@ return new class extends Migration
     Schema::create('group_keberangkatan', function (Blueprint $table) {
       $table->id();
       $table->string('keberangkatan');
+      $table->string('manasik')->nullable();
+      $table->string('operasional')->nullable();
+      $table->string('dam')->nullable();
       $table->timestamps();
     });
   }

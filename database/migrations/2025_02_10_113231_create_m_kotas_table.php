@@ -15,6 +15,7 @@ return new class extends Migration
       $table->id();
       $table->foreignId('provinsi_id')->constrained('m_provinsis')->onDelete('cascade');
       $table->string('kota');
+      $table->string('kota_lahir')->nullable();
       $table->timestamps();
     });
   }

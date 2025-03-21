@@ -25,7 +25,6 @@ Route::middleware(['auth'])->group(function () {
   // Route User
   Route::resource('/user', UserController::class);
 
-
   // Route Pendaftaran Haji
   Route::resource('/pendaftaran-haji', TDaftarHajiController::class);
   Route::get('/get-cabang/{id}', [TDaftarHajiController::class, 'getCabang']);
@@ -70,22 +69,11 @@ Route::middleware(['auth'])->group(function () {
 
   // Route Keberangkatan
   Route::resource('/keberangkatan', GroupKeberangkatanController::class);
+  Route::get('/tahun-keberangkatan', [GroupKeberangkatanController::class, 'tahun_keberangkatan']);
   Route::post('/simpan-peserta-keberangkatan', [GroupKeberangkatanController::class, 'simpanPesertaKeberangkatan'])
     ->name('simpan.peserta.keberangkatan');
   Route::post('/keberangkatan/hapus', [GroupKeberangkatanController::class, 'hapusPesertaKeberangkatan'])
     ->name('hapus.peserta.keberangkatan');
 
   Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan'])->name('filter.keberangkatan');
-
-  Route::get('/daftar-usia', [DashboardController::class, 'daftarUsia']);
-
-  Route::get('/usia-chart', [DashboardController::class, 'showUsiaChart']);
 });
-
-
-
-// Route::get('/create-DashboardController/{keberangkatan_id}', [GroupKeberangkatanController::class, 'createKeberangkatan'])
-//     ->name('create.keberangkatan');
-// Route::get('/detail-keberangkatan/{keberangkatan_id}', [GroupKeberangkatanController::class, 'detailKeberangkatan'])
-//     ->name('detail.keberangkatan');
-// Route::post('/update-keberangkatan', [GroupKeberangkatanController::class, 'updateKeberangkatan'])->name('update.keberangkatan');

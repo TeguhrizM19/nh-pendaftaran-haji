@@ -380,7 +380,6 @@ class TGabungHajiController extends Controller
 
     return redirect('/gabung-haji')->with('success', 'Data Dihapus');
   }
-
   public function search(Request $request)
   {
     $query = $request->input('query');
