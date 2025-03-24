@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
 use App\Models\TGabungHaji;
 use Illuminate\Http\Request;
 use App\Models\GroupKeberangkatan;
@@ -195,16 +196,23 @@ class GroupKeberangkatanController extends Controller
 
     $validated = $request->validate([
       'keberangkatan' => 'required|string',
-      'manasik' => 'nullable|string',
-      'operasional' => 'nullable|string',
-      'dam' => 'nullable|string',
+      'manasik_raw' => 'nullable|numeric',
+      'operasional_raw' => 'nullable|numeric',
+      'dam_raw' => 'nullable|numeric',
+    ]);
+
+    // Simpan ke database dengan nama kolom yang sesuai
+    GroupKeberangkatan::create([
+      'keberangkatan' => $validated['keberangkatan'],
+      'manasik' => $validated['manasik_raw'] ?? 0,
+      'operasional' => $validated['operasional_raw'] ?? 0,
+      'dam' => $validated['dam_raw'] ?? 0,
       'create_user' => $user
     ]);
 
-    GroupKeberangkatan::create($validated);
-
     return redirect()->back()->with('success', 'Data berhasil ditambahkan!');
   }
+
 
   public function edit($id)
   {
@@ -218,17 +226,23 @@ class GroupKeberangkatanController extends Controller
 
     $validated = $request->validate([
       'keberangkatan' => 'required|digits:4',
-      'manasik' => 'nullable|string',
-      'operasional' => 'nullable|string',
-      'dam' => 'nullable|string',
-      'update_user' => $user
+      'manasik_raw' => 'nullable|numeric',
+      'operasional_raw' => 'nullable|numeric',
+      'dam_raw' => 'nullable|numeric',
     ]);
 
     $keberangkatan = GroupKeberangkatan::findOrFail($id);
-    $keberangkatan->update($validated);
+    $keberangkatan->update([
+      'keberangkatan' => $validated['keberangkatan'],
+      'manasik' => $validated['manasik_raw'] ?? 0,
+      'operasional' => $validated['operasional_raw'] ?? 0,
+      'dam' => $validated['dam_raw'] ?? 0,
+      'update_user' => $user
+    ]);
 
     return redirect()->back()->with('success', 'Data keberangkatan berhasil diperbarui.');
   }
+
 
   public function destroy($id)
   {

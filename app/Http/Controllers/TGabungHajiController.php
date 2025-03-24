@@ -127,7 +127,6 @@ class TGabungHajiController extends Controller
   /**
    * Show the form for creating a new resource.
    */
-
   public function create()
   {
     $kota = Kota::all();
@@ -287,7 +286,6 @@ class TGabungHajiController extends Controller
   /**
    * Update the specified resource in storage.
    */
-
   public function update(Request $request, $id)
   {
     $gabung_haji = TGabungHaji::findOrFail($id);
@@ -380,6 +378,7 @@ class TGabungHajiController extends Controller
 
     return redirect('/gabung-haji')->with('success', 'Data Dihapus');
   }
+
   public function search(Request $request)
   {
     $query = $request->input('query');

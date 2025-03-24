@@ -7,14 +7,14 @@
       {{ $berangkat->keberangkatan ?? '-' }}
     </th>
     <th class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $berangkat->manasik ?? '-' }}
+      {{ $berangkat->manasik ? 'Rp. ' . number_format($berangkat->manasik, 0, ',', '.') : '-' }}
     </th>
     <th class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $berangkat->operasional ?? '-' }}
+        {{ $berangkat->operasional ? 'Rp. ' . number_format($berangkat->operasional, 0, ',', '.') : '-' }}
     </th>
     <th class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $berangkat->dam ?? '-' }}
-    </th>
+        {{ $berangkat->dam ? 'Rp. ' . number_format($berangkat->dam, 0, ',', '.') : '-' }}
+    </th>  
     <td class="px-6 py-4 text-center">
       <div class="inline-flex items-center space-x-2">
         <button class="font-medium text-blue-600 hover:underline"
@@ -34,7 +34,7 @@
               <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
             </svg>    
           </button>
-        </form>    
+        </form>
       </div>
     </td>
   </tr>
@@ -73,26 +73,36 @@
               <label class="mb-2 block text-sm font-medium text-[#099AA7]">
                 Manasik
               </label>
-              <input type="text" name="manasik" value="{{ $berangkat->manasik }}"
-                class="bg-gray-100 mb-3 border-2 border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nominal Manasik" />
-                <input type="hidden" name="manasik_raw" id="manasik_raw">
+              <input type="text" name="manasik" id="manasik_{{ $berangkat->id }}" 
+                value="{{ $berangkat->manasik ? 'Rp. ' . number_format($berangkat->manasik, 0, ',', '.') : '' }}"
+                class="bg-gray-100 mb-3 border-2 border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" 
+                placeholder="Masukkan Nominal Manasik" />
+
+              <input type="hidden" name="manasik_raw" id="manasik_raw_{{ $berangkat->id }}" value="{{ $berangkat->manasik }}">
             </div>
+
             <div>
               <label class="mb-2 block text-sm font-medium text-[#099AA7]">
                 Operasional
               </label>
-              <input type="text" name="operasional" value="{{ $berangkat->operasional }}"
-                class="bg-gray-100 mb-3 border-2 border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Masukkan Nominal Operasional" />
-                <input type="hidden" name="operasional_raw" id="operasional_raw">
+              <input type="text" name="operasional" id="operasional_{{ $berangkat->id }}" 
+                value="{{ $berangkat->operasional ? 'Rp. ' . number_format($berangkat->operasional, 0, ',', '.') : '' }}"
+                class="bg-gray-100 mb-3 border-2 border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" 
+                placeholder="Masukkan Nominal Operasional" />
+
+              <input type="hidden" name="operasional_raw" id="operasional_raw_{{ $berangkat->id }}" value="{{ $berangkat->operasional }}">
             </div>
+
             <div>
               <label class="mb-2 block text-sm font-medium text-[#099AA7]">
                 Dam
               </label>
-              <input type="text" name="dam" value="{{ $berangkat->dam }}"
+              <input type="text" name="dam" id="dam_{{ $berangkat->id }}" 
+                value="{{ $berangkat->dam ? 'Rp. ' . number_format($berangkat->dam, 0, ',', '.') : '' }}"
                 class="bg-gray-100 border-2 border-gray-500 text-gray-900 text-sm rounded-lg block w-full p-2.5" 
                 placeholder="Masukkan Nominal Dam" />
-                <input type="hidden" name="dam_raw" id="dam_raw">
+
+              <input type="hidden" name="dam_raw" id="dam_raw_{{ $berangkat->id }}" value="{{ $berangkat->dam }}">
             </div>
             <button type="submit"
               class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -135,11 +145,20 @@
   });
 
   // Format Uang
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     function formatCurrency(inputId, hiddenId) {
       let inputField = document.getElementById(inputId);
       let hiddenField = document.getElementById(hiddenId);
 
+      if (!inputField || !hiddenField) return;
+
+      // Format awal saat modal muncul
+      let initialValue = hiddenField.value;
+      if (initialValue) {
+        inputField.value = "Rp. " + new Intl.NumberFormat("id-ID").format(initialValue);
+      }
+
+      // Saat user mengetik
       inputField.addEventListener("input", function (e) {
         let value = e.target.value.replace(/\D/g, ""); // Hanya angka
         hiddenField.value = value; // Simpan angka asli tanpa format
@@ -151,10 +170,12 @@
         }
       });
 
+      // Saat fokus (biar terlihat angka asli)
       inputField.addEventListener("focus", function () {
-        inputField.value = hiddenField.value; // Tampilkan angka asli saat fokus
+        inputField.value = hiddenField.value;
       });
 
+      // Saat blur (kembali ke format Rp)
       inputField.addEventListener("blur", function () {
         let value = hiddenField.value;
         if (value) {
@@ -163,10 +184,14 @@
       });
     }
 
-    // Aktifkan format untuk semua input uang
-    formatCurrency("manasik", "manasik_raw");
-    formatCurrency("operasional", "operasional_raw");
-    formatCurrency("dam", "dam_raw");
+    // Aktifkan format untuk semua input uang di modal edit
+    document.querySelectorAll("[id^='manasik_']").forEach((el) => {
+      let id = el.id.replace("manasik_", "");
+      formatCurrency("manasik_" + id, "manasik_raw_" + id);
+      formatCurrency("operasional_" + id, "operasional_raw_" + id);
+      formatCurrency("dam_" + id, "dam_raw_" + id);
+    });
   });
+
 </script>
 

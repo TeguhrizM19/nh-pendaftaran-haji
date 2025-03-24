@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\MDokHaji;
+use App\Models\Pembayaran;
 use App\Models\TDaftarHaji;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,6 +50,12 @@ class TGabungHaji extends Model
     return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_documents', 'gabung_haji_id', 'dokumen_id');
   }
 
+  public function pembayaran()
+  {
+    return $this->hasMany(Pembayaran::class, 'pembayarans', 'id');
+  }
+
+  // Relasi Wilayah Indonesia
   // Relasi ke Provinsi
   public function provinsi()
   {

@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\GroupKeberangkatanController;
-use App\Http\Controllers\PencarianSelect2Controller;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PencarianSelect2Controller;
+use App\Http\Controllers\GroupKeberangkatanController;
 
 Route::middleware(['guest'])->group(function () {
   Route::get('/', [SessionController::class, 'index'])->name('login');
@@ -76,4 +77,9 @@ Route::middleware(['auth'])->group(function () {
     ->name('hapus.peserta.keberangkatan');
 
   Route::get('/filter-keberangkatan', [DashboardController::class, 'filterKeberangkatan'])->name('filter.keberangkatan');
+
+  // Route Pembayaran
+  Route::get('/pembayaran/{id}', [PembayaranController::class, 'index']);
+  Route::post('/pembayaran/{id}', [PembayaranController::class, 'store']);
+  Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 });
