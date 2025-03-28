@@ -29,7 +29,6 @@
     </button>
   </div>
 
-
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
     <table id="myTable" class="w-full text-sm text-left rtl:text-right text-black bg-white">
       <thead class="text-xs text-white uppercase bg-[#099AA7]">
@@ -37,6 +36,7 @@
           <th scope="col" class="px-6 py-3">No</th>
           <th scope="col" class="px-6 py-3">Nama</th>
           <th scope="col" class="px-6 py-3">Username</th>
+          <th scope="col" class="px-6 py-3">cabang</th>
           <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>
       </thead>
@@ -51,6 +51,9 @@
           </td>
           <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
             {{ $user->username }}
+          </td>
+          <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+            {{ $user->cabang->cabang ?? '-' }}
           </td>
           <td class="px-6 py-4 text-center">
             <div class="inline-flex items-center space-x-2">
@@ -131,6 +134,20 @@
               <input type="text" name="password" id="password" class="bg-gray-50 border-2 border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Masukkan Password" required />
             </div>
             <div>
+              <label for="cabang_id" class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Cabang Daftar <span class="text-red-500 text-lg">*</span>
+              </label>
+              <select name="cabang_id" id="cabang_id" required
+                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                <option value="">Pilih</option>
+                @foreach($cabang as $cbg)
+                <option value="{{ $cbg->id }}" {{ old('cabang_id') == $cbg->id ? 'selected' : '' }}>
+                  {{ $cbg->cabang }}
+                </option>
+                @endforeach
+              </select>
+            </div>
+            <div>
               <label for="level" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
                 Level
               </label>
@@ -173,6 +190,23 @@
         });
       });
     });
+  });
+
+  // Cabang
+  $(document).ready(function () {
+    $('#cabang_id').select2({
+      placeholder: "Pilih", // Placeholder
+      allowClear: true, // Bisa menghapus pilihan
+      width: '100%' // Sesuaikan dengan Tailwind
+    });
+
+    // Ambil nilai old value dari Laravel
+    var oldValue = "{{ old('cabang_id') }}";
+
+    // Jika oldValue ada, set di Select2
+    if (oldValue) {
+      $('#cabang_id').val(oldValue).trigger('change');
+    }
   });
   </script>
 

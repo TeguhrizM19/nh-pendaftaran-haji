@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MCabang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,8 @@ class UserController extends Controller
   public function index()
   {
     return view('user.index', [
-      'users' => User::all()
+      'users' => User::all(),
+      'cabang' => MCabang::all(),
     ]);
   }
 
@@ -36,6 +38,7 @@ class UserController extends Controller
       'name' => 'required|string|max:255',
       'username' => 'required|string|max:255|unique:users,username',
       'password' => 'required|string|min:5',
+      'cabang_id' => 'required|exists:m_cabangs,id',
       'level' => 'required|in:super_admin,admin,qc',
     ]);
 
@@ -49,8 +52,6 @@ class UserController extends Controller
     // Redirect dengan pesan sukses
     return redirect()->back()->with('success', 'User berhasil ditambahkan!');
   }
-
-
 
   /**
    * Display the specified resource.

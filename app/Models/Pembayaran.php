@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\MCabang;
 use App\Models\Customer;
 use App\Models\TDaftarHaji;
 use App\Models\TGabungHaji;
@@ -35,5 +37,15 @@ class Pembayaran extends Model
   public function keberangkatan()
   {
     return $this->belongsTo(GroupKeberangkatan::class, 'keberangkatan_id');
+  }
+
+  public function cabang()
+  {
+    return $this->belongsTo(MCabang::class, 'cabang_id');
+  }
+
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'cabang_id', 'cabang_id');
   }
 }
