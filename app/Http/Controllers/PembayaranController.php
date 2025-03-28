@@ -97,6 +97,9 @@ class PembayaranController extends Controller
     // Ambil ID cabang dari user
     $cabangId = Auth::user()->cabang_id ?? null;
 
+    // Ambil ID daftar haji dari relasi gabung haji
+    $daftarHajiId = $gabungHaji->daftarHaji->id ?? null;
+
     // Validasi input
     $validated = $request->validate([
       'tgl_bayar' => 'required|date',
@@ -134,6 +137,7 @@ class PembayaranController extends Controller
 
       Pembayaran::create([
         'gabung_haji_id' => $gabungHaji->id,
+        'daftar_haji_id' => $daftarHajiId,
         'keberangkatan_id' => $keberangkatanId,
         'tgl_bayar' => $request->tgl_bayar,
         'metode_bayar' => $request->metode_bayar,
