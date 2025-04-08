@@ -1,7 +1,7 @@
 @forelse ($keberangkatan as $berangkat) 
   <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $loop->iteration }}
+      {{ $loop->iteration + $keberangkatan->firstItem() - 1 }}
     </th>
     <th class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $berangkat->keberangkatan ?? '-' }}

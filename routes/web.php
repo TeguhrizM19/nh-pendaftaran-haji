@@ -81,5 +81,6 @@ Route::middleware(['auth'])->group(function () {
   // Route Pembayaran
   Route::get('/pembayaran/{id}', [PembayaranController::class, 'index']);
   Route::post('/pembayaran/{id}', [PembayaranController::class, 'store']);
+  Route::put('/pembayaran/update/{id}', [PembayaranController::class, 'update'])->name('pembayaran.update');
   Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 });

@@ -7,7 +7,7 @@
         {{ $gabung->keberangkatan_id ? 'checked' : '' }}>
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $loop->iteration }}
+      {{ $loop->iteration + $gabung_haji->firstItem() - 1 }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->keberangkatan->keberangkatan ?? '-' }}

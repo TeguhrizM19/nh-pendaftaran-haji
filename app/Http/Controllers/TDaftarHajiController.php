@@ -407,7 +407,7 @@ class TDaftarHajiController extends Controller
       'bank'   => 'nullable|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan'     => 'nullable|string',
-      'pelunasan_manasik' => 'nullable|string',
+      // 'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
       // upload
       'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

@@ -52,8 +52,9 @@ class TGabungHaji extends Model
 
   public function pembayaran()
   {
-    return $this->hasMany(Pembayaran::class, 'pembayarans', 'id');
+    return $this->hasMany(Pembayaran::class, 'gabung_haji_id', 'id');
   }
+
 
   // Relasi Wilayah Indonesia
   // Relasi ke Provinsi

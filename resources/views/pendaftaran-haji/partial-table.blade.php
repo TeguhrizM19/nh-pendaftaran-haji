@@ -1,7 +1,7 @@
 @forelse ($daftar_haji as $daftar )
   <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $loop->iteration }}
+      {{ $loop->iteration + $daftar_haji->firstItem() - 1 }}
     </td>
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->keberangkatan->keberangkatan ?? '-' }}

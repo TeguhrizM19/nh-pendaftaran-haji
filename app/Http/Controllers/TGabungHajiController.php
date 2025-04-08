@@ -23,7 +23,7 @@ class TGabungHajiController extends Controller
 
   public function index(Request $request)
   {
-    $query = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan']);
+    $query = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan', 'pembayaran']);
 
     // Filter berdasarkan search umum 
     if ($request->has('search')) {
@@ -205,7 +205,7 @@ class TGabungHajiController extends Controller
       'depag' => 'nullable|integer',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
       'pelunasan' => 'nullable|string',
-      'pelunasan_manasik' => 'nullable|string',
+      // 'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
       // Validasi checkbox dokumen
       'dokumen' => 'nullable|array',

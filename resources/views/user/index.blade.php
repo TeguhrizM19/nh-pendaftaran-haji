@@ -44,7 +44,7 @@
         @forelse ($users as $user )
         <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
           <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
-            {{ $loop->iteration }}
+            {{ $loop->iteration + $users->firstItem() - 1 }}
           </td>
           <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
             {{ $user->name }}
@@ -117,19 +117,19 @@
             @csrf
             <div>
               <label for="name" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
-                Nama
+                Nama <span class="text-red-500 text-lg">*</span>
               </label>
               <input type="text" name="name" id="name" class="bg-gray-50 border-2 border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Masukkan Nama" required />
             </div>
             <div>
               <label for="username" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
-                Username
+                Username <span class="text-red-500 text-lg">*</span>
               </label>
               <input type="text" name="username" id="username" class="bg-gray-50 border-2 border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Masukkan Username" required />
             </div>
             <div>
               <label for="password" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
-                Password
+                Password <span class="text-red-500 text-lg">*</span>
               </label>
               <input type="text" name="password" id="password" class="bg-gray-50 border-2 border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Masukkan Password" required />
             </div>
@@ -138,7 +138,7 @@
                 Cabang Daftar <span class="text-red-500 text-lg">*</span>
               </label>
               <select name="cabang_id" id="cabang_id" required
-                class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                class="w-full text-gray-900 bg-gray-50 border-2 border-gray-700 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 <option value="">Pilih</option>
                 @foreach($cabang as $cbg)
                 <option value="{{ $cbg->id }}" {{ old('cabang_id') == $cbg->id ? 'selected' : '' }}>
@@ -149,7 +149,7 @@
             </div>
             <div>
               <label for="level" class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
-                Level
+                Level <span class="text-red-500 text-lg">*</span>
               </label>
               <select name="level" id="level" class="bg-gray-50 border-2 border-gray-700 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                 @php

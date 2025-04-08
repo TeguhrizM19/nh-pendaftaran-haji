@@ -122,7 +122,7 @@
           <th scope="col" class="px-2 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-2 py-3">No Telepon</th>
           <th scope="col" class="px-2 py-3">Pelunasan Haji</th>
-          <th scope="col" class="px-2 py-3 w-36">Pelunasan Manasik</th>
+          <th scope="col" class="px-2 py-3 w-36 text-center">Pelunasan Biaya</th>
           <th scope="col" class="px-2 py-3">Cetak</th>
           <th scope="col" class="px-2 py-3 text-center">Aksi</th>
         </tr>

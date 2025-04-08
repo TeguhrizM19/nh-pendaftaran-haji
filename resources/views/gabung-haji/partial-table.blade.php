@@ -1,7 +1,7 @@
 @forelse ($gabung_haji as $gabung )
   <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      {{ $loop->iteration }}
+      {{ $loop->iteration + $gabung_haji->firstItem() - 1 }}
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->keberangkatan->keberangkatan ?? '-' }}
@@ -11,11 +11,11 @@
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       @if (!empty($gabung->no_porsi))
-          {{ $gabung->no_porsi ?? '-' }}
+        {{ $gabung->no_porsi ?? '-' }}
       @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->no_porsi_haji))
-          {{ $gabung->daftarHaji->no_porsi_haji ?? '-' }}
+        {{ $gabung->daftarHaji->no_porsi_haji ?? '-' }}
       @else
-          -
+        -
       @endif
     </th>
     <th scope="col" class="px-6 py-4 font-medium w-[150px] sm:w-[180px] md:w-[200px] lg:w-[250px] break-words sm:break-normal overflow-hidden text-ellipsis">
@@ -27,24 +27,83 @@
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $gabung->customer->no_hp_1 ?? '-' }}
     </th>
+    {{-- <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
+      @php
+        $biayaOperasional = $gabung->keberangkatan->operasional ?? 0;
+        $biayaManasik = $gabung->keberangkatan->manasik ?? 0;
+        $biayaDam = $gabung->keberangkatan->dam ?? 0;
+    
+        $dibayarOperasional = $gabung->pembayaran->where('pilihan_biaya', '4-000001')->sum('nominal');
+        $dibayarManasik = $gabung->pembayaran->where('pilihan_biaya', '4-000002')->sum('nominal');
+        $dibayarDam = $gabung->pembayaran->where('pilihan_biaya', '4-000003')->sum('nominal');
+    
+        $totalDibayar = $dibayarOperasional + $dibayarManasik + $dibayarDam;
+        $totalBiaya = $biayaOperasional + $biayaManasik + $biayaDam;
+      @endphp
+    
+      @if ($totalBiaya > 0 && $totalDibayar == 0)
+        -
+      @elseif ($dibayarOperasional >= $biayaOperasional && $dibayarManasik >= $biayaManasik && $dibayarDam >= $biayaDam)
+        LUNAS
+      @else
+        Belum Lunas
+      @endif
+    </th> --}}
+    
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       @if (!empty($gabung->pelunasan))
-          {{ $gabung->pelunasan }}
+        {{ $gabung->pelunasan }}
       @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan))
-          {{ $gabung->daftarHaji->pelunasan ?? '-' }}
+        {{ $gabung->daftarHaji->pelunasan ?? '-' }}
       @else
-          -
+        -
       @endif
     </th>
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-      @if (!empty($gabung->pelunasan_manasik))
-          {{ $gabung->pelunasan_manasik ?? '-' }}
-      @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan_manasik))
-          {{ $gabung->daftarHaji->pelunasan_manasik ?? '-' }}
-      @else
-          -
-      @endif
+      <ul class="list-disc pl-5">
+        <li>
+          Operasional : 
+          @php
+            $biayaOperasional = $gabung->keberangkatan->operasional ?? 0;
+            $dibayarOperasional = $gabung->pembayaran->where('pilihan_biaya', '4-000001')->sum('nominal');
+          @endphp
+          {{ $dibayarOperasional >= $biayaOperasional && $biayaOperasional > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+    
+        <li>
+          Manasik : 
+          @php
+            $biayaManasik = $gabung->keberangkatan->manasik ?? 0;
+            $dibayarManasik = $gabung->pembayaran->where('pilihan_biaya', '4-000002')->sum('nominal');
+          @endphp
+          {{ $dibayarManasik >= $biayaManasik && $biayaManasik > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+    
+        <li>
+          Dam : 
+          @php
+            $biayaDam = $gabung->keberangkatan->dam ?? 0;
+            $dibayarDam = $gabung->pembayaran->where('pilihan_biaya', '4-000003')->sum('nominal');
+          @endphp
+          {{ $dibayarDam >= $biayaDam && $biayaDam > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+      </ul>
     </th>
+    
+    {{-- <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      @if (!empty($gabung->pelunasan_manasik))
+        {{ $gabung->pelunasan_manasik ?? '-' }}
+      @elseif (!empty($gabung->daftarHaji) && !empty($gabung->daftarHaji->pelunasan_manasik))
+        {{ $gabung->daftarHaji->pelunasan_manasik ?? '-' }}
+        <ul>
+          <li>Operasional : </li>
+          <li>Manasik : </li>
+          <li>Dam :</li>
+        </ul>
+      @else
+        -
+      @endif
+    </th> --}}
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
       <a href="{{ isset($gabung->daftarHaji) ? route('daftar_haji.cetak', $gabung->daftarHaji->id) : route('gabung_haji.cetak', $gabung->id) }}" 
         target="_blank" 
@@ -68,7 +127,7 @@
             <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
             <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
           </svg>
-        </a>       
+        </a>
         <span>|</span>
         <form action="{{ isset($gabung->daftarHaji) ? url('/pendaftaran-haji/' . $gabung->daftarHaji->id) : url('/gabung-haji/' . $gabung->id) }}" 
           method="POST" 
