@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kota;
+use App\Models\User;
+use App\Models\MCabang;
 use App\Models\MDokHaji;
+use App\Models\Pembayaran;
 use App\Models\TDaftarHaji;
 use App\Models\TGabungHaji;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -66,5 +69,27 @@ class PdfController extends Controller
     ]);
 
     return $pdf->stream('gabung-haji.pdf'); // Bisa juga pakai ->download()
+  }
+
+  public function cetakPembayaran($id)
+  {
+    $pembayaran = Pembayaran::findOrFail($id);
+
+    // Ambil data gabung haji berdasarkan relasi dari pembayaran
+    $gabungHaji = TGabungHaji::with(['customer', 'daftarHaji'])->find($pembayaran->gabung_haji_id);
+
+    // Cari user berdasarkan nama create_user
+    $user = User::where('name', $pembayaran->create_user)->first();
+
+    // Cari cabangnya
+    $cabang = MCabang::where('id', $user->cabang_id)->first();
+
+    $pdf = Pdf::loadView('pdf.pembayaran', [
+      'pembayaran' => $pembayaran,
+      'cabang' => $cabang,
+      'gabungHaji' => $gabungHaji,
+    ]);
+
+    return $pdf->stream('pembayaran.pdf');
   }
 }

@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
   // Cetak PDF
   Route::get('/daftar-haji/{id}/cetak', [PdfController::class, 'cetakPendaftaran'])->name('daftar_haji.cetak');
   Route::get('/gabung-haji/{id}/cetak', [PdfController::class, 'cetakGabung'])->name('gabung_haji.cetak');
+  Route::get('/pembayaran/{id}/cetak', [PdfController::class, 'cetakPembayaran']);
 
   // Route Keberangkatan
   Route::resource('/keberangkatan', GroupKeberangkatanController::class);
@@ -81,6 +82,6 @@ Route::middleware(['auth'])->group(function () {
   // Route Pembayaran
   Route::get('/pembayaran/{id}', [PembayaranController::class, 'index']);
   Route::post('/pembayaran/{id}', [PembayaranController::class, 'store']);
-  Route::put('/pembayaran/update/{id}', [PembayaranController::class, 'update'])->name('pembayaran.update');
+  // Route::put('/pembayaran/update/{id}', [PembayaranController::class, 'update'])->name('pembayaran.update');
   Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 });
