@@ -19,7 +19,13 @@ return new class extends Migration
       $table->foreignId('cabang_id')->nullable()->constrained('m_cabangs')->onDelete('set null');
       $table->date('tgl_bayar')->nullable();
       $table->string('metode_bayar')->nullable();
-      $table->string('pilihan_biaya')->nullable();
+      $table->string('pilihan_biaya_operasional', 50)->nullable();
+      $table->string('pilihan_biaya_manasik', 50)->nullable();
+      $table->string('pilihan_biaya_dam', 50)->nullable();
+      $table->string('operasional', 100)->nullable();
+      $table->string('manasik', 100)->nullable();
+      $table->string('dam', 100)->nullable();
+      $table->string('tambahan', 100)->nullable();
       $table->string('nominal')->nullable();
       $table->string('kwitansi')->nullable();
       $table->string('keterangan')->nullable();

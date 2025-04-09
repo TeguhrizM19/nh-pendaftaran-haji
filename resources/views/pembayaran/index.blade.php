@@ -16,6 +16,7 @@
     });
   </script>
   @endif
+  
 
   <div class="mt-4 flex sm:w-auto gap-4">
     <a href="/gabung-haji" class="flex items-center justify-center gap-x-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-[#099AA7] shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
@@ -69,9 +70,9 @@
           <dd class="text-gray-800 font-semibold sm:col-span-5">: {{ $gabungHaji->keberangkatan->keberangkatan ?? '-' }}</dd>
         </div>
       
-        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-6 sm:gap-4">
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-6 sm:gap-4"> 
           <dt class="font-medium text-gray-900">Biaya Operasional</dt>
-      
+        
           <dd class="text-gray-800 font-semibold sm:col-span-5">: 
             {{ isset($gabungHaji->keberangkatan->operasional) && $gabungHaji->keberangkatan->operasional > 0 
               ? 'Rp ' . number_format($gabungHaji->keberangkatan->operasional, 0, ',', '.') 
@@ -79,21 +80,21 @@
             <span>|</span>
             @if(isset($gabungHaji->keberangkatan->operasional) && $gabungHaji->keberangkatan->operasional > 0)
               @if($kurangOperasional > 0)
-                Kekurangan : Rp {{ number_format($kurangOperasional, 0, ',', '.') }}
+                <span>Kekurangan : Rp {{ number_format($kurangOperasional, 0, ',', '.') }}</span>
               @elseif($lebihOperasional > 0)
-                Kelebihan : Rp {{ number_format($lebihOperasional, 0, ',', '.') }}
+                <span class="text-red-500">Kelebihan : Rp {{ number_format($lebihOperasional, 0, ',', '.') }}</span>
               @else
-                LUNAS
+                <span class="text-green-600">LUNAS</span>
               @endif
             @else
               -
             @endif
           </dd>
-        </div>
+        </div>        
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-6 sm:gap-4"> 
           <dt class="font-medium text-gray-900">Biaya Manasik</dt>
-      
+        
           <dd class="text-gray-800 font-semibold sm:col-span-5">: 
             {{ isset($gabungHaji->keberangkatan->manasik) && $gabungHaji->keberangkatan->manasik > 0 
               ? 'Rp ' . number_format($gabungHaji->keberangkatan->manasik, 0, ',', '.') 
@@ -101,21 +102,21 @@
             <span>|</span>
             @if(isset($gabungHaji->keberangkatan->manasik) && $gabungHaji->keberangkatan->manasik > 0)
               @if($kurangManasik > 0)
-                Kekurangan : Rp {{ number_format($kurangManasik, 0, ',', '.') }}
+                <span>Kekurangan : Rp {{ number_format($kurangManasik, 0, ',', '.') }}</span>
               @elseif($lebihManasik > 0)
-                Kelebihan : Rp {{ number_format($lebihManasik, 0, ',', '.') }}
+                <span class="text-red-500">Kelebihan : Rp {{ number_format($lebihManasik, 0, ',', '.') }}</span>
               @else
-                LUNAS
+                <span class="text-green-600">LUNAS</span>
               @endif
             @else
               -
             @endif
           </dd>
-        </div>
+        </div>        
       
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-6 sm:gap-4">
           <dt class="font-medium text-gray-900">Biaya Dam</dt>
-      
+        
           <dd class="text-gray-800 font-semibold sm:col-span-5">: 
             {{ isset($gabungHaji->keberangkatan->dam) && $gabungHaji->keberangkatan->dam > 0 
               ? 'Rp ' . number_format($gabungHaji->keberangkatan->dam, 0, ',', '.') 
@@ -123,21 +124,21 @@
             <span>|</span>
             @if(isset($gabungHaji->keberangkatan->dam) && $gabungHaji->keberangkatan->dam > 0)
               @if($kurangDam > 0)
-                Kekurangan : Rp {{ number_format($kurangDam, 0, ',', '.') }}
+                <span>Kekurangan : Rp {{ number_format($kurangDam, 0, ',', '.') }}</span>
               @elseif($lebihDam > 0)
-                Kelebihan : Rp {{ number_format($lebihDam, 0, ',', '.') }}
+                <span class="text-red-500">Kelebihan : Rp {{ number_format($lebihDam, 0, ',', '.') }}</span>
               @else
-                LUNAS
+                <span class="text-green-600">LUNAS</span>
               @endif
             @else
               -
             @endif
           </dd>
-        </div>
+        </div>        
       
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-6 sm:gap-4">
           <dt class="font-medium text-gray-900">Total Biaya</dt>
-      
+        
           <dd class="text-gray-800 font-semibold sm:col-span-5">: 
             {{ isset($totalBiaya) && $totalBiaya > 0 
               ? 'Rp ' . number_format($totalBiaya, 0, ',', '.') 
@@ -145,152 +146,158 @@
             <span>|</span>
             @if(isset($totalBiaya) && $totalBiaya > 0)
               @if($totalKekurangan > 0)
-                Total Kekurangan : Rp {{ number_format($totalKekurangan, 0, ',', '.') }}
+                <span>Total Kekurangan : Rp {{ number_format($totalKekurangan, 0, ',', '.') }}</span>
               @elseif($totalLebih > 0)
-                Total Kelebihan : Rp {{ number_format($totalLebih, 0, ',', '.') }}
+                <span class="text-red-500">Total Kelebihan : Rp {{ number_format($totalLebih, 0, ',', '.') }}</span>
               @else
-                LUNAS
+                <span class="text-green-600">LUNAS</span>
               @endif
             @else
               -
             @endif
           </dd>
-        </div>      
+        </div>             
       </dl>
     </div>
   </div>
 
   <!-- Tabel -->
-  <div class="rounded-lg shadow-lg shadow-gray-400 mt-4 p-4"> 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-      <table class="table-auto w-full text-sm text-left rtl:text-right text-black bg-white border-collapse">
-        <thead class="text-xs text-white uppercase bg-[#099AA7]">
-          <tr>
-            <th scope="col" class="px-2 py-3 text-center">Tanggal</th>
-            <th scope="col" class="px-2 py-3">No Kwitansi</th>
-            <th scope="col" class="px-4 py-3 w-[300px] sm:w-[360px] md:w-[400px] lg:w-[500px] break-words sm:break-normal overflow-hidden text-ellipsis">Keterangan</th>
-            <th scope="col" class="px-2 py-3">Nominal</th>
-            <th scope="col" class="px-2 py-3">Admin</th>
-            <th scope="col" class="px-2 py-3 text-center">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          @forelse($pembayaran as $data)
-            <tr>
-              <td class="px-6 py-4 text-center">{{ \Carbon\Carbon::parse($data->tgl_bayar)->translatedFormat('d-F-Y') }}</td>
-              <td class="px-6 py-4">{{ $data->cabang->kode_cab ?? 100 }}{{ $data->kwitansi ?? '-' }}</td>
-              <td class="px-6 py-4">{{ $data->keterangan ?? '-' }} {{ $metodeList[$data->metode_bayar] ?? $data->metode_bayar }}</td>
-              <td class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
-                {{ $data->nominal ? 'Rp. ' . number_format($data->nominal, 0, ',', '.') : '-' }}
-              </td>
-              <td class="px-6 py-4">{{ $data->create_user }}</td>
-              <td class="px-6 py-4 text-center">
-                <div class="inline-flex items-center space-x-2">
-                  <!-- <button class="font-medium text-blue-600 hover:underline"
-                    data-modal-target="modal-edit-{{ $data->id }}" z
-                    data-modal-toggle="modal-edit-{{ $data->id }}">
-                    <svg class="w-6 h-6 text-green-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
-                      <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+    <table class="table-auto w-full text-sm text-left rtl:text-right text-black bg-white border-collapse">
+      <thead class="text-xs text-white uppercase bg-[#099AA7]">
+        <tr>
+          <th scope="col" class="px-2 py-3 text-center">Tanggal</th>
+          <th scope="col" class="px-2 py-3">No Kwitansi</th>
+          <th scope="col" class="px-4 py-3 w-[300px] sm:w-[360px] md:w-[400px] lg:w-[500px] break-words sm:break-normal overflow-hidden text-ellipsis">Keterangan</th>
+          <th scope="col" class="px-2 py-3">Nominal</th>
+          <th scope="col" class="px-2 py-3">Admin</th>
+          <th scope="col" class="px-2 py-3 text-center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        @forelse($pembayaran as $data)
+          <tr class="bg-white border-b border-[#099AA7] hover:bg-gray-100">
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap text-center">{{ \Carbon\Carbon::parse($data->tgl_bayar)->translatedFormat('d-F-Y') }}</td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">{{ $data->cabang->kode_cab ?? 100 }}{{ $data->kwitansi ?? '-' }}</td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+              {{ $data->keterangan ?? '-' }}
+              <ul>
+                <li>Operasional : {{ $data->operasional ? 'Rp. ' . number_format($data->operasional, 0, ',', '.') : '-' }}</li>
+                <li>Manasik : {{ $data->manasik ? 'Rp. ' . number_format($data->manasik, 0, ',', '.') : '-' }}</li>
+                <li>Dam : {{ $data->dam ? 'Rp. ' . number_format($data->dam, 0, ',', '.') : '-' }}</li>
+              </ul>
+              {{ $metodeList[$data->metode_bayar] ?? $data->metode_bayar }}
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
+              {{ $data->nominal ? 'Rp. ' . number_format($data->nominal, 0, ',', '.') : '-' }}
+            </td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap">{{ $data->create_user }}</td>
+            <td class="px-6 py-4 font-medium text-black whitespace-nowrap text-center">
+              <div class="inline-flex items-center space-x-2">
+                <!-- <button class="font-medium text-blue-600 hover:underline"
+                  data-modal-target="modal-edit-{{ $data->id }}" z
+                  data-modal-toggle="modal-edit-{{ $data->id }}">
+                  <svg class="w-6 h-6 text-green-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                  </svg>
+                </button>
+                <span>|</span> -->
+                <form action="/pembayaran/{{ $data->id }}" method="POST" class="deleteForm inline-block">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" class="deleteButton font-medium text-blue-600 hover:underline bg-transparent border-none p-0 cursor-pointer">
+                    <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
                     </svg>
                   </button>
-                  <span>|</span> -->
-                  <form action="/pembayaran/{{ $data->id }}" method="POST" class="deleteForm inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="deleteButton font-medium text-blue-600 hover:underline bg-transparent border-none p-0 cursor-pointer">
-                      <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
-                      </svg>
-                    </button>
-                  </form>
+                </form>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Modal Edit Pembayaran -->
+          {{-- <div id="modal-edit-{{ $data->id }}" tabindex="-1" aria-hidden="true"
+            class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50">
+            <div class="relative p-4 w-full max-w-xl max-h-full">
+              <div class="relative bg-white rounded-lg shadow-sm">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 border-b rounded-t border-gray-200">
+                  <h3 class="text-xl font-semibold text-gray-900">Edit Pembayaran</h3>
+                  <button type="button"
+                    class="text-gray-400 hover:text-gray-900 bg-transparent hover:bg-gray-200 rounded-lg text-sm w-8 h-8 flex justify-center items-center"
+                    data-modal-hide="modal-edit-{{ $data->id }}">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 14 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
                 </div>
-              </td>
-            </tr>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                  <form action="{{ route('pembayaran.update', $data->id) }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id" value="{{ $data->id }}">
 
-            <!-- Modal Edit Pembayaran -->
-            {{-- <div id="modal-edit-{{ $data->id }}" tabindex="-1" aria-hidden="true"
-              class="hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50">
-              <div class="relative p-4 w-full max-w-xl max-h-full">
-                <div class="relative bg-white rounded-lg shadow-sm">
-                  <!-- Modal header -->
-                  <div class="flex items-center justify-between p-4 border-b rounded-t border-gray-200">
-                    <h3 class="text-xl font-semibold text-gray-900">Edit Pembayaran</h3>
-                    <button type="button"
-                      class="text-gray-400 hover:text-gray-900 bg-transparent hover:bg-gray-200 rounded-lg text-sm w-8 h-8 flex justify-center items-center"
-                      data-modal-hide="modal-edit-{{ $data->id }}">
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13" />
-                      </svg>
-                      <span class="sr-only">Close modal</span>
-                    </button>
-                  </div>
-                  <!-- Modal body -->
-                  <div class="p-4 md:p-5">
-                    <form action="{{ route('pembayaran.update', $data->id) }}" method="POST" class="space-y-4">
-                      @csrf
-                      @method('PUT')
-                      <input type="hidden" name="id" value="{{ $data->id }}">
-
-                      <div class="grid gap-4 mb-4 grid-cols-2">
-                        <!-- Tanggal Bayar -->
-                        <div class="col-span-2 sm:col-span-1">
-                          <label class="mb-2 block text-sm font-medium text-[#099AA7]">Tanggal Pembayaran
-                            <span class="text-red-500 text-lg">*</span></label>
-                          <input type="date" name="tgl_bayar" value="{{ old('tgl_bayar', $data->tgl_bayar) }}"
-                            class="bg-gray-100 border-2 border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-[#099AA7] focus:border-[#099AA7] block w-full p-2.5"
-                            required />
-                        </div>
-
-                        <!-- Metode Bayar -->
-                        <div class="col-span-2 sm:col-span-1">
-                          <label class="mb-2 block text-sm font-medium text-[#099AA7]">Metode Bayar
-                            <span class="text-red-500 text-lg">*</span>
-                          </label>
-                            <select name="metode_bayar" id="metodeBayar-{{ $data->id }}" data-selected="{{ $data->metode_bayar }}" required
-                              class="w-full text-gray-900 bg-gray-100 border-2 border-gray-500 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
-                            </select>                    
-                        </div>
-                      </div>
-
-                      <!-- Nominal -->
-                      <div>
-                        <label class="mb-2 block text-sm font-medium text-[#099AA7]">Nominal Pembayaran
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                      <!-- Tanggal Bayar -->
+                      <div class="col-span-2 sm:col-span-1">
+                        <label class="mb-2 block text-sm font-medium text-[#099AA7]">Tanggal Pembayaran
                           <span class="text-red-500 text-lg">*</span></label>
-                        <input type="text" name="nominal" id="nominal-{{ $data->id }}" value="{{ old('nominal', $data->nominal) }}" min="0"
+                        <input type="date" name="tgl_bayar" value="{{ old('tgl_bayar', $data->tgl_bayar) }}"
                           class="bg-gray-100 border-2 border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-[#099AA7] focus:border-[#099AA7] block w-full p-2.5"
                           required />
                       </div>
 
-                      <!-- Keterangan -->
-                      <div>
-                        <label class="mb-2 block text-sm font-medium text-[#099AA7]">Keterangan
-                          <span class="text-red-500 text-lg">*</span></label>
-                        <textarea rows="3" name="keterangan" id="keterangan-{{ $data->id }}"
-                          class="block p-2.5 w-full text-sm text-black bg-gray-100 border-2 border-gray-500 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Masukkan Keterangan...">{{ old('keterangan', $data->keterangan) }}</textarea>
+                      <!-- Metode Bayar -->
+                      <div class="col-span-2 sm:col-span-1">
+                        <label class="mb-2 block text-sm font-medium text-[#099AA7]">Metode Bayar
+                          <span class="text-red-500 text-lg">*</span>
+                        </label>
+                          <select name="metode_bayar" id="metodeBayar-{{ $data->id }}" data-selected="{{ $data->metode_bayar }}" required
+                            class="w-full text-gray-900 bg-gray-100 border-2 border-gray-500 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+                          </select>                    
                       </div>
+                    </div>
 
-                      <button type="submit"
-                        class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Simpan Perubahan
-                      </button>
-                    </form>
-                  </div>
+                    <!-- Nominal -->
+                    <div>
+                      <label class="mb-2 block text-sm font-medium text-[#099AA7]">Nominal Pembayaran
+                        <span class="text-red-500 text-lg">*</span></label>
+                      <input type="text" name="nominal" id="nominal-{{ $data->id }}" value="{{ old('nominal', $data->nominal) }}" min="0"
+                        class="bg-gray-100 border-2 border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-[#099AA7] focus:border-[#099AA7] block w-full p-2.5"
+                        required />
+                    </div>
+
+                    <!-- Keterangan -->
+                    <div>
+                      <label class="mb-2 block text-sm font-medium text-[#099AA7]">Keterangan
+                        <span class="text-red-500 text-lg">*</span></label>
+                      <textarea rows="3" name="keterangan" id="keterangan-{{ $data->id }}"
+                        class="block p-2.5 w-full text-sm text-black bg-gray-100 border-2 border-gray-500 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Masukkan Keterangan...">{{ old('keterangan', $data->keterangan) }}</textarea>
+                    </div>
+
+                    <button type="submit"
+                      class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                      Simpan Perubahan
+                    </button>
+                  </form>
                 </div>
               </div>
-            </div> --}}
+            </div>
+          </div> --}}
 
-            @empty
-            <tr>
-              <td colspan="6" class="text-center text-red-500 font-semibold py-4">Data Masih Kosong</td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
-    </div>
+          @empty
+          <tr>
+            <td colspan="6" class="text-center text-red-500 font-semibold py-4">Data Masih Kosong</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
   </div>
 
   <!-- Modal Tambah Pembayaran -->
@@ -313,7 +320,9 @@
         </div>
         <!-- Modal body -->
         <div class="p-4 md:p-5">
-          <form action="/pembayaran/{{ $gabungHaji->id }}" method="POST" class="space-y-4">
+          <form id="formPembayaran" action="/pembayaran/{{ $gabungHaji->id }}" method="POST" class="space-y-4" 
+            data-total-biaya="{{ $totalBiaya ?? 0 }}"
+            data-total-dibayar="{{ $totalDibayar ?? 0 }}">
             @csrf
             <div class="grid gap-4 mb-4 grid-cols-2">
               <div class="col-span-2 sm:col-span-1"> 
@@ -366,8 +375,10 @@
               <input type="hidden" name="keterangan" id="hiddenKeterangan">
             </div>
           
-            <button type="submit" id="simpanBtn"
-            class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+            <button type="submit"
+              class="mt-4 w-full text-white bg-[#099AA7] hover:bg-[#099AA7]/80 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              Simpan
+            </button>
           </form>
         </div>
       </div>
@@ -505,6 +516,7 @@
 
                       <input type="hidden" name="nominal[]" class="nominal-hidden">
                       <input type="hidden" name="pilihan_biaya[]" value="${selectedOptionValue}">
+                      <input type="hidden" name="jenis_biaya[]" value="${selectedOptionText}">
                     </div>
                   </label>
                 </div>

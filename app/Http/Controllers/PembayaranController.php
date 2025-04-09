@@ -20,24 +20,24 @@ class PembayaranController extends Controller
     // 1. Ambil data gabungan haji berdasarkan ID
     $gabungHaji = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan'])->find($id);
 
-    // 2. Ambil data pembayaran terkait dengan gabungan haji ini
+    // 2. Ambil semua pembayaran untuk gabung_haji_id tersebut
     $pembayaran = Pembayaran::where('gabung_haji_id', $id)->get();
 
-    // 3. Hitung biaya yang harus dibayar berdasarkan data keberangkatan
+    // 3. Ambil nilai biaya dari keberangkatan
     $biayaManasik = $gabungHaji->keberangkatan->manasik ?? 0;
     $biayaOperasional = $gabungHaji->keberangkatan->operasional ?? 0;
     $biayaDam = $gabungHaji->keberangkatan->dam ?? 0;
 
     $totalBiaya = $biayaManasik + $biayaOperasional + $biayaDam;
 
-    // 4. Hitung total yang sudah dibayar berdasarkan pilihan_biaya
-    $totalDibayarManasik = $pembayaran->where('pilihan_biaya', '4-000002')->sum('nominal');
-    $totalDibayarOperasional = $pembayaran->where('pilihan_biaya', '4-000001')->sum('nominal');
-    $totalDibayarDam = $pembayaran->where('pilihan_biaya', '4-000003')->sum('nominal');
+    // 4. Hitung total yang sudah dibayar berdasarkan masing-masing kolom
+    $totalDibayarManasik = $pembayaran->sum('manasik');
+    $totalDibayarOperasional = $pembayaran->sum('operasional');
+    $totalDibayarDam = $pembayaran->sum('dam');
 
     $totalDibayar = $totalDibayarManasik + $totalDibayarOperasional + $totalDibayarDam;
 
-    // 5. Hitung kekurangan atau kelebihan pembayaran
+    // 5. Hitung kekurangan atau kelebihan
     $kurangManasik = max(0, $biayaManasik - $totalDibayarManasik);
     $kurangOperasional = max(0, $biayaOperasional - $totalDibayarOperasional);
     $kurangDam = max(0, $biayaDam - $totalDibayarDam);
@@ -49,19 +49,20 @@ class PembayaranController extends Controller
     $totalKekurangan = $kurangManasik + $kurangOperasional + $kurangDam;
     $totalLebih = $lebihManasik + $lebihOperasional + $lebihDam;
 
-    // Jika semua data kosong, set totalKekurangan dan totalLebih ke null
+    // 6. Set ke null jika tidak ada pembayaran & biaya
     if ($totalBiaya == 0 && $totalDibayar == 0) {
       $totalKekurangan = null;
       $totalLebih = null;
     }
 
+    // 7. Metode Pembayaran
     $metodeList = [
       '1-111001' => 'Tunai',
       '1-113001' => 'CIMB NIAGA - 860055550500',
       '1-113002' => 'BSI (BSM) - 7119135456',
     ];
 
-    // 6. Kirim data ke view
+    // 8. Kirim ke view
     return view('pembayaran.index', compact(
       'gabungHaji',
       'totalBiaya',
@@ -81,68 +82,6 @@ class PembayaranController extends Controller
       'metodeList'
     ));
   }
-
-
-
-  // public function index($id)
-  // {
-  //   // 1. Ambil data gabungan haji berdasarkan ID
-  //   $gabungHaji = TGabungHaji::with(['customer', 'daftarHaji', 'keberangkatan'])->find($id);
-
-  //   // 2. Ambil data pembayaran terkait dengan gabungan haji ini
-  //   $pembayaran = Pembayaran::where('gabung_haji_id', $id)->get();
-
-  //   // 3. Hitung biaya yang harus dibayar berdasarkan data keberangkatan
-  //   $biayaManasik = $gabungHaji->keberangkatan->manasik ?? 0; // Gunakan 0 jika null
-  //   $biayaOperasional = $gabungHaji->keberangkatan->operasional ?? 0;
-  //   $biayaDam = $gabungHaji->keberangkatan->dam ?? 0;
-
-  //   $totalBiaya = $biayaManasik + $biayaOperasional + $biayaDam;
-
-  //   // 4. Hitung total yang sudah dibayar dari tabel pembayaran
-  //   $totalDibayarManasik = $pembayaran->sum('manasik');
-  //   $totalDibayarOperasional = $pembayaran->sum('operasional');
-  //   $totalDibayarDam = $pembayaran->sum('dam');
-
-  //   $totalDibayar = $totalDibayarManasik + $totalDibayarOperasional + $totalDibayarDam;
-
-  //   // 5. Hitung kekurangan atau kelebihan pembayaran
-  //   $kurangManasik = max(0, $biayaManasik - $totalDibayarManasik);
-  //   $kurangOperasional = max(0, $biayaOperasional - $totalDibayarOperasional);
-  //   $kurangDam = max(0, $biayaDam - $totalDibayarDam);
-
-  //   $lebihManasik = max(0, $totalDibayarManasik - $biayaManasik);
-  //   $lebihOperasional = max(0, $totalDibayarOperasional - $biayaOperasional);
-  //   $lebihDam = max(0, $totalDibayarDam - $biayaDam);
-
-  //   $totalKekurangan = $kurangManasik + $kurangOperasional + $kurangDam;
-  //   $totalLebih = $lebihManasik + $lebihOperasional + $lebihDam;
-
-  //   // Jika semua data kosong (tidak ada biaya & tidak ada pembayaran), set totalKekurangan dan totalLebih ke null
-  //   if ($totalBiaya == 0 && $totalDibayar == 0) {
-  //     $totalKekurangan = null;
-  //     $totalLebih = null;
-  //   }
-
-  //   // 6. Kirim data ke view untuk ditampilkan
-  //   return view('pembayaran.index', [
-  //     'gabungHaji' => $gabungHaji,
-  //     'totalBiaya' => $totalBiaya,
-  //     'pembayaran' => $pembayaran,
-  //     'totalDibayar' => $totalDibayar,
-  //     'totalDibayarManasik' => $totalDibayarManasik,
-  //     'totalDibayarOperasional' => $totalDibayarOperasional,
-  //     'totalDibayarDam' => $totalDibayarDam,
-  //     'kurangManasik' => $kurangManasik,
-  //     'kurangOperasional' => $kurangOperasional,
-  //     'kurangDam' => $kurangDam,
-  //     'totalKekurangan' => $totalKekurangan,
-  //     'lebihManasik' => $lebihManasik,
-  //     'lebihOperasional' => $lebihOperasional,
-  //     'lebihDam' => $lebihDam,
-  //     'totalLebih' => $totalLebih
-  //   ]);
-  // }
 
   /**
    * Show the form for creating a new resource.
@@ -170,8 +109,10 @@ class PembayaranController extends Controller
       'metode_bayar' => 'required|string',
       'pilihan_biaya' => 'nullable|array',
       'pilihan_biaya.*' => 'nullable|string',
+      'jenis_biaya' => 'nullable|array',
+      'jenis_biaya.*' => 'nullable|string',
       'nominal' => 'nullable|array',
-      'nominal.*' => 'nullable|numeric',
+      'nominal.*' => 'nullable|string',
       'keterangan' => 'nullable|string',
     ]);
 
@@ -191,140 +132,62 @@ class PembayaranController extends Controller
       return $prefix . $newNumber;
     }
 
-    foreach ($request->nominal as $index => $nominal) {
-      $biayaValue = $request->pilihan_biaya[$index] ?? null;
-      $biayaText = $biayaMapping[$biayaValue] ?? "Biaya Tidak Diketahui";
+    // Ambil inputan
+    $inputBiaya = $request->pilihan_biaya;
+    $inputJenis = $request->jenis_biaya;
+    $inputNominal = $request->nominal;
 
+    // Default kosong
+    $operasional = 0;
+    $manasik = 0;
+    $dam = 0;
+    $pilihan_biaya_operasional = null;
+    $pilihan_biaya_manasik = null;
+    $pilihan_biaya_dam = null;
+
+    foreach ($inputBiaya as $index => $biayaValue) {
+      $biayaText = $biayaMapping[$biayaValue] ?? "Biaya Tidak Diketahui";
+      $nominalBersih = (int) str_replace('.', '', $inputNominal[$index]);
+
+      if ($biayaText === 'Operasional') {
+        $operasional = $nominalBersih;
+        $pilihan_biaya_operasional = $biayaValue;
+      } elseif ($biayaText === 'Manasik') {
+        $manasik = $nominalBersih;
+        $pilihan_biaya_manasik = $biayaValue;
+      } elseif ($biayaText === 'DAM') {
+        $dam = $nominalBersih;
+        $pilihan_biaya_dam = $biayaValue;
+      }
+    }
+
+    // Hitung total nominal
+    $totalNominal = $operasional + $manasik + $dam;
+
+    if ($operasional || $manasik || $dam) {
       Pembayaran::create([
         'gabung_haji_id' => $gabungHaji->id,
         'daftar_haji_id' => $daftarHajiId,
         'keberangkatan_id' => $keberangkatanId,
         'tgl_bayar' => $request->tgl_bayar,
         'metode_bayar' => $request->metode_bayar,
-        'pilihan_biaya' => $biayaValue,
-        'nominal' => $nominal,
+        'pilihan_biaya_operasional' => $pilihan_biaya_operasional,
+        'pilihan_biaya_manasik' => $pilihan_biaya_manasik,
+        'pilihan_biaya_dam' => $pilihan_biaya_dam,
+        'operasional' => $operasional,
+        'manasik' => $manasik,
+        'dam' => $dam,
+        'nominal' => $totalNominal, // <- ini penambahan kolom nominal
         'keberangkatan' => $keberangkatan,
         'kwitansi' => getNewKwitansi($prefix),
         'cabang_id' => $cabangId,
-        'keterangan' => "DP Jamaah {$keberangkatan} {$biayaText} {$request->keterangan}",
+        'keterangan' => "DP Jamaah {$keberangkatan} {$request->keterangan}",
         'create_user' => $user,
       ]);
     }
 
-    // Ambil ulang data pembayaran terbaru dari database
-    $pembayaranTerbaru = Pembayaran::where('gabung_haji_id', $gabungHaji->id)->get();
-
-    // Hitung total dibayar (tanpa pisah jenis)
-    $totalDibayar = $pembayaranTerbaru->sum('nominal');
-
-    // Hitung total biaya dari data keberangkatan
-    $biayaOperasional = $gabungHaji->keberangkatan->operasional ?? 0;
-    $biayaManasik     = $gabungHaji->keberangkatan->manasik ?? 0;
-    $biayaDam         = $gabungHaji->keberangkatan->dam ?? 0;
-    $totalBiaya       = $biayaOperasional + $biayaManasik + $biayaDam;
-
-    // Tentukan status pelunasan berdasarkan total
-    if (round($totalDibayar, 2) >= round($totalBiaya, 2)) {
-      $statusPelunasan = 'LUNAS';
-    } elseif ($totalDibayar > 0) {
-      $statusPelunasan = 'Belum Lunas';
-    } else {
-      $statusPelunasan = null;
-    }
-
-    // Simpan status pelunasan ke TGabungHaji
-    $gabungHaji->update([
-      'pelunasan' => $statusPelunasan,
-      'update_user' => $user,
-    ]);
-
     return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan!');
   }
-
-
-  // public function store(Request $request, $id)
-  // {
-  //   $gabungHaji = TGabungHaji::with('keberangkatan', 'daftarHaji.cabang')->findOrFail($id);
-  //   $user = Auth::user()->name;
-
-  //   // Ambil tahun keberangkatan jika ada
-  //   $keberangkatan = $gabungHaji->keberangkatan->keberangkatan ?? 'Tanpa Tahun';
-
-  //   // Ambil ID cabang
-  //   $cabangId = $gabungHaji->daftarHaji->cabang->id ?? null;
-
-  //   // Validasi input
-  //   $validated = $request->validate([
-  //     'tgl_bayar' => 'required|date',
-  //     'metode_bayar' => 'required|string',
-  //     'manasik_raw' => 'nullable|numeric',
-  //     'operasional_raw' => 'nullable|numeric',
-  //     'dam_raw' => 'nullable|numeric',
-  //     'kwitansi' => 'nullable|string',
-  //     'keterangan' => 'nullable|string',
-  //   ]);
-
-  //   DB::transaction(function () use ($validated, $gabungHaji, $user, $keberangkatan, $cabangId) {
-  //     // Ambil tanggal sekarang (format YYMM)
-  //     $prefix = date('y') . date('m'); // Contoh: 2503 (Tahun 2025, Bulan Maret)
-
-  //     // Fungsi untuk mendapatkan nomor kwitansi terbaru
-  //     function getNewKwitansi($prefix)
-  //     {
-  //       $lastKwitansi = Pembayaran::where('kwitansi', 'LIKE', "{$prefix}%")->max('kwitansi');
-  //       $lastNumber = $lastKwitansi ? (int) substr($lastKwitansi, -3) : 0;
-  //       $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
-  //       return $prefix . $newNumber; // Hasil: 2503001, 2503002, dst.
-  //     }
-
-  //     if (!is_null($validated['manasik_raw'])) {
-  //       Pembayaran::create([
-  //         'gabung_haji_id' => $gabungHaji->id,
-  //         'tgl_bayar' => $validated['tgl_bayar'],
-  //         'metode_bayar' => $validated['metode_bayar'],
-  //         'manasik' => $validated['manasik_raw'],
-  //         'operasional' => null,
-  //         'dam' => null,
-  //         'kwitansi' => getNewKwitansi($prefix),
-  //         'keterangan' => "DP Jamaah {$keberangkatan} Manasik " . ($validated['keterangan'] ?? ''),
-  //         'create_user' => $user,
-  //         'cabang_id' => $cabangId, // Simpan cabang_id
-  //       ]);
-  //     }
-
-  //     if (!is_null($validated['operasional_raw'])) {
-  //       Pembayaran::create([
-  //         'gabung_haji_id' => $gabungHaji->id,
-  //         'tgl_bayar' => $validated['tgl_bayar'],
-  //         'metode_bayar' => $validated['metode_bayar'],
-  //         'manasik' => null,
-  //         'operasional' => $validated['operasional_raw'],
-  //         'dam' => null,
-  //         'kwitansi' => getNewKwitansi($prefix),
-  //         'keterangan' => "DP Jamaah {$keberangkatan} Operasional " . ($validated['keterangan'] ?? ''),
-  //         'create_user' => $user,
-  //         'cabang_id' => $cabangId, // Simpan cabang_id
-  //       ]);
-  //     }
-
-  //     if (!is_null($validated['dam_raw'])) {
-  //       Pembayaran::create([
-  //         'gabung_haji_id' => $gabungHaji->id,
-  //         'tgl_bayar' => $validated['tgl_bayar'],
-  //         'metode_bayar' => $validated['metode_bayar'],
-  //         'manasik' => null,
-  //         'operasional' => null,
-  //         'dam' => $validated['dam_raw'],
-  //         'kwitansi' => getNewKwitansi($prefix),
-  //         'keterangan' => "DP Jamaah {$keberangkatan} Dam " . ($validated['keterangan'] ?? ''),
-  //         'create_user' => $user,
-  //         'cabang_id' => $cabangId, // Simpan cabang_id
-  //       ]);
-  //     }
-  //   });
-
-  //   return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan!');
-  // }
 
   /**
    * Display the specified resource.
