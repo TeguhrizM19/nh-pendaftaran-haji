@@ -156,7 +156,7 @@
               -
             @endif
           </dd>
-        </div>             
+        </div>
       </dl>
     </div>
   </div>
@@ -182,10 +182,18 @@
             <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
               {{ $data->keterangan ?? '-' }}
               <ul>
-                <li>Operasional : {{ $data->operasional ? 'Rp. ' . number_format($data->operasional, 0, ',', '.') : '-' }}</li>
-                <li>Manasik : {{ $data->manasik ? 'Rp. ' . number_format($data->manasik, 0, ',', '.') : '-' }}</li>
-                <li>Dam : {{ $data->dam ? 'Rp. ' . number_format($data->dam, 0, ',', '.') : '-' }}</li>
-              </ul>
+                @if ($data->operasional)
+                  <li>Operasional : Rp. {{ number_format($data->operasional, 0, ',', '.') }}</li>
+                @endif
+              
+                @if ($data->manasik)
+                  <li>Manasik : Rp. {{ number_format($data->manasik, 0, ',', '.') }}</li>
+                @endif
+              
+                @if ($data->dam)
+                  <li>Dam : Rp. {{ number_format($data->dam, 0, ',', '.') }}</li>
+                @endif
+              </ul>              
               {{ $metodeList[$data->metode_bayar] ?? $data->metode_bayar }}
             </td>
             <td class="px-6 py-4 font-medium text-black whitespace-nowrap"> 

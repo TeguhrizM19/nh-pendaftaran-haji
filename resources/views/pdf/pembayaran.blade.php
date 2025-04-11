@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulir Pendaftaran Haji</title>
+  <title>Kwitansi Pembayaran</title>
   <style>
-    body { font-family: 'Times New Roman', Times, serif; font-size: 17px; }
+    body { font-family: 'Times New Roman', Times, serif; font-size: 16px; }
     .header-table {
       width: 100%;
       border-collapse: collapse;
@@ -124,13 +124,148 @@
     <h4 style="text-align: center;">KWITANSI PEMBAYARAN</h4>
     <p>Kwitansi No : {{ $cabang->kode_cab }}{{ $pembayaran->kwitansi }}</p>
 
-    <table class="table-format" style="margin-top: 20px">
+    <table class="table-format">
       <tr>
         <td class="label">Telah terima dari</td>
         <td class="separator">:</td>
         <td>{{ $gabungHaji->customer->nama }}</td>
       </tr>
+      
+      @foreach ($pembayaranList as $data)
+        <tr>
+          <td class="label" style="vertical-align: top;">Untuk Pembayaran</td>
+          <td class="separator" style="vertical-align: top;">:</td>
+          <td>
+            DP Haji {{ $gabungHaji->keberangkatan->keberangkatan ?? '-' }}
+            @if ($data->operasional)
+              Operasional: Rp. {{ number_format($data->operasional, 0, ',', '.') }}
+            @endif
+            @if ($data->manasik)
+              ,Manasik: Rp. {{ number_format($data->manasik, 0, ',', '.') }},
+            @endif
+            @if ($data->dam)
+              ,Dam: Rp. {{ number_format($data->dam, 0, ',', '.') }}
+            @endif
+          </td> 
+        </tr>
+
+        <tr>
+          <td class="label font-bold">Total Nominal</td>
+          <td class="separator font-bold">:</td>
+          <td class="font-bold text-black">
+            {{ $totalKeseluruhan ? 'Rp. ' . number_format($totalKeseluruhan, 0, ',', '.') : '-' }}
+          </td>
+        </tr>
+        <tr>
+          <td class="label font-bold">Terbilang Total</td>
+          <td class="separator font-bold">:</td>
+          <td class="font-bold text-black">
+            {{ $totalKeseluruhan ? '# ' . strtoupper($terbilangTotal) . ' RUPIAH #' : '-' }}
+          </td>
+        </tr>
+        @endforeach
+
+        <tr>
+          <td class="label">Metode Bayar</td>
+          <td class="separator">:</td>
+          <td>{{ $metodeList[$data->metode_bayar] ?? $data->metode_bayar }}</td>
+        </tr>
+
+        <tr> 
+          <td class="label font-bold">Total Biaya</td>
+          <td class="separator font-bold">:</td>
+          <td class="font-bold text-black">
+            {{ isset($totalBiayaResmi) && $totalBiayaResmi > 0 
+              ? 'Rp ' . number_format($totalBiayaResmi, 0, ',', '.') 
+              : '-' }}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">Admin Input</td>
+          <td class="separator">:</td>
+          <td>{{ $data->create_user }}</td>
+        </tr>
     </table>
+
+    <table style="width: 100%; text-align: center; border-collapse: collapse;">
+      <tr>
+        <td style="height: 10px;"></td>
+      </tr>
+      <tr>
+        <td style="width: 40%;"></td> <!-- Spasi di tengah -->
+        <td style="width: 40%;"></td> <!-- Spasi di tengah -->
+        <td style="width: 50%; text-align: center;">
+          Surabaya, {{ \Carbon\Carbon::parse($data->created_at)->translatedFormat('d F Y') }}
+        </td>
+      </tr>
+      <tr>
+        <td style="height: 60px;"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td style="text-align: center;">
+          {{ $data->create_user ?? 'Admin' }}
+        </td>
+      </tr>
+    </table>
+    <div style="border-top: 2px dotted #000; margin: 10px 0;"></div>
+    <p>Info Rincian Pembayaran : </p>
+    <table class="header-table">
+      <tr class="top-section">
+        <td style="font-weight: bold">Tanggal</td>
+        <td style="font-weight: bold">No Kwitansi</td>
+        <td style="font-weight: bold">Keterangan</td>
+        <td style="font-weight: bold">Nominal</td>
+        <td style="font-weight: bold">Admin</td>
+      </tr>
+      @forelse($semuaPembayaran as $pembayaran)
+        <tr>
+          <td>
+            {{ \Carbon\Carbon::parse($pembayaran->tgl_bayar)->translatedFormat('d-F-Y') }}
+          </td>
+          <td>
+            {{ $pembayaran->cabang->kode_cab ?? 100 }}{{ $pembayaran->kwitansi ?? '-' }}
+          </td>
+          <td style="text-align: left;">
+            {{ $pembayaran->keterangan ?? '-' }}
+            <ul style="list-style-type: none; padding: 0; margin: 0;">
+              @if ($pembayaran->operasional)
+                <li>Operasional : Rp. {{ number_format($pembayaran->operasional, 0, ',', '.') }}</li>
+              @endif
+            
+              @if ($pembayaran->manasik)
+                <li>Manasik : Rp. {{ number_format($pembayaran->manasik, 0, ',', '.') }}</li>
+              @endif
+            
+              @if ($pembayaran->dam)
+                <li>Dam : Rp. {{ number_format($pembayaran->dam, 0, ',', '.') }}</li>
+              @endif
+            </ul> 
+            {{ $metodeList[$pembayaran->metode_bayar] ?? $pembayaran->metode_bayar }}
+          </td>
+          <td> 
+            {{ $pembayaran->nominal ? 'Rp. ' . number_format($pembayaran->nominal, 0, ',', '.') : '-' }}
+          </td>
+          <td>{{ $pembayaran->create_user }}</td>
+        </tr>
+      @empty
+        <tr>
+          <td colspan="6" style="color: red">Data Masih Kosong</td>
+        </tr>
+      @endforelse
+    </table>
+
+    <p class="label font-bold">Status : 
+      @if($totalKekurangan > 0)
+        <span>Kurang Rp {{ number_format($totalKekurangan, 0, ',', '.') }}</span>
+      @elseif($totalLebih > 0)
+        <span>Kelebihan Rp {{ number_format($totalLebih, 0, ',', '.') }}</span>
+      @else
+        <span>LUNAS</span>
+      @endif
+    </p>
   </div>
 </body>
 </html>
