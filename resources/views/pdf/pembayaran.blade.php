@@ -141,23 +141,23 @@
               Operasional: Rp. {{ number_format($data->operasional, 0, ',', '.') }}
             @endif
             @if ($data->manasik)
-              ,Manasik: Rp. {{ number_format($data->manasik, 0, ',', '.') }},
+              Manasik: Rp. {{ number_format($data->manasik, 0, ',', '.') }},
             @endif
             @if ($data->dam)
-              ,Dam: Rp. {{ number_format($data->dam, 0, ',', '.') }}
+              Dam: Rp. {{ number_format($data->dam, 0, ',', '.') }}
             @endif
           </td> 
         </tr>
 
         <tr>
-          <td class="label font-bold">Total Nominal</td>
+          <td class="label font-bold">Total Pembayaran</td>
           <td class="separator font-bold">:</td>
           <td class="font-bold text-black">
             {{ $totalKeseluruhan ? 'Rp. ' . number_format($totalKeseluruhan, 0, ',', '.') : '-' }}
           </td>
         </tr>
         <tr>
-          <td class="label font-bold">Terbilang Total</td>
+          <td class="label font-bold">Terbilang</td>
           <td class="separator font-bold">:</td>
           <td class="font-bold text-black">
             {{ $totalKeseluruhan ? '# ' . strtoupper($terbilangTotal) . ' RUPIAH #' : '-' }}

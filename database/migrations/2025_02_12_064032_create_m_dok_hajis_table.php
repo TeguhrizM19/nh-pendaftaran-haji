@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('m_dok_hajis', function (Blueprint $table) {
       $table->id();
       $table->string('dokumen', 100)->nullable();
-      $table->integer('status')->nullable();
+      $table->string('status', 15)->nullable();
       $table->timestamps();
     });
   }

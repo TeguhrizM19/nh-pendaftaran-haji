@@ -3,64 +3,81 @@
 namespace App\Http\Controllers;
 
 use App\Models\MDokHaji;
-use App\Http\Requests\StoreMDokHajiRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateMDokHajiRequest;
 
 class MDokHajiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   */
+  public function index()
+  {
+    return view('dokumen.index', [
+      'dokumen' => MDokHaji::all()
+    ]);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreMDokHajiRequest $request)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    $validated = $request->validate([
+      'dokumen' => 'required',
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MDokHaji $mDokHaji)
-    {
-        //
-    }
+    MDokHaji::create($validated);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(MDokHaji $mDokHaji)
-    {
-        //
-    }
+    return redirect()->back()->with('success', 'Dokumen berhasil ditambahkan!');
+  }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateMDokHajiRequest $request, MDokHaji $mDokHaji)
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   */
+  public function show(MDokHaji $mDokHaji)
+  {
+    //
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(MDokHaji $mDokHaji)
-    {
-        //
-    }
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(MDokHaji $mDokHaji)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, $id)
+  {
+    $dokumen = MDokHaji::findOrFail($id);
+
+    $validated = $request->validate([
+      'dokumen' => 'required|string',
+      'status' => 'nullable|string',
+    ]);
+
+    $dokumen->update($validated);
+
+    return redirect()->back()->with('success', 'Dokumen berhasil diubah!');
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(MDokHaji $mDokHaji)
+  {
+    //
+  }
 }

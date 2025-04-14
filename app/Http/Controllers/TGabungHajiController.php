@@ -130,12 +130,13 @@ class TGabungHajiController extends Controller
   public function create()
   {
     $kota = Kota::all();
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
     return view('gabung-haji.create', [
       'kotaBank' => $kota,
       'tempatLahir' => $kota,
       'depag' => $kota,
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       'provinsi' => Provinsi::all(),
       'keberangkatan' => GroupKeberangkatan::all(),
 
@@ -256,6 +257,7 @@ class TGabungHajiController extends Controller
     ])->find($id);
 
     $customer = $gabung_haji->customer;
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
     // Decode dokumen dari JSON ke array, pastikan tidak null
     $selected_documents = json_decode($gabung_haji->dokumen, true) ?? [];
@@ -266,7 +268,7 @@ class TGabungHajiController extends Controller
       'kotaBank' => Kota::find($gabung_haji->kota_bank),
       'depag' => Kota::find($gabung_haji->depag),
       'keberangkatan' => GroupKeberangkatan::find($gabung_haji->keberangkatan_id),
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       'selected_documents' => $selected_documents,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
@@ -405,13 +407,14 @@ class TGabungHajiController extends Controller
     $customer = Customer::find($id);
 
     $kota = Kota::all();
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
     return view('gabung-haji.repeat-data', [
       'customer' => $customer,
       'kotaBank' => $kota,
       'depag' => $kota,
       'keberangkatan' => GroupKeberangkatan::all(),
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
       'provinsi_ktp' => Provinsi::find($customer->provinsi_ktp),
@@ -495,18 +498,18 @@ class TGabungHajiController extends Controller
     return redirect('/gabung-haji')->with('success', 'Data berhasil ditambahkan!');
   }
 
-
   public function ambilSemuaData($id)
   {
     $customer = Customer::find($id);
     $kota = Kota::all();
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
     return view('gabung-haji.ambil-semua-data', [
       'customer' => $customer,
       'kotaBank' => $kota,
       'depag' => $kota,
       'keberangkatan' => GroupKeberangkatan::all(),
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
       'provinsi_ktp' => Provinsi::find($customer->provinsi_ktp),

@@ -493,7 +493,7 @@
             </div>
             
             <!-- Pelunasan manasik -->
-            <div class="w-full">
+            {{-- <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Pelunasan Manasik</h3>
               <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
@@ -517,7 +517,7 @@
                   </div>
                 </li>
               </ul>
-            </div>
+            </div> --}}
           </div>
 
           <!-- Kolom Dokumen -->
@@ -525,6 +525,9 @@
             <h3 class="mb-3 mt-3 font-semibold text-[#099AA7]">Dokumen</h3>  
             <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
               @foreach ($dokumen as $dok)
+                @if ($dok->status !== 'Aktif')
+                  @continue
+                @endif
                 <li class="w-full border-b border-gray-200 last:border-b-0">
                   <div class="flex items-center ps-3">
                     <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"

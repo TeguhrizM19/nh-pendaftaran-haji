@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\MDokHaji;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\MDokHajiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TDaftarHajiController;
@@ -84,4 +86,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/pembayaran/{id}', [PembayaranController::class, 'store']);
   // Route::put('/pembayaran/update/{id}', [PembayaranController::class, 'update'])->name('pembayaran.update');
   Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
+
+  Route::resource('/dokumen', MDokHajiController::class);
 });

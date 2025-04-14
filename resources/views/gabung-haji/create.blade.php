@@ -536,16 +536,19 @@
               <h3 class="mb-3 font-semibold text-[#099AA7]">Dokumen</h3>
               <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
                 @foreach ($dokumen as $dok)
-                <li class="w-full border-b border-gray-200">
-                  <div class="flex items-center ps-3">
-                    <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
-                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      {{ in_array($dok->id, old('dokumen', $selectedDokumen ?? [])) ? 'checked' : '' }}>
-                    <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
-                      {{ $dok->dokumen }}
-                    </label>
-                  </div>
-                </li>
+                  @if ($dok->status !== 'Aktif')
+                    @continue
+                  @endif
+                  <li class="w-full border-b border-gray-200">
+                    <div class="flex items-center ps-3">
+                      <input id="dokumen{{ $dok->id }}" type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                        class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        {{ in_array($dok->id, old('dokumen', $selectedDokumen ?? [])) ? 'checked' : '' }}>
+                      <label for="dokumen{{ $dok->id }}" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                        {{ $dok->dokumen }}
+                      </label>
+                    </div>
+                  </li>
                 @endforeach
               </ul>
             </div>

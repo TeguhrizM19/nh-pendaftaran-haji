@@ -125,13 +125,14 @@ class TDaftarHajiController extends Controller
   public function create()
   {
     $kota = Kota::all();
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
     return view('pendaftaran-haji.create', [
       'wilayahKota' => $kota,
       'tempatLahir' => $kota,
       'cabang' => MCabang::all(),
       'sumberInfo' => MSumberInfo::all(),
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       'provinsi' => Provinsi::all(),
       'keberangkatan' => GroupKeberangkatan::all(),
 
