@@ -19,8 +19,12 @@ class TDaftarHaji extends Model
   /** @use HasFactory<\Database\Factories\TDaftarHajiFactory> */
   use HasFactory;
 
-  protected $guarded = ['id'];
   protected $table = 't_daftar_hajis';
+  protected $guarded = ['id'];
+  protected $casts = [
+    'dokumen' => 'array',
+    'perlengkapan' => 'array',
+  ];
 
   public function customer()
   {
@@ -42,9 +46,14 @@ class TDaftarHaji extends Model
     return $this->belongsTo(Kota::class, 'wilayah_daftar', 'id');
   }
 
-  public function dokumen()
+  // public function dokumen()
+  // {
+  //   return $this->belongsToMany(MDokHaji::class, 't_daftar_haji_documents', 'daftar_haji_id', 'dokumen_id');
+  // }
+
+  public function getDokumenItemsAttribute()
   {
-    return $this->belongsToMany(MDokHaji::class, 't_daftar_haji_documents', 'daftar_haji_id', 'dokumen_id');
+    return MDokHaji::whereIn('id', $this->dokumen ?? [])->get();
   }
 
   public function tempatLahir()

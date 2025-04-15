@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\MDokHaji;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateMDokHajiRequest;
 
 class MDokHajiController extends Controller
 {

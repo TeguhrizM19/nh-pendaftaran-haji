@@ -257,10 +257,10 @@ class TGabungHajiController extends Controller
     ])->find($id);
 
     $customer = $gabung_haji->customer;
+
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
-    // Decode dokumen dari JSON ke array, pastikan tidak null
-    $selected_documents = json_decode($gabung_haji->dokumen, true) ?? [];
+    $selected_documents = $gabung_haji->dokumen ?? [];
 
     return view('gabung-haji.edit', [
       'gabung_haji' => $gabung_haji,

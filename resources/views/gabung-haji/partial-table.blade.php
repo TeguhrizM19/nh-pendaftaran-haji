@@ -115,12 +115,6 @@
     </th>  
     <td class="px-6 py-4 text-center">
       <div class="inline-flex items-center space-x-2">
-        <a href="/pembayaran/{{ $gabung->id }}">
-          <svg class="w-6 h-6 text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M16.5 15v1.5m0 0V18m0-1.5H15m1.5 0H18M3 9V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3M3 9v6a1 1 0 0 0 1 1h5M3 9h16m0 0v1M6 12h3m12 4.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/>
-          </svg>
-        </a>
-        <span>|</span>
         <a href="{{ isset($gabung->daftarHaji) ? url('/pendaftaran-haji/' . $gabung->daftarHaji->id . '/edit') : url('/gabung-haji/' . $gabung->id . '/edit') }}" 
           class="font-medium text-blue-600 hover:underline">
           <svg class="w-6 h-6 text-green-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -129,6 +123,18 @@
           </svg>
         </a>
         <span>|</span>
+        <a href="/pembayaran/{{ $gabung->id }}">
+          <svg class="w-6 h-6 text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M16.5 15v1.5m0 0V18m0-1.5H15m1.5 0H18M3 9V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3M3 9v6a1 1 0 0 0 1 1h5M3 9h16m0 0v1M6 12h3m12 4.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/>
+          </svg>
+        </a>
+        <span>|</span>
+        <a href="/kelengkapan/{{ $gabung->id }}">
+          <svg class="w-6 h-6 text-yellow-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M5.024 3.783A1 1 0 0 1 6 3h12a1 1 0 0 1 .976.783L20.802 12h-4.244a1.99 1.99 0 0 0-1.824 1.205 2.978 2.978 0 0 1-5.468 0A1.991 1.991 0 0 0 7.442 12H3.198l1.826-8.217ZM3 14v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5h-4.43a4.978 4.978 0 0 1-9.14 0H3Zm5-7a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm0 2a1 1 0 0 0 0 2h8a1 1 0 1 0 0-2H8Z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+        <span>|</span>        
         <form action="{{ isset($gabung->daftarHaji) ? url('/pendaftaran-haji/' . $gabung->daftarHaji->id) : url('/gabung-haji/' . $gabung->id) }}" 
           method="POST" 
           class="deleteForm inline-block">

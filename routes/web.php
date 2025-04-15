@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\MDokHaji;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\UserController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\TDaftarHajiController;
 use App\Http\Controllers\TGabungHajiController;
 use App\Http\Controllers\PencarianSelect2Controller;
 use App\Http\Controllers\GroupKeberangkatanController;
+use App\Http\Controllers\MPerlengkapanController;
 
 Route::middleware(['guest'])->group(function () {
   Route::get('/', [SessionController::class, 'index'])->name('login');
@@ -87,5 +87,13 @@ Route::middleware(['auth'])->group(function () {
   // Route::put('/pembayaran/update/{id}', [PembayaranController::class, 'update'])->name('pembayaran.update');
   Route::delete('/pembayaran/{id}', [PembayaranController::class, 'destroy']);
 
+  // Route kelengkapan
+  Route::get('/kelengkapan', [MPerlengkapanController::class, 'index']);
+  Route::put('/kelengkapan/perlengkapan/{id}', [MPerlengkapanController::class, 'update'])->name('kelengkapan.update');
+  Route::get('/kelengkapan/{id}', [MPerlengkapanController::class, 'indexKelengkapanCustomer']);
+  Route::put('/kelengkapan/customer/{id}', [MPerlengkapanController::class, 'updateKelengkapanCustomer'])->name('kelengkapanCustomer.update');
+
+
+  // Route Dokumen
   Route::resource('/dokumen', MDokHajiController::class);
 });

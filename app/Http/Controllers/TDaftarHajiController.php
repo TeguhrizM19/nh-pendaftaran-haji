@@ -333,8 +333,9 @@ class TDaftarHajiController extends Controller
     // Pastikan relasi `customer` ada sebelum mengaksesnya
     $customer = $daftar_haji->customer ?? abort(404, 'Data pelanggan tidak ditemukan');
 
-    // Decode dokumen dari JSON ke array, pastikan tidak null
-    $selected_documents = json_decode($daftar_haji->dokumen, true) ?? [];
+    $dokumen = MDokHaji::where('status', 'Aktif')->get();
+
+    $selected_documents = $daftar_haji->dokumen ?? [];
 
     return view('pendaftaran-haji.edit', [
       'daftar_haji' => $daftar_haji,
@@ -343,7 +344,7 @@ class TDaftarHajiController extends Controller
       'cabang' => MCabang::find($daftar_haji->cabang_id),
       'keberangkatan' => GroupKeberangkatan::find($daftar_haji->keberangkatan_id),
       'wilayahDaftar' => Kota::find($daftar_haji->wilayah_daftar),
-      'dokumen' => MDokHaji::all(),
+      'dokumen' => $dokumen,
       'selected_documents' => $selected_documents,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
@@ -565,7 +566,6 @@ class TDaftarHajiController extends Controller
     return redirect('/pendaftaran-haji')->with('success', 'Data berhasil dihapus.');
   }
 
-
   // function untuk wilayah indonasia
   public function getKota($provinsi_id)
   {
@@ -681,7 +681,7 @@ class TDaftarHajiController extends Controller
       'bpjs'           => 'nullable|digits:13',
       'bank'           => 'nullable|string',
       'keberangkatan_id' => 'nullable|exists:group_keberangkatan,id',
-      // 'pelunasan'      => 'nullable|string',
+      'pelunasan'      => 'nullable|string',
       // 'pelunasan_manasik' => 'nullable|string',
       'catatan'        => 'nullable|string',
       // Upload file

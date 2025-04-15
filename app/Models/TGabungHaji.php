@@ -15,6 +15,11 @@ class TGabungHaji extends Model
 
   protected $guarded = ['id'];
 
+  protected $casts = [
+    'dokumen' => 'array',
+    'perlengkapan' => 'array',
+  ];
+
   public function customer()
   {
     return $this->belongsTo(Customer::class, 'customer_id');
@@ -45,9 +50,19 @@ class TGabungHaji extends Model
     return $this->belongsTo(Kota::class, 'kota_bank', 'id');
   }
 
-  public function dokumen()
+  // public function dokumen()
+  // {
+  //   return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_documents', 'gabung_haji_id', 'dokumen_id');
+  // }
+
+  public function perleng()
   {
-    return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_documents', 'gabung_haji_id', 'dokumen_id');
+    return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_perlengkapan', 'gabung_haji_id', 'perlengkapan_id');
+  }
+
+  public function getDokumenItemsAttribute()
+  {
+    return MDokHaji::whereIn('id', $this->dokumen ?? [])->get();
   }
 
   public function pembayaran()

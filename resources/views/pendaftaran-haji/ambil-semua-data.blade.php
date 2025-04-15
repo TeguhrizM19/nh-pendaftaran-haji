@@ -482,8 +482,8 @@
             </div>
           </div>
   
-          {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"> 
-            <!-- Pelunasan Haji -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"> 
+            <!-- Pelunasan -->
             <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Pelunasan Haji</h3>
               <ul class="w-full text-sm font-medium shadow-lg text-gray-900 bg-white border border-gray-200 rounded-lg">
@@ -511,7 +511,7 @@
             </div>
           
             <!-- Pelunasan manasik -->
-            <div class="w-full">
+            {{-- <div class="w-full">
               <h3 class="mb-3 font-semibold text-[#099AA7]">Pelunasan Manasik</h3>
               <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full border-b border-gray-200">
@@ -535,8 +535,8 @@
                   </div>
                 </li>
               </ul>
-            </div>
-          </div> --}}
+            </div> --}}
+          </div>
 
           <!-- Kolom Dokumen -->
           <div class="w-full">
