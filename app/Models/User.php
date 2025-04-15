@@ -54,7 +54,7 @@ class User extends Authenticatable
 
   public function cabang()
   {
-    return $this->belongsTo(MCabang::class, 'cabang_id', 'kode_cab', 'kode_cab');
+    return $this->belongsTo(MCabang::class, 'cabang_id'); // asumsi FK-nya adalah 'cabang_id'
   }
 
   public function pembayaran()

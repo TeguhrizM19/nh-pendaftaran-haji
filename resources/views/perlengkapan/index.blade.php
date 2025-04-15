@@ -175,7 +175,7 @@
         </div>
         <!-- Modal body -->
         <div class="p-4 md:p-5">
-          <form action="/kelengkapan" method="POST">
+          <form action="/kelengkapan/tambah" method="POST">
             @csrf
             <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
               Nama Perlengkapan <span class="text-red-500 text-lg">*</span>

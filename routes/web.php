@@ -89,10 +89,10 @@ Route::middleware(['auth'])->group(function () {
 
   // Route kelengkapan
   Route::get('/kelengkapan', [MPerlengkapanController::class, 'index']);
+  Route::post('/kelengkapan/tambah', [MPerlengkapanController::class, 'store']);
   Route::put('/kelengkapan/perlengkapan/{id}', [MPerlengkapanController::class, 'update'])->name('kelengkapan.update');
   Route::get('/kelengkapan/{id}', [MPerlengkapanController::class, 'indexKelengkapanCustomer']);
   Route::put('/kelengkapan/customer/{id}', [MPerlengkapanController::class, 'updateKelengkapanCustomer'])->name('kelengkapanCustomer.update');
-
 
   // Route Dokumen
   Route::resource('/dokumen', MDokHajiController::class);
