@@ -21,10 +21,11 @@ class TDaftarHaji extends Model
 
   protected $table = 't_daftar_hajis';
   protected $guarded = ['id'];
-  protected $casts = [
-    'dokumen' => 'array',
-    'perlengkapan' => 'array',
-  ];
+
+  // protected $casts = [
+  //   'dokumen' => 'array',
+  //   'perlengkapan' => 'array',
+  // ];
 
   public function customer()
   {

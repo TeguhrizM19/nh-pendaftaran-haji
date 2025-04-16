@@ -28,6 +28,7 @@ class MPerlengkapanController extends Controller
 
     // Ambil semua dokumen yang status-nya aktif
     $dokumenAktif = MDokHaji::where('status', 'Aktif')->get();
+
     $perlengkapanAktif = MPerlengkapan::where('status', 'Aktif')
       ->where(function ($query) use ($jenisKelamin) {
         $query->whereRaw('LOWER(jenis_kelamin) = ?', [$jenisKelamin])

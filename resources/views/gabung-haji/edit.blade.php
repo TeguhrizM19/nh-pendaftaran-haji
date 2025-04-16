@@ -477,7 +477,7 @@
                   <div class="flex items-center ps-3">
                     <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
                       class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      {{ in_array($dok->id, array_map('intval', (array) $selected_documents)) ? 'checked' : '' }}>
+                      {{ in_array((string) $dok->id, (array) $selected_documents) ? 'checked' : '' }}>
                     <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
                       {{ $dok->dokumen }}
                     </label>

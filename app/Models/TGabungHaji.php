@@ -15,10 +15,10 @@ class TGabungHaji extends Model
 
   protected $guarded = ['id'];
 
-  protected $casts = [
-    'dokumen' => 'array',
-    'perlengkapan' => 'array',
-  ];
+  // protected $casts = [
+  //   'dokumen' => 'array',
+  //   'perlengkapan' => 'array',
+  // ];
 
   public function customer()
   {

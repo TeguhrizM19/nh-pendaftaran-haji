@@ -300,6 +300,7 @@ class TDaftarHajiController extends Controller
         'customer_id'   => $customer->id,
         'daftar_haji_id' => $daftarHaji->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 
@@ -333,7 +334,7 @@ class TDaftarHajiController extends Controller
 
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
-    $selected_documents = $daftar_haji->dokumen ?? [];
+    $selected_documents = is_array($daftar_haji->dokumen) ? $daftar_haji->dokumen : json_decode($daftar_haji->dokumen, true);
 
     return view('pendaftaran-haji.edit', [
       'daftar_haji' => $daftar_haji,
@@ -507,11 +508,13 @@ class TDaftarHajiController extends Controller
     if ($gabung_haji) {
       $gabung_haji->update([
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     } else {
       TGabungHaji::create([
         'daftar_haji_id' => $daftar_haji->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     }
 
@@ -759,7 +762,8 @@ class TDaftarHajiController extends Controller
       TGabungHaji::create([
         'customer_id' => $customer->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
-        'daftar_haji_id' => $daftarHaji->id
+        'daftar_haji_id' => $daftarHaji->id,
+        'dokumen'         => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 
@@ -936,6 +940,7 @@ class TDaftarHajiController extends Controller
         'customer_id'   => $customer->id,
         'daftar_haji_id' => $daftarHaji->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'dokumen' => json_encode($validated['dokumen'] ?? []),
       ]);
     });
 

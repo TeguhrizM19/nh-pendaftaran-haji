@@ -260,7 +260,7 @@ class TGabungHajiController extends Controller
 
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
 
-    $selected_documents = $gabung_haji->dokumen ?? [];
+    $selected_documents = is_array($gabung_haji->dokumen) ? $gabung_haji->dokumen : json_decode($gabung_haji->dokumen, true);
 
     return view('gabung-haji.edit', [
       'gabung_haji' => $gabung_haji,
