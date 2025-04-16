@@ -299,8 +299,13 @@ class TDaftarHajiController extends Controller
       TGabungHaji::create([
         'customer_id'   => $customer->id,
         'daftar_haji_id' => $daftarHaji->id,
+        'no_porsi' => $validated['no_porsi_haji'] ?? null,
+        'nama_bank' => $validated['bank'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
+        'pelunasan' => $validated['pelunasan'] ?? null,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'create_user' => $user
       ]);
     });
 
@@ -498,7 +503,7 @@ class TDaftarHajiController extends Controller
       'bank' => $validated['bank'] ?? null,
       'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
       'pelunasan' => $validated['pelunasan'] ?? null,
-      'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
+      // 'pelunasan_manasik' => $validated['pelunasan_manasik'] ?? null,
       'catatan' => $validated['catatan'] ?? null,
       'dokumen' => json_encode($validated['dokumen'] ?? []),
       'update_user' => $user
@@ -508,13 +513,23 @@ class TDaftarHajiController extends Controller
     if ($gabung_haji) {
       $gabung_haji->update([
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'no_porsi' => $validated['no_porsi_haji'] ?? null,
+        'nama_bank' => $validated['bank'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
+        'pelunasan' => $validated['pelunasan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'update_user' => $user
       ]);
     } else {
       TGabungHaji::create([
         'daftar_haji_id' => $daftar_haji->id,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
+        'no_porsi' => $validated['no_porsi_haji'] ?? null,
+        'nama_bank' => $validated['bank'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
+        'pelunasan' => $validated['pelunasan'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'update_user' => $user
       ]);
     }
 
@@ -761,9 +776,14 @@ class TDaftarHajiController extends Controller
       // **Buat data di TGabungHaji**
       TGabungHaji::create([
         'customer_id' => $customer->id,
+        'no_porsi' => $validated['no_porsi_haji'] ?? null,
+        'nama_bank' => $validated['bank'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
+        'pelunasan' => $validated['pelunasan'] ?? null,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'daftar_haji_id' => $daftarHaji->id,
         'dokumen'         => json_encode($validated['dokumen'] ?? []),
+        'create_user'     => $user
       ]);
     });
 
@@ -939,8 +959,13 @@ class TDaftarHajiController extends Controller
       TGabungHaji::create([
         'customer_id'   => $customer->id,
         'daftar_haji_id' => $daftarHaji->id,
+        'no_porsi' => $validated['no_porsi_haji'] ?? null,
+        'nama_bank' => $validated['bank'] ?? null,
+        'pelunasan' => $validated['pelunasan'] ?? null,
+        'catatan' => $validated['catatan'] ?? null,
         'keberangkatan_id' => $validated['keberangkatan_id'] ?? null,
         'dokumen' => json_encode($validated['dokumen'] ?? []),
+        'create_user' => $user
       ]);
     });
 
