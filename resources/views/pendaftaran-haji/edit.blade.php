@@ -335,7 +335,7 @@
         <div class="relative">
           <div>
             <label class="mb-2 mt-1 block text-sm font-medium leading-6 text-[#099AA7]">
-              Nomor Porsi Haji <span class="italic text-sm font-medium text-black">(10 digit angka)</span>
+              Nomor Porsi Haji
             </label>
             <input type="number" name="no_porsi_haji" id="no_porsi_haji" value="{{ old('no_porsi_haji', $daftar_haji->no_porsi_haji) }}" placeholder="Nomor Porsi Haji"
             class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 
