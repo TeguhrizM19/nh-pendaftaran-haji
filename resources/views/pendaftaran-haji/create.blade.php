@@ -401,7 +401,7 @@
           <!-- Kolom Nomor Porsi Haji -->
           <div>
             <label for="no_porsi_haji" class="mb-2 mt-1 block text-sm font-medium leading-6 text-[#099AA7]">
-              Nomor Porsi Haji
+              Nomor Porsi Haji <span class="italic text-sm font-medium text-black">(10 digit angka)</span>
             </label>
             <input type="number" id="no_porsi_haji" name="no_porsi_haji" value="{{ old('no_porsi_haji') }}" placeholder="Masukkan Nomor Porsi Haji" 
             class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 

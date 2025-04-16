@@ -346,7 +346,9 @@
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-medium leading-6 text-[#099AA7]">Nomor Porsi</label>
+              <label class="mb-1 block text-sm font-medium leading-6 text-[#099AA7]">
+                Nomor Porsi <span class="italic text-sm font-medium text-black">(10 digit angka)</span>
+              </label>
               <input type="number" name="no_porsi" id="no_porsi" value="{{ old('no_porsi', $gabung_haji->no_porsi) }}" placeholder="Nomor Porsi" 
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-insetring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 
               @error('no_porsi') border-red-500 ring-red-500 focus:ring-red-500 @enderror" />
