@@ -193,7 +193,7 @@ class TDaftarHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // Validasi untuk t_daftar_hajis
-      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -404,7 +404,7 @@ class TDaftarHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // t_daftar_hajis
-      'no_porsi_haji'  => ['nullable', 'numeric', 'digits:10', Rule::unique('t_daftar_hajis', 'no_porsi_haji')->ignore($daftar_haji->id)],
+      'no_porsi_haji'  => ['nullable', 'numeric', Rule::unique('t_daftar_hajis', 'no_porsi_haji')->ignore($daftar_haji->id)],
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -689,7 +689,7 @@ class TDaftarHajiController extends Controller
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
       // t_daftar_hajis
-      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',
@@ -853,7 +853,7 @@ class TDaftarHajiController extends Controller
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
 
       // Validasi untuk t_daftar_hajis
-      'no_porsi_haji'  => 'nullable|digits:10|unique:t_daftar_hajis,no_porsi_haji',
+      'no_porsi_haji'  => 'nullable|unique:t_daftar_hajis,no_porsi_haji',
       'cabang_id'      => 'nullable|exists:m_cabangs,id',
       'sumber_info_id' => 'nullable|exists:m_sumber_infos,id',
       'wilayah_daftar' => 'nullable|exists:m_kotas,id',

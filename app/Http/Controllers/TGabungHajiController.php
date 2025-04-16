@@ -200,7 +200,7 @@ class TGabungHajiController extends Controller
 
       // t_gabung_hajis
       'no_spph' => 'nullable|unique:t_gabung_hajis,no_spph',
-      'no_porsi' => 'nullable|digits:10|unique:t_gabung_hajis,no_porsi',
+      'no_porsi' => 'nullable|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
@@ -323,7 +323,7 @@ class TGabungHajiController extends Controller
 
       // t_gabung_hajis
       'no_spph' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
-      'no_porsi' => ['nullable', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
+      'no_porsi' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_porsi')->ignore($gabung_haji->id)],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
@@ -463,7 +463,7 @@ class TGabungHajiController extends Controller
 
       // t_gabung_hajis
       'no_spph' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')],
-      'no_porsi' => ['nullable', 'numeric', 'digits:10', Rule::unique('t_gabung_hajis', 'no_porsi')],
+      'no_porsi' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_porsi')],
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',
@@ -559,7 +559,7 @@ class TGabungHajiController extends Controller
 
       // t_gabung_hajis
       'no_spph' => 'nullable|unique:t_gabung_hajis,no_spph',
-      'no_porsi' => 'nullable|digits:10|unique:t_gabung_hajis,no_porsi',
+      'no_porsi' => 'nullable|unique:t_gabung_hajis,no_porsi',
       'nama_bank' => 'nullable|string',
       'kota_bank' => 'nullable|integer',
       'depag' => 'nullable|integer',

@@ -375,7 +375,7 @@
 
             <div>
               <label for="no_porsi" class="mb-1 block text-sm font-medium leading-6 text-[#099AA7]">
-                Nomor Porsi <span class="italic text-sm font-medium text-black">(10 digit angka)</span>
+                Nomor Porsi
               </label>
               <input type="number" id="no_porsi" name="no_porsi" value="{{ old('no_porsi') }}" placeholder="Masukkan Nomor Porsi"
               class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-slate-400 ring-1 ring-inset 

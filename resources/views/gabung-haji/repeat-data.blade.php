@@ -319,7 +319,7 @@
             
             <div>
               <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
-                Nomor Porsi Haji <span class="italic text-sm font-medium text-black">(10 digit angka)</span>
+                Nomor Porsi Haji
               </label>
               <input type="number" id="no_porsi" name="no_porsi" placeholder="Masukkan Nomor Porsi" 
               value="{{ old('no_porsi') }}" 
