@@ -27,7 +27,7 @@ class TDaftarHajiController extends Controller
 
   public function index(Request $request)
   {
-    $query = TDaftarHaji::with('customer', 'keberangkatan');
+    $query = TDaftarHaji::with('customer', 'keberangkatan', 'pembayaran');
 
     // 🔹 Pencarian Umum
     if ($request->has('search')) {
@@ -60,9 +60,7 @@ class TDaftarHajiController extends Controller
 
     // 🔹 Filter Keberangkatan
     if ($request->filled('keberangkatan')) {
-      $query->whereHas('keberangkatan', function ($q) use ($request) {
-        $q->where('keberangkatan', 'like', "%{$request->keberangkatan}%");
-      });
+      $query->where('keberangkatan_id', $request->keberangkatan);
     }
 
     // 🔹 Filter Pelunasan Haji

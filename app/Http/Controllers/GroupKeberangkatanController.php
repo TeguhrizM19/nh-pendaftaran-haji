@@ -97,13 +97,17 @@ class GroupKeberangkatanController extends Controller
     if ($request->ajax()) {
       if ($gabung_haji instanceof \Illuminate\Pagination\LengthAwarePaginator) {
         return response()->json([
-          'html' => trim(view('keberangkatan.partial-table-peserta', ['gabung_haji' => $gabung_haji])->render()),
+          'html' => trim(view('keberangkatan.partial-table-peserta', [
+            'gabung_haji' => $gabung_haji
+          ])->render()),
           'pagination' => $gabung_haji->links('pagination::tailwind')->toHtml(),
           'paginate' => true,
         ]);
       } else {
         return response()->json([
-          'html' => trim(view('keberangkatan.partial-table-peserta', ['gabung_haji' => $gabung_haji])->render()),
+          'html' => trim(view('keberangkatan.partial-table-peserta', [
+            'gabung_haji' => $gabung_haji
+          ])->render()),
           'paginate' => false,
         ]);
       }

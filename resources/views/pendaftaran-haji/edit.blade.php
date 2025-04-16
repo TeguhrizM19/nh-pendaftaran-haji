@@ -407,8 +407,11 @@
             </div>
 
             <div>
-              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">Tahun Keberangkatan</label>
-              <select name="keberangkatan_id" id="keberangkatan" class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Tahun Keberangkatan
+              </label>
+              <select name="keberangkatan_id" id="keberangkatan" 
+              class="w-full text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-blue-300 focus:border-blue-500">
                 @if($keberangkatan)
                   <option value="{{ $keberangkatan->id }}" selected>
                     {{ $keberangkatan->keberangkatan }}

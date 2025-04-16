@@ -24,9 +24,41 @@
     <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->pelunasan ?? '-' }}
     </td>
-    <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
+    {{-- <td class="px-6 py-4 font-medium text-black whitespace-nowrap">
       {{ $daftar->pelunasan_manasik ?? '-' }}
-    </td>
+    </td> --}}
+
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+      <ul class="list-disc pl-5">
+        <li>
+          Operasional : 
+          @php
+            $biayaOperasional = $daftar->keberangkatan->operasional ?? 0;
+            $dibayarOperasional = $daftar->pembayaran->where('pilihan_biaya', '4-000001')->sum('nominal');
+          @endphp
+          {{ $dibayarOperasional >= $biayaOperasional && $biayaOperasional > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+    
+        <li>
+          Manasik : 
+          @php
+            $biayaManasik = $daftar->keberangkatan->manasik ?? 0;
+            $dibayarManasik = $daftar->pembayaran->where('pilihan_biaya', '4-000002')->sum('nominal');
+          @endphp
+          {{ $dibayarManasik >= $biayaManasik && $biayaManasik > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+    
+        <li>
+          Dam : 
+          @php
+            $biayaDam = $daftar->keberangkatan->dam ?? 0;
+            $dibayarDam = $daftar->pembayaran->where('pilihan_biaya', '4-000003')->sum('nominal');
+          @endphp
+          {{ $dibayarDam >= $biayaDam && $biayaDam > 0 ? 'LUNAS' : 'Belum Lunas' }}
+        </li>
+      </ul>
+    </th>
+    
     <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
       <a href="{{ route('daftar_haji.cetak', $daftar->id) }}" target="_blank" class="text-blue-600 hover:underline">
         <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -44,6 +76,13 @@
           </svg>
         </a>
         <span>|</span>
+          {{-- Pembayaran --}}
+          {{-- <a href="/pembayaran/{{ $daftar->id }}" class="font-medium text-blue-600 hover:underline">
+            <svg class="w-6 h-6 text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M16.5 15v1.5m0 0V18m0-1.5H15m1.5 0H18M3 9V6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3M3 9v6a1 1 0 0 0 1 1h5M3 9h16m0 0v1M6 12h3m12 4.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/>
+            </svg>
+          </a>
+        <span>|</span> --}}
         <form action="/pendaftaran-haji/{{ $daftar->id }}" method="POST" class="deleteForm inline-block">
           @method('DELETE')
           @csrf

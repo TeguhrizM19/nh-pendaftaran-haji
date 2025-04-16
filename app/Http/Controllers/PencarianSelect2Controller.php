@@ -20,7 +20,6 @@ class PencarianSelect2Controller extends Controller
     // Cari cabang yang namanya mengandung teks yang diketik
     $cabang = MCabang::where('cabang', 'LIKE', "%$query%")
       ->select('id', 'cabang')
-      ->limit(10) // Batasi hasil agar tidak terlalu banyak
       ->get();
 
     return response()->json($cabang);
@@ -33,7 +32,6 @@ class PencarianSelect2Controller extends Controller
     // Cari wilayah (kota) yang namanya mengandung teks yang diketik
     $wilayah = Kota::where('kota', 'LIKE', "%$query%")
       ->select('id', 'kota')
-      ->limit(10) // Batasi hasil agar tidak terlalu banyak
       ->get();
 
     return response()->json($wilayah);
@@ -45,7 +43,6 @@ class PencarianSelect2Controller extends Controller
 
     $data = Kota::select('id', 'kota')
       ->where('kota', 'like', "%{$search}%")
-      ->limit(10) // Batasi hasil agar tidak terlalu berat
       ->get();
 
     return response()->json($data);
@@ -57,7 +54,6 @@ class PencarianSelect2Controller extends Controller
 
     $data = Kota::select('id', 'kota')
       ->where('kota', 'like', "%{$search}%")
-      ->limit(10) // Batasi hasil agar tidak terlalu berat
       ->get();
 
     return response()->json($data);
@@ -69,7 +65,6 @@ class PencarianSelect2Controller extends Controller
 
     $data = GroupKeberangkatan::select('id', 'keberangkatan')
       ->where('keberangkatan', 'like', "%{$search}%")
-      ->limit(10) // Batasi hasil agar tidak terlalu berat
       ->get();
 
     return response()->json($data);
@@ -81,7 +76,6 @@ class PencarianSelect2Controller extends Controller
 
     $provinsi = Provinsi::where('provinsi', 'LIKE', "%$search%")
       ->select('id', 'provinsi')
-      ->limit(10)
       ->get();
 
     return response()->json($provinsi);
@@ -94,7 +88,6 @@ class PencarianSelect2Controller extends Controller
     $kota = Kota::where('provinsi_id', $provinsi_id) // Pastikan ini benar
       ->where('kota', 'LIKE', "%$search%")
       ->select('id', 'kota')
-      ->limit(10)
       ->get();
 
     return response()->json($kota);
@@ -107,7 +100,6 @@ class PencarianSelect2Controller extends Controller
     $kecamatan = Kecamatan::where('kota_id', $kota_id)
       ->where('kecamatan', 'LIKE', "%$search%") // Bisa mencari kecamatan juga
       ->select('id', 'kecamatan')
-      ->limit(10) // Batasi hasil agar respons lebih cepat
       ->get();
 
     return response()->json($kecamatan);
@@ -120,7 +112,6 @@ class PencarianSelect2Controller extends Controller
     $kelurahan = Kelurahan::where('kecamatan_id', $kecamatan_id)
       ->where('kelurahan', 'LIKE', "%$search%")
       ->select('id', 'kelurahan')
-      ->limit(10)
       ->get();
 
     return response()->json($kelurahan);
@@ -133,7 +124,6 @@ class PencarianSelect2Controller extends Controller
     // Cari wilayah (kota) yang namanya mengandung teks yang diketik
     $wilayah = Kota::where('kota', 'LIKE', "%$query%")
       ->select('id', 'kota')
-      ->limit(10) // Batasi hasil agar tidak terlalu banyak
       ->get();
 
     return response()->json($wilayah);
@@ -146,7 +136,6 @@ class PencarianSelect2Controller extends Controller
     // Cari berdasarkan no_porsi_haji
     $noPorsi = TDaftarHaji::where('no_porsi_haji', 'LIKE', "%$query%")
       ->select('id', 'no_porsi_haji')
-      ->limit(10) // Batasi hasil agar tidak terlalu banyak
       ->get();
 
     return response()->json($noPorsi);

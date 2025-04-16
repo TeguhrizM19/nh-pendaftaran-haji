@@ -46,11 +46,6 @@ class TDaftarHaji extends Model
     return $this->belongsTo(Kota::class, 'wilayah_daftar', 'id');
   }
 
-  // public function dokumen()
-  // {
-  //   return $this->belongsToMany(MDokHaji::class, 't_daftar_haji_documents', 'daftar_haji_id', 'dokumen_id');
-  // }
-
   public function getDokumenItemsAttribute()
   {
     return MDokHaji::whereIn('id', $this->dokumen ?? [])->get();
@@ -64,6 +59,11 @@ class TDaftarHaji extends Model
   public function keberangkatan()
   {
     return $this->belongsTo(GroupKeberangkatan::class, 'keberangkatan_id');
+  }
+
+  public function pembayaran()
+  {
+    return $this->hasMany(Pembayaran::class, 'daftar_haji_id', 'id');
   }
 
   // Awal Relasi Wilayah Indonesia

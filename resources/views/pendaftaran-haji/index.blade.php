@@ -87,9 +87,9 @@
 
         <div class="w-full md:w-auto">
           <select name="keberangkatan" id="keberangkatan" class="w-full md:w-auto text-gray-900 bg-white border border-gray-300 rounded-lg text-sm px-3 py-3 focus:ring-blue-300 focus:border-blue-500">
-            <option value="">Pilih Tahun</option>
+            <option value="">Pilih Keberangkatan</option>
             @foreach ($keberangkatan as $berangkat)
-            <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
+              <option value="{{ $berangkat->id }}">{{ $berangkat->keberangkatan }}</option>
             @endforeach
           </select>
         </div>
@@ -111,7 +111,7 @@
           <th scope="col" class="px-6 py-3">Jenis Kelamin</th>
           <th scope="col" class="px-6 py-3">No Telpone</th>
           <th scope="col" class="px-6 py-3">Pelunasan Haji</th>
-          <th scope="col" class="px-6 py-3">Pelunasan Manasik</th>
+          <th scope="col" class="px-6 py-3">Pelunasan Biaya</th>
           <th scope="col" class="px-6 py-3">Cetak</th>
           <th scope="col" class="px-6 py-3 text-center">Aksi</th>
         </tr>
@@ -128,19 +128,19 @@
     </div>
   </div>
 
-  {{-- Style select2 agar lebih panjang --}}
-  <style>
-    .select2-container .select2-selection--single {
-    height: 45px !important; /* Sesuaikan dengan tinggi input search */
-    display: flex;
-    align-items: center;
-    padding: 8px; /* Sesuaikan dengan padding input */
-    }
+{{-- Style select2 agar lebih panjang --}}
+<style>
+  .select2-container .select2-selection--single {
+  height: 45px !important; /* Sesuaikan dengan tinggi input search */
+  display: flex;
+  align-items: center;
+  padding: 8px; /* Sesuaikan dengan padding input */
+  }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 45px !important; /* Samakan dengan tinggi input */
-    }
-  </style>
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+      line-height: 45px !important; /* Samakan dengan tinggi input */
+  }
+</style>
 
 <script>
   // Semua Filter
@@ -258,4 +258,5 @@
   });
 
 </script>
+
 </x-layout>
