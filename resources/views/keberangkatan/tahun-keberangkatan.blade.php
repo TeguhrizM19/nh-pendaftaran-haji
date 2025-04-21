@@ -1,21 +1,37 @@
 <x-layout>
+  
+  {{-- Pesan Data Berhasil Disimpan --}}
+  @if(session('success'))
+    <style>
+      .swal-confirm-btn {
+        background-color: #099AA7 !important;
+        color: #fff !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Data berhasil disimpan!",
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: 'swal-confirm-btn'
+          },
+          buttonsStyling: false // penting: matikan styling default SweetAlert
+        });
+      });
+    </script>
+  @endif
+
   <div>
     <x-page-title>Tahun Keberangkatan Dan Nominal Pembayaran</x-page-title>
   </div>
 
-  @if(session('success'))
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      Swal.fire({
-        title: "Berhasil!",
-        text: "{!! session('success') !!}",
-        icon: "success",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#099AA7"
-      });
-    });
-  </script>
-  @endif
 
   <div class="mt-3">
     <button data-modal-target="modal-keberangkatan" data-modal-toggle="modal-keberangkatan" 

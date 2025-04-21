@@ -3,15 +3,29 @@
     <x-page-title>Perlengkapan</x-page-title>
   </div>
 
+  {{-- Pesan Data Berhasil Disimpan --}}
   @if(session('success'))
+    <style>
+      .swal-confirm-btn {
+        background-color: #099AA7 !important;
+        color: #fff !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+      }
+    </style>
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         Swal.fire({
           title: "Berhasil!",
-          text: "{!! session('success') !!}",
+          text: "Data berhasil disimpan!",
           icon: "success",
           confirmButtonText: "OK",
-          confirmButtonColor: "#099AA7"
+          customClass: {
+            confirmButton: 'swal-confirm-btn'
+          },
+          buttonsStyling: false // penting: matikan styling default SweetAlert
         });
       });
     </script>

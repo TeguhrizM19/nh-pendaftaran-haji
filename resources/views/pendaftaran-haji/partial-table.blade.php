@@ -103,25 +103,48 @@
 </tr>
 @endforelse
 
+{{-- Style warna dari Sweet Alert Konfirmasi Delete --}}
+<style>
+  .btn-swal-hapus {
+    background-color: #d33 !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    margin-right: 0.5rem;
+  }
+
+  .btn-swal-batal {
+    background-color: #3085d6 !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+  }
+</style>
+
 <script>
   // Sweet Alert Konfirmasi Delete
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".deleteForm").forEach(function (form) {
       form.addEventListener("submit", function (event) {
         event.preventDefault(); // Mencegah form langsung submit
-        
+
         Swal.fire({
           title: "Apakah Anda yakin?",
           text: "Data akan dihapus secara permanen!",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#3085d6",
           confirmButtonText: "Ya, Hapus!",
-          cancelButtonText: "Batal"
+          cancelButtonText: "Batal",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn-swal-hapus',  // custom button hapus
+            cancelButton: 'btn-swal-batal'    // custom button batal
+          }
         }).then((result) => {
           if (result.isConfirmed) {
-            form.submit(); // Submit form jika dikonfirmasi
+            form.submit();
           }
         });
       });

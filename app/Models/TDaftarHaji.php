@@ -47,9 +47,14 @@ class TDaftarHaji extends Model
     return $this->belongsTo(Kota::class, 'wilayah_daftar', 'id');
   }
 
-  public function getDokumenItemsAttribute()
+  public function getSelectedPerlengkapanAttribute()
   {
-    return MDokHaji::whereIn('id', $this->dokumen ?? [])->get();
+    return collect(json_decode($this->perlengkapan, true) ?? []);
+  }
+
+  public function getSelectedDokumenAttribute()
+  {
+    return collect(json_decode($this->dokumen, true) ?? []);
   }
 
   public function tempatLahir()

@@ -12,18 +12,32 @@
     }
   </style>
 
+  {{-- Pesan Data Berhasil Disimpan --}}
   @if(session('success'))
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      Swal.fire({
-        title: "Berhasil!",
-        text: "{!! session('success') !!}",
-        icon: "success",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#099AA7"
+    <style>
+      .swal-confirm-btn {
+        background-color: #099AA7 !important;
+        color: #fff !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Data berhasil disimpan!",
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: 'swal-confirm-btn'
+          },
+          buttonsStyling: false // penting: matikan styling default SweetAlert
+        });
       });
-    });
-  </script>
+    </script>
   @endif
 
   <div>
@@ -123,7 +137,7 @@
           <th scope="col" class="px-2 py-3">No Telepon</th>
           <th scope="col" class="px-2 py-3">Pelunasan Haji</th>
           <th scope="col" class="px-2 py-3 w-36 text-center">Pelunasan Biaya</th>
-          <th scope="col" class="px-2 py-3">Cetak</th>
+          {{-- <th scope="col" class="px-2 py-3">Cetak</th> --}}
           <th scope="col" class="px-2 py-3 text-center">Aksi</th>
         </tr>
       </thead>
@@ -141,29 +155,6 @@
   </div>
   
   <script>
-    // Sweet Alert Konfirmasi Delete
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll(".deleteForm").forEach(function (form) {
-        form.addEventListener("submit", function (event) {
-          event.preventDefault(); // Mencegah form langsung submit
-          
-          Swal.fire({
-            title: "Apakah Anda yakin?",
-            text: "Data akan dihapus secara permanen!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Batal"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              form.submit(); // Submit form jika dikonfirmasi
-            }
-          });
-        });
-      });
-    });
 
     // Semua Filter
     $(document).ready(function () {

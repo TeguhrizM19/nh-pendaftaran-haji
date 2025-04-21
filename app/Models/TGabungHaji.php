@@ -2,9 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Kota;
+use App\Models\Customer;
 use App\Models\MDokHaji;
+use App\Models\Provinsi;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Pembayaran;
 use App\Models\TDaftarHaji;
+use App\Models\MPerlengkapan;
+use App\Models\GroupKeberangkatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -50,19 +57,14 @@ class TGabungHaji extends Model
     return $this->belongsTo(Kota::class, 'kota_bank', 'id');
   }
 
-  // public function dokumen()
-  // {
-  //   return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_documents', 'gabung_haji_id', 'dokumen_id');
-  // }
-
-  public function perleng()
+  public function getSelectedPerlengkapanAttribute()
   {
-    return $this->belongsToMany(MDokHaji::class, 't_gabung_haji_perlengkapan', 'gabung_haji_id', 'perlengkapan_id');
+    return collect(json_decode($this->perlengkapan, true) ?? []);
   }
 
-  public function getDokumenItemsAttribute()
+  public function getSelectedDokumenAttribute()
   {
-    return MDokHaji::whereIn('id', $this->dokumen ?? [])->get();
+    return collect(json_decode($this->dokumen, true) ?? []);
   }
 
   public function pembayaran()

@@ -69,7 +69,7 @@
       </ul>
     </th>
     
-    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
+    {{-- <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap"> 
       <a href="{{ isset($gabung->daftarHaji) ? route('daftar_haji.cetak', $gabung->daftarHaji->id) : route('gabung_haji.cetak', $gabung->id) }}" 
         target="_blank" 
         class="text-blue-600 hover:underline">
@@ -77,7 +77,7 @@
           <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2 2 2 0 0 0 2 2h12a2 2 0 0 0 2-2 2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2V4a2 2 0 0 0-2-2h-7Zm-6 9a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h.5a2.5 2.5 0 0 0 0-5H5Zm1.5 3H6v-1h.5a.5.5 0 0 1 0 1Zm4.5-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.376A2.626 2.626 0 0 0 15 15.375v-1.75A2.626 2.626 0 0 0 12.375 11H11Zm1 5v-3h.375a.626.626 0 0 1 .625.626v1.748a.625.625 0 0 1-.626.626H12Zm5-5a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1h1a1 1 0 1 0 0-2h-2Z" clip-rule="evenodd"/>
         </svg>   
       </a>
-    </th>
+    </th> --}}
 
     <td class="px-6 py-4 text-center"> 
       <div class="inline-flex flex-col items-center space-y-1">
@@ -102,11 +102,18 @@
     
         {{-- Baris kedua: Kelengkapan | Delete --}}
         <div class="inline-flex items-center space-x-2">
-          {{-- Kelengkapan --}}
-          <a href="/kelengkapan/{{ $gabung->id }}" class="font-medium text-blue-600 hover:underline">
+          <!-- Kelengkapan -->
+          {{-- <a href="/kelengkapan/{{ $gabung->id }}" class="font-medium text-blue-600 hover:underline">
             <svg class="w-6 h-6 text-yellow-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M5.024 3.783A1 1 0 0 1 6 3h12a1 1 0 0 1 .976.783L20.802 12h-4.244a1.99 1.99 0 0 0-1.824 1.205 2.978 2.978 0 0 1-5.468 0A1.991 1.991 0 0 0 7.442 12H3.198l1.826-8.217ZM3 14v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5h-4.43a4.978 4.978 0 0 1-9.14 0H3Zm5-7a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm0 2a1 1 0 0 0 0 2h8a1 1 0 1 0 0-2H8Z" clip-rule="evenodd"/>
             </svg>
+          </a> --}}
+          <a href="{{ isset($gabung->daftarHaji) ? route('daftar_haji.cetak', $gabung->daftarHaji->id) : route('gabung_haji.cetak', $gabung->id) }}" 
+            target="_blank" 
+            class="text-blue-600 hover:underline">
+            <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2 2 2 0 0 0 2 2h12a2 2 0 0 0 2-2 2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2V4a2 2 0 0 0-2-2h-7Zm-6 9a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h.5a2.5 2.5 0 0 0 0-5H5Zm1.5 3H6v-1h.5a.5.5 0 0 1 0 1Zm4.5-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.376A2.626 2.626 0 0 0 15 15.375v-1.75A2.626 2.626 0 0 0 12.375 11H11Zm1 5v-3h.375a.626.626 0 0 1 .625.626v1.748a.625.625 0 0 1-.626.626H12Zm5-5a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1h1a1 1 0 1 0 0-2h-2Z" clip-rule="evenodd"/>
+            </svg>   
           </a>
           <span>|</span>
           {{-- Delete --}}
@@ -130,3 +137,52 @@
   <td colspan="6" class="text-center text-red-500 font-semibold py-4">Data Masih Kosong</td>
 </tr>
 @endforelse
+
+{{-- Style warna dari Sweet Alert Konfirmasi Delete --}}
+<style>
+  .btn-swal-hapus {
+    background-color: #d33 !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    margin-right: 0.5rem;
+  }
+
+  .btn-swal-batal {
+    background-color: #3085d6 !important;
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+  }
+</style>
+
+<script>
+  // Sweet Alert Konfirmasi Delete
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".deleteForm").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Mencegah form langsung submit
+
+        Swal.fire({
+          title: "Apakah Anda yakin?",
+          text: "Data akan dihapus secara permanen!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Ya, Hapus!",
+          cancelButtonText: "Batal",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn-swal-hapus',  // custom button hapus
+            cancelButton: 'btn-swal-batal'    // custom button batal
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit();
+          }
+        });
+      });
+    });
+  });
+</script>

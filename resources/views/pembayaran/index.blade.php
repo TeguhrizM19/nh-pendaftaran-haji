@@ -1,22 +1,36 @@
 <x-layout>
+
+  {{-- Pesan Data Berhasil Disimpan --}}
+  @if(session('success'))
+    <style>
+      .swal-confirm-btn {
+        background-color: #099AA7 !important;
+        color: #fff !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Data berhasil disimpan!",
+          icon: "success",
+          confirmButtonText: "OK",
+          customClass: {
+            confirmButton: 'swal-confirm-btn'
+          },
+          buttonsStyling: false // penting: matikan styling default SweetAlert
+        });
+      });
+    </script>
+  @endif
+  
   <div>
     <x-page-title>Pembayaran</x-page-title>
   </div>
-
-  @if(session('success'))
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      Swal.fire({
-        title: "Berhasil!",
-        text: "{!! session('success') !!}",
-        icon: "success",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#099AA7"
-      });
-    });
-  </script>
-  @endif
-  
 
   <div class="mt-4 flex sm:w-auto gap-4">
     <a href="/gabung-haji" class="flex items-center justify-center gap-x-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-[#099AA7] shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">

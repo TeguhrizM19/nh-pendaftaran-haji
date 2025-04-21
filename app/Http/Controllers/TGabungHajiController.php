@@ -10,6 +10,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\TGabungHaji;
 use Illuminate\Http\Request;
+use App\Models\MPerlengkapan;
 use Illuminate\Validation\Rule;
 use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
@@ -131,12 +132,14 @@ class TGabungHajiController extends Controller
   {
     $kota = Kota::all();
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
+    $perlengkapan = MPerlengkapan::where('status', 'Aktif')->get();
 
     return view('gabung-haji.create', [
       'kotaBank' => $kota,
       'tempatLahir' => $kota,
       'depag' => $kota,
       'dokumen' => $dokumen,
+      'perlengkapan' => $perlengkapan,
       'provinsi' => Provinsi::all(),
       'keberangkatan' => GroupKeberangkatan::all(),
 
@@ -185,6 +188,9 @@ class TGabungHajiController extends Controller
       'status_nikah' => 'nullable|string',
       'pekerjaan' => 'nullable|string',
       'pendidikan' => 'nullable|string',
+      'instansi' => 'nullable|string',
+      'jabatan' => 'nullable|string',
+      'merokok' => 'nullable|string',
       // Alamat KTP
       'alamat_ktp' => 'nullable|string',
       'provinsi_ktp' => 'nullable|exists:m_provinsis,id',
@@ -208,6 +214,18 @@ class TGabungHajiController extends Controller
       'pelunasan' => 'nullable|string',
       // 'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
+      'nama_pasport' => 'nullable|string',
+      'tempat_lahir_pasport' => 'nullable|string',
+      'tgl_lahir_pasport' => 'nullable|date',
+      'no_pasport' => 'nullable|string',
+      'office_pasport' => 'nullable|string',
+      'issue_date' => 'nullable|date',
+      'experi_date' => 'nullable|date',
+
+      // Validasi checkbox perlengkapan
+      'perlengkapan' => 'nullable|array',
+      'perlengkapan.*' => 'exists:m_perlengkapans,id',
+
       // Validasi checkbox dokumen
       'dokumen' => 'nullable|array',
       'dokumen.*' => 'exists:m_dok_hajis,id',
@@ -225,6 +243,7 @@ class TGabungHajiController extends Controller
       $customer = Customer::create($validated);
 
       $validated['customer_id'] = $customer->id;
+      $validated['perlengkapan'] = json_encode($validated['perlengkapan'] ?? []);
       $validated['dokumen'] = json_encode($validated['dokumen'] ?? []);
 
       TGabungHaji::create($validated);
@@ -253,14 +272,22 @@ class TGabungHajiController extends Controller
       'customer',
       'kotaBank',
       'depag',
-      'keberangkatan'
+      'keberangkatan',
     ])->find($id);
 
     $customer = $gabung_haji->customer;
+    $jenisKelamin = strtolower($gabung_haji->customer->jenis_kelamin);
 
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
+    $perlengkapan = MPerlengkapan::where('status', 'Aktif')
+      ->where(function ($query) use ($jenisKelamin) {
+        $query->whereRaw('LOWER(jenis_kelamin) = ?', [$jenisKelamin])
+          ->orWhereRaw('LOWER(jenis_kelamin) = ?', ['laki-laki/perempuan']);
+      })
+      ->get();
 
-    $selected_documents = is_array($gabung_haji->dokumen) ? $gabung_haji->dokumen : json_decode($gabung_haji->dokumen, true);
+    $selected_perlengkapan = $gabung_haji->selected_perlengkapan->map(fn($id) => (string) $id)->toArray();
+    $selected_documents = $gabung_haji->selected_dokumen->map(fn($id) => (string) $id)->toArray();
 
     return view('gabung-haji.edit', [
       'gabung_haji' => $gabung_haji,
@@ -268,6 +295,8 @@ class TGabungHajiController extends Controller
       'kotaBank' => Kota::find($gabung_haji->kota_bank),
       'depag' => Kota::find($gabung_haji->depag),
       'keberangkatan' => GroupKeberangkatan::find($gabung_haji->keberangkatan_id),
+      'perlengkapan' => $perlengkapan,
+      'selected_perlengkapan' => $selected_perlengkapan,
       'dokumen' => $dokumen,
       'selected_documents' => $selected_documents,
       // Alamat KTP
@@ -310,6 +339,9 @@ class TGabungHajiController extends Controller
       'status_nikah' => 'nullable|string',
       'pekerjaan' => 'nullable|string',
       'pendidikan' => 'nullable|string',
+      'instansi' => 'nullable|string',
+      'jabatan' => 'nullable|string',
+      'merokok' => 'nullable|string',
       'alamat_ktp' => 'nullable|string',
       'provinsi_ktp' => 'nullable|exists:m_provinsis,id',
       'kota_ktp' => 'nullable|exists:m_kotas,id',
@@ -331,8 +363,17 @@ class TGabungHajiController extends Controller
       'pelunasan' => 'nullable|string',
       'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
+      'perlengkapan' => 'nullable|array',
+      'perlengkapan.*' => 'exists:m_perlengkapans,id',
       'dokumen' => 'nullable|array',
       'dokumen.*' => 'exists:m_dok_hajis,id',
+      'nama_pasport' => 'nullable|string',
+      'tempat_lahir_pasport' => 'nullable|string',
+      'tgl_lahir_pasport' => 'nullable|date',
+      'no_pasport' => 'nullable|string',
+      'office_pasport' => 'nullable|string',
+      'issue_date' => 'nullable|date',
+      'experi_date' => 'nullable|date',
     ]);
 
     DB::transaction(function () use ($validated, $customer, $gabung_haji) {
@@ -346,6 +387,7 @@ class TGabungHajiController extends Controller
       ]));
 
       $gabung_haji->update(array_merge($validated, [
+        'perlengkapan' => json_encode($validated['perlengkapan'] ?? []),
         'dokumen' => json_encode($validated['dokumen'] ?? []),
         'update_user' => $user,
       ]));
@@ -405,15 +447,23 @@ class TGabungHajiController extends Controller
   public function repeatDataGabung($id)
   {
     $customer = Customer::find($id);
-
     $kota = Kota::all();
+
+    $jenisKelamin = strtolower($customer->jenis_kelamin);
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
+    $perlengkapan = MPerlengkapan::where('status', 'Aktif')
+      ->where(function ($query) use ($jenisKelamin) {
+        $query->whereRaw('LOWER(jenis_kelamin) = ?', [$jenisKelamin])
+          ->orWhereRaw('LOWER(jenis_kelamin) = ?', ['laki-laki/perempuan']);
+      })
+      ->get();
 
     return view('gabung-haji.repeat-data', [
       'customer' => $customer,
       'kotaBank' => $kota,
       'depag' => $kota,
       'keberangkatan' => GroupKeberangkatan::all(),
+      'perlengkapan' => $perlengkapan,
       'dokumen' => $dokumen,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
@@ -450,6 +500,9 @@ class TGabungHajiController extends Controller
       'warga' => 'nullable|string',
       'pekerjaan' => 'nullable|string',
       'pendidikan' => 'nullable|string',
+      'instansi' => 'nullable|string',
+      'jabatan' => 'nullable|string',
+      'merokok' => 'nullable|string',
       'alamat_ktp' => 'nullable|string',
       'provinsi_ktp' => 'nullable|exists:m_provinsis,id',
       'kota_ktp' => 'nullable|exists:m_kotas,id',
@@ -471,8 +524,17 @@ class TGabungHajiController extends Controller
       'pelunasan' => 'nullable|string',
       'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
+      'perlengkapan' => 'nullable|array',
+      'perlengkapan.*' => 'exists:m_perlengkapans,id',
       'dokumen' => 'nullable|array',
       'dokumen.*' => 'exists:m_dok_hajis,id',
+      'nama_pasport' => 'nullable|string',
+      'tempat_lahir_pasport' => 'nullable|string',
+      'tgl_lahir_pasport' => 'nullable|date',
+      'no_pasport' => 'nullable|string',
+      'office_pasport' => 'nullable|string',
+      'issue_date' => 'nullable|date',
+      'experi_date' => 'nullable|date',
     ]);
 
     DB::transaction(function () use ($validated, $customer) {
@@ -490,6 +552,7 @@ class TGabungHajiController extends Controller
       // Buat data baru di t_gabung_hajis
       TGabungHaji::create(array_merge($validated, [
         'customer_id' => $customer->id,
+        'perlengkapan' => json_encode($validated['perlengkapan'] ?? []),
         'dokumen' => json_encode($validated['dokumen'] ?? []),
         'create_user' => $user,
       ]));
@@ -503,12 +566,14 @@ class TGabungHajiController extends Controller
     $customer = Customer::find($id);
     $kota = Kota::all();
     $dokumen = MDokHaji::where('status', 'Aktif')->get();
+    $perlengkapan = MPerlengkapan::where('status', 'Aktif')->get();
 
     return view('gabung-haji.ambil-semua-data', [
       'customer' => $customer,
       'kotaBank' => $kota,
       'depag' => $kota,
       'keberangkatan' => GroupKeberangkatan::all(),
+      'perlengkapan' => $perlengkapan,
       'dokumen' => $dokumen,
       // Alamat KTP
       'alamatKtp' => $customer->alamat_ktp,
@@ -544,6 +609,9 @@ class TGabungHajiController extends Controller
       'status_nikah' => 'nullable|string',
       'pekerjaan' => 'nullable|string',
       'pendidikan' => 'nullable|string',
+      'instansi' => 'nullable|string',
+      'jabatan' => 'nullable|string',
+      'merokok' => 'nullable|string',
       // Alamat KTP
       'alamat_ktp' => 'nullable|string',
       'provinsi_ktp' => 'nullable|exists:m_provinsis,id',
@@ -567,9 +635,20 @@ class TGabungHajiController extends Controller
       'pelunasan' => 'nullable|string',
       'pelunasan_manasik' => 'nullable|string',
       'catatan' => 'nullable|string',
+      // Validasi checkbox perlengkapan
+      'perlengkapan' => 'nullable|array',
+      'perlengkapan.*' => 'exists:m_perlengkapans,id',
       // Validasi checkbox dokumen
       'dokumen' => 'nullable|array',
       'dokumen.*' => 'exists:m_dok_hajis,id',
+      // Pasport
+      'nama_pasport' => 'nullable|string',
+      'tempat_lahir_pasport' => 'nullable|string',
+      'tgl_lahir_pasport' => 'nullable|date',
+      'no_pasport' => 'nullable|string',
+      'office_pasport' => 'nullable|string',
+      'issue_date' => 'nullable|date',
+      'experi_date' => 'nullable|date',
     ]);
 
     DB::transaction(function () use ($validated) {
@@ -584,6 +663,7 @@ class TGabungHajiController extends Controller
       $customer = Customer::create($validated);
 
       $validated['customer_id'] = $customer->id;
+      $validated['perlengkapan'] = json_encode($validated['perlengkapan'] ?? []);
       $validated['dokumen'] = json_encode($validated['dokumen'] ?? []);
 
       TGabungHaji::create($validated);

@@ -9,7 +9,7 @@
       <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
-        {{-- Kolom 1 --}}
+        <!-- Kolom 1 -->
         <div>
           <div class="relative">
             <div class="flex gap-2 mb-3 items-end">
@@ -170,6 +170,54 @@
                 <option value="S2" {{ old('pendidikan', $customer->pendidikan) == "S2" ? 'selected' : '' }}>S2</option>
                 <option value="S3" {{ old('pendidikan', $customer->pendidikan) == "S3" ? 'selected' : '' }}>S3</option>
               </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Instansi
+              </label>
+              <input type="text" name="instansi" id="instansi" placeholder="instansi" value="{{ old('instansi', $customer->instansi) }}""
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                Jabatan
+              </label>
+              <input type="text" name="jabatan" id="jabatan" placeholder="jabatan" value="{{ old('jabatan', $customer->jabatan) }}"
+              class="mb-3 block w-full rounded-md border-0 p-2 text-gray-900  shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Merokok -->
+            <div class="w-full">
+              <h3 class="mb-3 font-semibold text-[#099AA7]">
+                Merokok
+              </h3>
+              <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <li class="w-full border-b border-gray-200">
+                  <div class="flex items-center ps-3">
+                    <input id="ya" type="radio" value="Ya" name="merokok" 
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $customer->merokok == 'Ya' ? 'checked' : '' }}>
+                    <label for="ya" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Ya
+                    </label>
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center ps-3">
+                    <input id="tidak" type="radio" value="Tidak" name="merokok"
+                      class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                      {{ $customer->merokok == 'Tidak' ? 'checked' : '' }}>
+                    <label for="tidak" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                      Tidak
+                    </label>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -447,7 +495,7 @@
           </div> --}}
 
           <!-- Kolom Dokumen -->
-          <div class="w-full">
+          {{-- <div class="w-full">
             <h3 class="mb-1 mt-4 font-semibold text-[#099AA7]">Dokumen</h3>  
             <ul class="w-full text-sm font-medium  text-gray-900 bg-white border border-gray-200 rounded-lg">
               @foreach ($dokumen as $dok)
@@ -466,7 +514,7 @@
                 </li>
               @endforeach
             </ul>
-          </div>
+          </div> --}}
 
           <div>
             <label for="catatan" class="block mt-3 mb-2 text-sm font-medium text-[#099AA7]">
@@ -479,16 +527,149 @@
         </div>
       </div>
 
-      <!-- Tombol Kembali & Simpan -->
-      <div class="w-full flex justify-center mt-6">
+      <!-- Modal Tambah Perlengkapan -->
+      <div id="modal-perlengkapan" tabindex="-1" aria-hidden="true" 
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-7xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow-sm">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+              <h3 class="text-xl font-semibold text-gray-900">
+                Masukkan Perlengkapan
+              </h3>
+              <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="modal-perlengkapan">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+              <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-7">
+      
+                <!-- Kolom Perlengkapan -->
+                <div class="mt-3">
+                  <span class="font-medium text-gray-900 block mb-2">
+                    Perlengkapan yang sudah dibagikan
+                  </span>
+                  <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+                    @foreach ($perlengkapan as $data)
+                      <li class="w-full border-b border-gray-200 last:border-b-0">
+                        <div class="flex items-center ps-3">
+                          <input type="checkbox" name="perlengkapan[]" value="{{ $data->id }}"
+                            {{ in_array($data->id, old('perlengkapan', [])) ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                          <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                            {{ $data->perlengkapan }}
+                          </label>
+                        </div>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+              
+                <!-- Kolom Dokumen -->
+                <div class="mt-3">
+                  <span class="font-medium text-gray-900 block mb-2">Dokumen</span>
+                  <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+                    @foreach ($dokumen as $dok)
+                      <li class="w-full border-b border-gray-200 last:border-b-0">
+                        <div class="flex items-center ps-3">
+                          <input type="checkbox" name="dokumen[]" value="{{ $dok->id }}"
+                            {{ in_array($dok->id, old('dokumen', [])) ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 bg-gray-300 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                          <label class="w-full py-3 ms-2 text-sm font-medium text-gray-900">
+                            {{ $dok->dokumen }}
+                          </label>
+                        </div>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+
+                <!-- Kolom 3 Pasport -->
+                <div class="mt-3">
+                  <label class="mb-2 block text-sm font-medium leading-6 text-[#099AA7]">
+                    Nama Sesuai Pasport
+                  </label>
+                  <input type="text" name="nama_pasport" id="nama_pasport" placeholder="Nama Sesuai Pasport" value="{{ old('nama_pasport') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        Tempat Lahir Sesuai Pasport
+                      </label>
+                      <input type="text" name="tempat_lahir_pasport" id="tempat_lahir_pasport" placeholder="Tempat Lahir Sesuai Pasport" value="{{ old('tempat_lahir_pasport') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        Tgl Lahir Sesuai Pasport
+                      </label>
+                      <input type="date" name="tgl_lahir_pasport" id="tgl_lahir_pasport" value="{{ old('tgl_lahir_pasport') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        No Pasport
+                      </label>
+                      <input type="text" name="no_pasport" id="no_pasport" placeholder="No Pasport" value="{{ old('no_pasport') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        Office Pasport
+                      </label>
+                      <input type="text" name="office_pasport" id="office_pasport" placeholder="Office Pasport" value="{{ old('office_pasport') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        Issue Date
+                      </label>
+                      <input type="date" name="issue_date" id="issue_date" placeholder="Issue Date" value="{{ old('issue_date') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                    <div>
+                      <label class="mb-2 mt-3 block text-sm font-medium leading-6 text-[#099AA7]">
+                        Experi Date
+                      </label>
+                      <input type="date" name="experi_date" id="experi_date" placeholder="Expiri Date" value="{{ old('experi_date') }}" class="block w-full rounded-md border-0 p-2 bg-gray-100 text-gray-900 shadow-slate-400 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6 uppercase" />
+                    </div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tombol -->
+      <div class="w-full flex justify-center mt-6 gap-3">
+        <!-- Tombol Kembali -->
         <a href="/gabung-haji"
-        class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+          class="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gray-500 rounded-md hover:bg-gray-600 shadow-sm">
           Kembali
         </a>
-        <button type="submit" class="px-6 py-2 bg-[#099AA7] text-white rounded-md hover:bg-[#077F8A] ml-4">
+
+        <!-- Tombol Tambah Perlengkapan -->
+        <button type="button" data-modal-target="modal-perlengkapan" data-modal-toggle="modal-perlengkapan"
+          class="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-600/80 shadow-sm gap-x-2 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+          </svg>
+          Tambah Perlengkapan, Dokumen, Pasport
+        </button>
+      
+        <!-- Tombol Simpan -->
+        <button type="submit"
+          class="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-[#099AA7] rounded-md hover:bg-[#077F8A] shadow-sm">
           Simpan
         </button>
-      </div>  
+      </div>
     </form>
   </div>
 

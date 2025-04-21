@@ -58,6 +58,16 @@
   </tr>
 @endforelse
 
+<style>
+  .btn-swal-ok {
+  background-color: #099AA7 !important;
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+}
+</style>
+
 <script>
   $(document).ready(function () {
     let pesertaTerhapus = new Set(); // Simpan daftar peserta yang akan dihapus
@@ -99,8 +109,11 @@
           title: "Peringatan!",
           text: "Pilih tahun keberangkatan terlebih dahulu!",
           icon: "warning",
-          confirmButtonColor: "#099AA7",
-          confirmButtonText: "OK"
+          confirmButtonText: "OK",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn-swal-ok'
+          }
         });
         return;
       }
@@ -110,8 +123,11 @@
           title: "Peringatan!",
           text: "Pilih minimal satu peserta!",
           icon: "warning",
-          confirmButtonColor: "#099AA7",
-          confirmButtonText: "OK"
+          confirmButtonText: "OK",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn-swal-ok'
+          }
         });
         return;
       }
@@ -129,8 +145,11 @@
             title: "Berhasil!",
             text: response.message,
             icon: "success",
-            confirmButtonColor: "#099AA7",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: 'btn-swal-ok'
+            }
           }).then(() => {
             location.reload();
           });
@@ -140,8 +159,11 @@
             title: "Gagal!",
             text: "Terjadi kesalahan, silakan coba lagi!",
             icon: "error",
-            confirmButtonColor: "#099AA7",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: 'btn-swal-ok'
+            }
           });
         }
       });
@@ -153,8 +175,11 @@
           title: "Peringatan!",
           text: "Pilih peserta yang akan dihapus dengan menghilangkan centangnya!",
           icon: "warning",
-          confirmButtonColor: "#099AA7",
-          confirmButtonText: "OK"
+          confirmButtonText: "OK",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn-swal-ok'
+          }
         });
         return;
       }
@@ -171,8 +196,11 @@
             title: "Berhasil!",
             text: response.message,
             icon: "success",
-            confirmButtonColor: "#099AA7",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: 'btn-swal-ok'
+            }
           }).then(() => {
             location.reload();
           });
@@ -182,12 +210,16 @@
             title: "Gagal!",
             text: "Terjadi kesalahan, silakan coba lagi!",
             icon: "error",
-            confirmButtonColor: "#099AA7",
-            confirmButtonText: "OK"
+            confirmButtonText: "OK",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: 'btn-swal-ok'
+            }
           });
         }
       });
     }
+
 
     // Filter Tahun Keberangkatan
     $('#filter-keberangkatan').select2({
@@ -235,7 +267,6 @@
       });
     });
   });
-
 </script>
 
 
