@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form id="formPendaftaran" action="/gabung-haji/{{ $gabung_haji->id }}" method="POST">
+    <form id="formPendaftaran" action="/gabung-haji/{{ $gabung_haji->id }}" method="POST" enctype="multipart/form-data">
       @method('PUT')
       @csrf
 
@@ -608,6 +608,125 @@
                       </li>
                     @endforeach
                   </ul>
+
+                  <!-- Upload File -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                    <!-- KTP -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                      id="ktp" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->ktp))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->ktp) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->ktp }}
+                          </a>
+                        </p>
+                      @endif
+                      {{-- Percobaan server --}}
+                      {{-- {{ asset('../public_html/folder-image-truenas/' . $customer->ktp) }} --}}
+                    </div>
+        
+                    <!-- KK -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                        id="kk" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->kk))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->kk) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->kk }}
+                          </a>
+                        </p>
+                      @endif
+                    </div>
+        
+                    <!-- Surat Nikah/Akte lahir/Ijazah -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                        id="surat" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->surat))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->surat) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->surat }}
+                          </a>
+                        </p>
+                      @endif
+                    </div>
+        
+                    <!-- SPPH -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                        id="spph" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->spph))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->spph) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->spph }}
+                          </a>
+                        </p>
+                      @endif
+                    </div>
+        
+                    <!-- BPIH -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                        id="bpih" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->bpih))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->bpih) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->bpih }}
+                          </a>
+                        </p>
+                      @endif
+                    </div>
+        
+                    <!-- Pas Photo -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+                      
+                      <!-- Input untuk upload file baru -->
+                      <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" 
+                        id="photo" type="file">
+                    
+                      <!-- Menampilkan file yang sudah di-upload sebelumnya -->
+                      @if (!empty($customer->photo))
+                        <p class="mt-2 text-sm">
+                          File saat ini: 
+                          <a href="{{ asset('uploads/dokumen_haji/' . $customer->photo) }}" class="text-blue-600 underline" target="_blank">
+                            {{ $customer->photo }}
+                          </a>
+                        </p>
+                      @endif
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Kolom 3 Pasport -->
@@ -682,7 +801,7 @@
           <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
           </svg>
-          Tambah Perlengkapan, Dokumen, Pasport
+          Perlengkapan, Dokumen, Pasport
         </button>
       
         <!-- Tombol Simpan -->
@@ -1004,7 +1123,6 @@
     });
   });
 
-
   // Provinsi Domisili
   $(document).ready(function () {
     $('#provinsi_domisili').select2({
@@ -1191,6 +1309,70 @@
         $('#kelurahan_domisili').val(null).trigger('change');
         loadKelurahan(kecamatanId, null);
     });
+  });
+
+  // Kompres File
+  document.addEventListener("DOMContentLoaded", function () {
+    // Pilih semua input file dalam form
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    fileInputs.forEach(input => {
+      input.addEventListener("change", function (event) {
+        compressImage(event.target);
+      });
+    });
+
+    function compressImage(inputElement) {
+      const file = inputElement.files[0];
+      if (!file) return;
+
+      const MAX_WIDTH = 800;
+      const MAX_HEIGHT = 800;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = function () {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob((blob) => {
+            const compressedFile = new File([blob], file.name, {
+              type: "image/jpeg",
+              lastModified: Date.now(),
+            });
+
+            // Buat DataTransfer untuk menggantikan file lama
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(compressedFile);
+            inputElement.files = dataTransfer.files;
+
+            console.log("✅ File dikompresi:", inputElement.files[0]);
+          }, "image/jpeg", 0.7);
+        };
+      };
+    }
   });
 
 </script>

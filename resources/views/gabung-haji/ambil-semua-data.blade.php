@@ -4,7 +4,7 @@
   </div>
 
   <div class="rounded-lg shadow-lg shadow-black mt-4 p-4">
-    <form id="formPendaftaran" action="{{ route('gabung-haji.ambilSemuaData') }}" method="POST">
+    <form id="formPendaftaran" action="{{ route('gabung-haji.ambilSemuaData') }}" method="POST" enctype="multipart/form-data">
       @csrf
       <input type="hidden" name="customer_id" value="{{ $customer->id }}">
 
@@ -616,6 +616,39 @@
                       </li>
                     @endforeach
                   </ul>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+                    <!-- KTP -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="ktp">KTP</label>
+                      <input name="ktp" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="ktp" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                    <!-- KK -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="kk">KK</label>
+                      <input name="kk" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="kk" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                    <!-- Surat Nikah/Akte lahir/Ijazah -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="surat">Surat Nikah/Akte lahir/Ijazah</label>
+                      <input name="surat" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="surat" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                    <!-- SPPH -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="spph">SPPH</label>
+                      <input name="spph" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="spph" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                    <!-- BPIH -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="bpih">BPIH</label>
+                      <input name="bpih" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="bpih" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                    <!-- Pas Photo -->
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-[#099AA7]" for="photo">Pas Photo</label>
+                      <input name="photo" class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-700 focus:outline-none" id="photo" type="file" accept="image/*" class="file-input" onchange="imageInput(event)">
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Kolom 3 Pasport -->
@@ -690,7 +723,7 @@
           <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
           </svg>
-          Tambah Perlengkapan, Dokumen, Pasport
+          Perlengkapan, Dokumen, Pasport
         </button>
       
         <!-- Tombol Simpan -->
@@ -723,7 +756,6 @@
   </div>
 
 <script>
-
   // Select2
   // Tempat Lahir
   $(document).ready(function () { 
@@ -1203,6 +1235,69 @@
         loadKelurahan(kecamatanId, null);
     });
   });
+
+  // Kompres Gambar
+  function imageInput(event) {
+    const file = event.target.files[0];
+    if (file) {
+      compressImage(event);
+    }
+  }
+
+  function compressImage(event) {
+    const files = event.target.files;
+    const dataTransfer = new DataTransfer();
+    const MAX_WIDTH = 800;
+    const MAX_HEIGHT = 800;
+
+    function processFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob((blob) => {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now()
+              });
+
+              dataTransfer.items.add(compressedFile);
+              event.target.files = dataTransfer.files; // Menetapkan file yang telah dikompresi
+              
+              console.log("File setelah dikompresi:", event.target.files);
+          }, 'image/jpeg', 0.7);
+        };
+      };
+    }
+
+    if (files.length > 0) {
+      processFile(files[0]); // Mulai proses kompresi pada file pertama
+    }
+  }
 
 </script>
 </x-layout>

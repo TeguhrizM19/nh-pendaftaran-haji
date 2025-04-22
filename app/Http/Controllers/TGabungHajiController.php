@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use App\Models\GroupKeberangkatan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class TGabungHajiController extends Controller
 {
@@ -222,6 +223,14 @@ class TGabungHajiController extends Controller
       'issue_date' => 'nullable|date',
       'experi_date' => 'nullable|date',
 
+      // Validasi file upload
+      'ktp'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'kk'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'surat' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'spph'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'bpih'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'photo' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+
       // Validasi checkbox perlengkapan
       'perlengkapan' => 'nullable|array',
       'perlengkapan.*' => 'exists:m_perlengkapans,id',
@@ -231,14 +240,75 @@ class TGabungHajiController extends Controller
       'dokumen.*' => 'exists:m_dok_hajis,id',
     ]);
 
-    DB::transaction(function () use ($validated) {
+    DB::transaction(function () use (&$validated, $request) {
       $user = Auth::user()->name;
 
-      $validated['create_user'] = $user;
+      // Upload file satu per satu
+      if ($request->file('ktp')) {
+        $newName = time() . "_ktp." . $request->ktp->extension();
+        // server
+        $request->ktp->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['ktp'] = $newName;
+      }
+
+      if ($request->file('kk')) {
+        $newName = time() . "_kk." . $request->kk->extension();
+        // server
+        $request->kk->move('../public_html/folder-image-truenas', $newName);
+
+        // Local
+        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['kk'] = $newName;
+      }
+
+      if ($request->file('surat')) {
+        $newName = time() . "_surat." . $request->surat->extension();
+        // server
+        $request->surat->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['surat'] = $newName;
+      }
+
+      if ($request->file('spph')) {
+        $newName = time() . "_spph." . $request->spph->extension();
+        // server
+        $request->spph->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['spph'] = $newName;
+      }
+
+      if ($request->file('bpih')) {
+        $newName = time() . "_bpih." . $request->bpih->extension();
+        // server
+        $request->bpih->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['bpih'] = $newName;
+      }
+
+      if ($request->file('photo')) {
+        $newName = time() . "_photo." . $request->photo->extension();
+        // server
+        $request->photo->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['photo'] = $newName;
+      }
+
       $validated['nama'] = strtoupper($validated['nama']);
       $validated['panggilan'] = strtoupper($validated['panggilan']);
       $validated['alamat_ktp'] = strtoupper($validated['alamat_ktp']);
       $validated['alamat_domisili'] = strtoupper($validated['alamat_domisili']);
+      $validated['create_user'] = $user;
 
       $customer = Customer::create($validated);
 
@@ -251,19 +321,6 @@ class TGabungHajiController extends Controller
 
     return redirect('/gabung-haji')->with('success', 'Data berhasil disimpan!');
   }
-
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(TGabungHaji $tGabungHaji)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
 
   public function edit($id)
   {
@@ -352,6 +409,13 @@ class TGabungHajiController extends Controller
       'kota_domisili' => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
+      // upload
+      'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'kk'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'surat'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'spph'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'bpih'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
 
       // t_gabung_hajis
       'no_spph' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')->ignore($gabung_haji->id)],
@@ -378,6 +442,42 @@ class TGabungHajiController extends Controller
 
     DB::transaction(function () use ($validated, $customer, $gabung_haji) {
       $user = Auth::user()->name;
+
+      $uploadFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
+      $serverPath = '../public_html/folder-image-truenas';
+
+      foreach ($uploadFields as $field) {
+        if (request()->hasFile($field)) {
+          $file = request()->file($field);
+          $newName = time() . "_$field." . $file->extension();
+
+          // Simpan ke local
+          // $file->move(public_path('uploads/dokumen_haji'), $newName);
+
+          // Simpan ke server (jika folder server tersedia)
+          if (file_exists($serverPath) && is_dir($serverPath)) {
+            request()->file($field)->move($serverPath, $newName);
+          }
+
+          // Hapus file lama dari local
+          $oldFile = $gabung_haji->$field ?? $customer->$field;
+          if ($oldFile) {
+            // $localPath = public_path('uploads/dokumen_haji/' . $oldFile);
+            // if (file_exists($localPath)) {
+            //   @unlink($localPath);
+            // }
+
+            // Hapus file lama dari server
+            $serverFile = $serverPath . '/' . $oldFile;
+            if (file_exists($serverFile)) {
+              @unlink($serverFile);
+            }
+          }
+
+          $validated[$field] = $newName;
+        }
+      }
+
       $customer->update(array_merge($validated, [
         'nama' => strtoupper($validated['nama']),
         'panggilan' => strtoupper($validated['panggilan']),
@@ -404,23 +504,40 @@ class TGabungHajiController extends Controller
   {
     DB::transaction(function () use ($id) {
       $gabungHaji = TGabungHaji::findOrFail($id);
+      $customer = Customer::findOrFail($gabungHaji->customer_id);
 
-      // Ambil ID customer sebelum menghapus
-      $customerId = $gabungHaji->customer_id;
+      // Cek apakah masih ada id customer yang sama di t_daftar_hajis
+      $isDuplicate = TGabungHaji::where('customer_id', $customer->id)
+        ->where('id', '!=', $id) // Pastikan bukan data yang akan dihapus
+        ->exists();
 
-      // Hapus data di t_gabung_hajis
+      // Hapus file dokumen jika tidak ada customer_id yang sama lagi
+      if (!$isDuplicate) {
+        foreach (['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'] as $field) {
+          // local
+          // $filePathLocal = public_path("uploads/dokumen_haji/{$customer->$field}");
+          // if (!empty($customer->$field) && file_exists($filePathLocal)) {
+          //   @unlink($filePathLocal);
+          // }
+
+          // server
+          $filePathServer = '../public_html/folder-image-truenas/' . $customer->$field;
+          if (!empty($customer->$field) && file_exists($filePathServer)) {
+            @unlink($filePathServer);
+          }
+        }
+      }
+
+      // Hapus data di t_daftar_hajis
       $gabungHaji->delete();
 
-      // Cek apakah masih ada data di t_gabung_hajis dengan customer_id yang sama
-      $customerExists = TGabungHaji::where('customer_id', $customerId)->exists();
-
-      if (!$customerExists) {
-        // Jika tidak ada lagi data di t_gabung_hajis untuk customer ini, hapus customer
-        Customer::where('id', $customerId)->delete();
+      // Hapus customer jika tidak ada lagi data di t_daftar_hajis
+      if (!TGabungHaji::where('customer_id', $customer->id)->exists()) {
+        $customer->delete();
       }
     });
 
-    return redirect('/gabung-haji')->with('success', 'Data Dihapus');
+    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil dihapus.');
   }
 
   public function search(Request $request)
@@ -513,6 +630,13 @@ class TGabungHajiController extends Controller
       'kota_domisili' => 'nullable|exists:m_kotas,id',
       'kecamatan_domisili' => 'nullable|exists:m_kecamatans,id',
       'kelurahan_domisili' => 'nullable|exists:m_kelurahans,id',
+      // Upload file
+      'ktp'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'kk'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'surat'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'spph'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'bpih'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+      'photo'  => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
 
       // t_gabung_hajis
       'no_spph' => ['nullable', 'numeric', Rule::unique('t_gabung_hajis', 'no_spph')],
@@ -537,8 +661,15 @@ class TGabungHajiController extends Controller
       'experi_date' => 'nullable|date',
     ]);
 
-    DB::transaction(function () use ($validated, $customer) {
+    DB::transaction(function () use ($validated, $customer, $request) {
       $user = Auth::user()->name;
+
+      // **Simpan data lama sebelum update**
+      $oldFiles = [];
+      $fileFields = ['ktp', 'kk', 'surat', 'spph', 'bpih', 'photo'];
+      foreach ($fileFields as $field) {
+        $oldFiles[$field] = $customer->getOriginal($field);
+      }
 
       // Update data customer
       $customer->update(array_merge($validated, [
@@ -548,6 +679,34 @@ class TGabungHajiController extends Controller
         'alamat_domisili' => strtoupper($validated['alamat_domisili']),
         'update_user' => $user,
       ]));
+
+      // **Update dokumen pelanggan**
+      foreach ($fileFields as $field) {
+        if ($request->hasFile($field)) {
+          // **Hapus file lama jika ada**
+          if (!empty($oldFiles[$field])) {
+            // server
+            $oldFilePath = '../public_html/folder-image-truenas/' . $customer->$field;
+
+            // local
+            // $oldFilePath = public_path('uploads/dokumen_haji/' . $oldFiles[$field]);
+            if (File::exists($oldFilePath)) {
+              File::delete($oldFilePath);
+            }
+          }
+
+          // **Simpan file baru**
+          $newFileName = time() . '_' . $field . '.' . $request->file($field)->extension();
+          // server
+          $request->file($field)->move('../public_html/folder-image-truenas', $newFileName);
+
+          // local
+          // $request->file($field)->move(public_path('uploads/dokumen_haji'), $newFileName);
+
+          // **Update field dokumen di database**
+          $customer->update([$field => $newFileName]);
+        }
+      }
 
       // Buat data baru di t_gabung_hajis
       TGabungHaji::create(array_merge($validated, [
@@ -638,6 +797,13 @@ class TGabungHajiController extends Controller
       // Validasi checkbox perlengkapan
       'perlengkapan' => 'nullable|array',
       'perlengkapan.*' => 'exists:m_perlengkapans,id',
+      // Validasi file upload
+      'ktp'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'kk'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'surat' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'spph'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'bpih'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+      'photo' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
       // Validasi checkbox dokumen
       'dokumen' => 'nullable|array',
       'dokumen.*' => 'exists:m_dok_hajis,id',
@@ -651,8 +817,69 @@ class TGabungHajiController extends Controller
       'experi_date' => 'nullable|date',
     ]);
 
-    DB::transaction(function () use ($validated) {
+    DB::transaction(function () use (&$validated, $request) {
       $user = Auth::user()->name;
+
+      // Upload file satu per satu
+      if ($request->file('ktp')) {
+        $newName = time() . "_ktp." . $request->ktp->extension();
+        // server
+        $request->ktp->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->ktp->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['ktp'] = $newName;
+      }
+
+      if ($request->file('kk')) {
+        $newName = time() . "_kk." . $request->kk->extension();
+        // server
+        $request->kk->move('../public_html/folder-image-truenas', $newName);
+
+        // Local
+        // $request->kk->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['kk'] = $newName;
+      }
+
+      if ($request->file('surat')) {
+        $newName = time() . "_surat." . $request->surat->extension();
+        // server
+        $request->surat->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->surat->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['surat'] = $newName;
+      }
+
+      if ($request->file('spph')) {
+        $newName = time() . "_spph." . $request->spph->extension();
+        // server
+        $request->spph->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->spph->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['spph'] = $newName;
+      }
+
+      if ($request->file('bpih')) {
+        $newName = time() . "_bpih." . $request->bpih->extension();
+        // server
+        $request->bpih->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->bpih->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['bpih'] = $newName;
+      }
+
+      if ($request->file('photo')) {
+        $newName = time() . "_photo." . $request->photo->extension();
+        // server
+        $request->photo->move('../public_html/folder-image-truenas', $newName);
+
+        // local
+        // $request->photo->move(public_path('uploads/dokumen_haji'), $newName);
+        $validated['photo'] = $newName;
+      }
 
       $validated['create_user'] = $user;
       $validated['nama'] = strtoupper($validated['nama']);
