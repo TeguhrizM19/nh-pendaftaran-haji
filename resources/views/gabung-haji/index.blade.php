@@ -155,7 +155,6 @@
   </div>
   
   <script>
-
     // Semua Filter
     $(document).ready(function () {
       // Inisialisasi Select2
@@ -269,7 +268,6 @@
         fetchFilteredData(page);
       });
     });
-
   </script>
   
 </x-layout>

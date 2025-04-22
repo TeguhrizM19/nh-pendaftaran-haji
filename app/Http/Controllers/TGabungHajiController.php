@@ -537,7 +537,7 @@ class TGabungHajiController extends Controller
       }
     });
 
-    return redirect('/pendaftaran-haji')->with('success', 'Data berhasil dihapus.');
+    return redirect('/gabung-haji')->with('success', 'Data berhasil dihapus.');
   }
 
   public function search(Request $request)
@@ -661,7 +661,7 @@ class TGabungHajiController extends Controller
       'experi_date' => 'nullable|date',
     ]);
 
-    DB::transaction(function () use ($validated, $customer, $request) {
+    DB::transaction(function () use ($customer, $validated, $request) {
       $user = Auth::user()->name;
 
       // **Simpan data lama sebelum update**
